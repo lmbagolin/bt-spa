@@ -1,0 +1,170 @@
+:root {
+  /* Primárias */
+  --primary:        #0284c7;   /* azul-oceano */
+  --primary-light:  #0ea5e9;
+  --primary-dark:   #0369a1;
+
+  /* Secundárias */
+  --secondary:      #f59e0b;   /* âmbar-areia */
+  --secondary-light:#fbbf24;
+  --secondary-dark: #d97706;
+
+  /* Accent */
+  --accent:         #06b6d4;   /* ciano-água */
+
+  /* Semânticas */
+  --success:        #22c55e;
+  --warning:        #f59e0b;
+  --danger:         #ef4444;
+  --info:           #3b82f6;
+
+  /* Superfície (Sakai Slate Theme) */
+  --surface-0:      #ffffff;
+  --surface-50:     #f8fafc;
+  --surface-100:    #f1f5f9;
+  --surface-200:    #e2e8f0;
+  --surface-300:    #cbd5e1;
+  --surface-400:    #94a3b8;
+  --surface-500:    #64748b;
+  --surface-600:    #475569;
+  --surface-700:    #334155;
+  --surface-800:    #1e293b;
+  --surface-900:    #0f172a;
+
+  /* Sidebar */
+  --sidebar-bg:     #1e293b;   /* slate-800 */
+  --sidebar-text:   #94a3b8;
+  --sidebar-active-bg: rgba(2,132,199,0.15);
+  --sidebar-active-text: #0ea5e9;
+  --sidebar-hover:  rgba(255,255,255,0.05);
+
+  /* Border Radius */
+  --radius-sm:   6px;
+  --radius-md:   10px;
+  --radius-lg:   12px;
+  --radius-xl:   16px;
+  --radius-2xl:  24px;
+
+  /* Sombras Precisas Sakai */
+  --shadow-sm:  0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md:  0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg:  0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --shadow-card: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+}
+
+body {
+  background-color: var(--surface-50);
+  color: var(--surface-700);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Quasar Component Overrides */
+.q-layout {
+  background-color: var(--surface-50);
+}
+
+.q-header {
+  background-color: white !important;
+  color: var(--surface-900) !important;
+  border-bottom: 1px solid var(--surface-100);
+}
+
+.q-drawer {
+  background-color: var(--sidebar-bg) !important;
+  color: white;
+}
+
+.q-field--outlined .q-field__control {
+  border-radius: var(--radius-md) !important;
+}
+
+.q-btn {
+  border-radius: var(--radius-md) !important;
+  text-transform: none;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+
+.q-card {
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  border: 1px solid var(--surface-100);
+}
+
+/* Typography Helpers */
+.text-xs { font-size: 0.75rem; line-height: 1rem; }
+.text-sm { font-size: 0.875rem; line-height: 1.25rem; }
+.text-base { font-size: 1rem; line-height: 1.5rem; }
+.text-lg { font-size: 1.125rem; line-height: 1.75rem; }
+.text-xl { font-size: 1.25rem; line-height: 1.75rem; }
+.text-2xl { font-size: 1.5rem; line-height: 2rem; }
+
+/* Spacing Helpers */
+.gap-1 { gap: 0.25rem; }
+.gap-2 { gap: 0.5rem; }
+.gap-3 { gap: 0.75rem; }
+.gap-4 { gap: 1rem; }
+
+/* Borders */
+.border-none { border: none !important; }
+.border-surface-100 { border: 1px solid var(--surface-100) !important; }
+
+/* Transitions */
+.transition-all { transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); }
+
+/* Custom Sakai Cards */
+.sakai-card {
+  background: #ffffff;
+  padding: 1.5rem;
+  border-radius: var(--radius-lg);
+  margin-bottom: 2rem;
+}
+
+/* Stat Card Gradients - Handoff Fidelity */
+.bg-gradient-blue {
+  background: linear-gradient(90deg, #3b82f6 0%, #2563eb 100%) !important;
+}
+
+.bg-gradient-purple {
+  background: linear-gradient(90deg, #a855f7 0%, #7c3aed 100%) !important;
+}
+
+.bg-gradient-green {
+  background: linear-gradient(90deg, #22c55e 0%, #16a34a 100%) !important;
+}
+
+.bg-gradient-amber {
+  background: linear-gradient(90deg, #f59e0b 0%, #d97706 100%) !important;
+}
+
+.watermark-icon {
+  opacity: 0.2;
+  position: absolute;
+  right: 16px;
+  bottom: 16px;
+  pointer-events: none;
+}
+
+/* Surface Utilities */
+.bg-surface-800 { background-color: var(--surface-800) !important; }
+.bg-surface-700 { background-color: var(--surface-700) !important; }
+.bg-surface-100 { background-color: var(--surface-100) !important; }
+.bg-surface-50  { background-color: var(--surface-50)  !important; }
+
+.text-surface-900 { color: var(--surface-900) !important; }
+.text-surface-700 { color: var(--surface-700) !important; }
+.text-surface-500 { color: var(--surface-500) !important; }
+.text-surface-400 { color: var(--surface-400) !important; }
+.text-surface-300 { color: var(--surface-300) !important; }
+
+/* Sidebar Active State Refinement */
+.nav-active {
+  background-color: var(--sidebar-active-bg) !important;
+  color: var(--sidebar-active-text) !important;
+  border-left: 4px solid var(--primary-light);
+}
+
+.nav-active i {
+  color: var(--sidebar-active-text) !important;
+}
