@@ -8,56 +8,49 @@
 
       <q-card-section>
         <q-form @submit="onSubmit" class="q-gutter-md">
-          <q-input
+          <BtInput
             v-model="form.name"
             label="Nome Completo"
-            outlined
-            lazy-rules
-            :rules="[val => !!val || 'Nome é obrigatório']"
+            placeholder="Seu nome completo"
           >
-            <template v-slot:prepend>
+            <template #prefix>
               <q-icon name="person" color="primary" />
             </template>
-          </q-input>
+          </BtInput>
 
-          <q-input
+          <BtInput
             v-model="form.email"
             type="email"
             label="E-mail"
-            outlined
-            lazy-rules
-            :rules="[val => !!val || 'E-mail é obrigatório']"
+            placeholder="seu@email.com"
           >
-            <template v-slot:prepend>
+            <template #prefix>
               <q-icon name="email" color="primary" />
             </template>
-          </q-input>
+          </BtInput>
 
-          <q-input
+          <BtInput
             v-model="form.password"
             type="password"
             label="Senha"
-            outlined
-            lazy-rules
-            :rules="[val => !!val || 'Senha é obrigatória', val => val.length >= 8 || 'Mínimo 8 caracteres']"
+            placeholder="Mínimo 8 caracteres"
+            hint="Use pelo menos 8 caracteres"
           >
-            <template v-slot:prepend>
+            <template #prefix>
               <q-icon name="lock" color="primary" />
             </template>
-          </q-input>
+          </BtInput>
 
-          <q-input
+          <BtInput
             v-model="form.password_confirmation"
             type="password"
             label="Confirmar Senha"
-            outlined
-            lazy-rules
-            :rules="[val => val === form.password || 'As senhas não coincidem']"
+            placeholder="Repita sua senha"
           >
-            <template v-slot:prepend>
+            <template #prefix>
               <q-icon name="check_circle" color="primary" />
             </template>
-          </q-input>
+          </BtInput>
 
           <div class="q-mt-xl">
             <q-btn

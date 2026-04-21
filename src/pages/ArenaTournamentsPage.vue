@@ -16,120 +16,90 @@
     </div>
 
     <!-- Tournaments Table -->
-    <q-card class="rounded-borders-15 shadow-2">
-      <q-table
-        :rows="tournamentStore.tournaments"
-        :columns="columns"
-        row-key="id"
-        flat
-        :loading="tournamentStore.loading"
-        no-data-label="Nenhum torneio encontrado"
-        class="arena-table"
-      >
-        <template v-slot:body-cell-type="props">
-          <q-td :props="props">
-            <q-chip outline color="primary" size="sm" class="text-bold">
-              {{ getTypeLabel(props.value) }}
-            </q-chip>
-          </q-td>
-        </template>
+    <BtTable
+      :rows="tournamentStore.tournaments"
+      :columns="columns"
+      row-key="id"
+      :loading="tournamentStore.loading"
+      no-data-label="Nenhum torneio encontrado"
+    >
+      <template #cell-type="{ row }">
+        <q-chip outline color="primary" size="sm" class="text-bold">
+          {{ getTypeLabel(row.type) }}
+        </q-chip>
+      </template>
 
-        <template v-slot:body-cell-status="props">
-          <q-td :props="props">
-            <q-chip
-              :color="getStatusColor(props.value)"
-              text-color="white"
-              size="sm"
-              class="text-bold"
-            >
-              {{ getStatusLabel(props.value) }}
-            </q-chip>
-          </q-td>
-        </template>
+      <template #cell-status="{ row }">
+        <q-chip
+          :color="getStatusColor(row.status)"
+          text-color="white"
+          size="sm"
+          class="text-bold"
+        >
+          {{ getStatusLabel(row.status) }}
+        </q-chip>
+      </template>
 
-        <template v-slot:body-cell-actions="props">
-          <q-td :props="props" class="q-gutter-xs">
-            <q-btn
-              flat
-              round
-              dense
-              color="grey-7"
-              icon="edit"
-              @click="openForm(props.row)"
-            >
-              <q-tooltip>Editar</q-tooltip>
-            </q-btn>
-            <q-btn
-              flat
-              round
-              dense
-              color="negative"
-              icon="delete"
-              @click="confirmDelete(props.row)"
-            >
-              <q-tooltip>Excluir</q-tooltip>
-            </q-btn>
-          </q-td>
-        </template>
-      </q-table>
-    </q-card>
+      <template #cell-actions="{ row }">
+        <div class="q-gutter-xs">
+          <q-btn
+            flat
+            round
+            dense
+            color="grey-7"
+            icon="edit"
+            @click="openForm(row)"
+          >
+            <q-tooltip>Editar</q-tooltip>
+          </q-btn>
+          <q-btn
+            flat
+            round
+            dense
+            color="negative"
+            icon="delete"
+            @click="confirmDelete(row)"
+          >
+            <q-tooltip>Excluir</q-tooltip>
+          </q-btn>
+        </div>
+      </template>
+    </BtTable>
 
     <!-- Form Dialog -->
-    <q-dialog v-model="showDialog" persistent>
-      <q-card style="min-width: 450px; border-radius: 15px">
-        <q-card-section class="row items-center q-pb-none">
-          <div class="text-h6 text-bold">{{ editingId ? 'Editar Torneio' : 'Novo Torneio' }}</div>
-          <q-space />
-          <q-btn icon="close" flat round dense v-close-popup />
-        </q-card-section>
+    <BtDialog v-model="showDialog" :title="editingId ? 'Editar Torneio' : 'Novo Torneio'" closable>
+      <form @submit.prevent="onSubmit" class="q-gutter-md">
+        <BtInput
+          v-model="form.name"
+          label="Nome do Torneio"
+          placeholder="Digite o nome do torneio"
+        />
 
-        <q-form @submit="onSubmit">
-          <q-card-section class="q-gutter-md">
-            <q-input
-              v-model="form.name"
-              label="Nome do Torneio"
-              outlined
-              dense
-              :rules="[val => !!val || 'Nome é obrigatório']"
-            />
+        <BtSelect
+          v-model="form.type"
+          :options="typeOptions"
+          label="Tipo de Torneio"
+          clearable
+        />
 
-            <q-select
-              v-model="form.type"
-              :options="typeOptions"
-              label="Tipo de Torneio"
-              outlined
-              dense
-              emit-value
-              map-options
-              :rules="[val => !!val || 'Tipo é obrigatório']"
-            />
+        <BtSelect
+          v-model="form.status"
+          :options="statusOptions"
+          label="Status"
+          clearable
+        />
+      </form>
 
-            <q-select
-              v-model="form.status"
-              :options="statusOptions"
-              label="Status"
-              outlined
-              dense
-              emit-value
-              map-options
-              :rules="[val => !!val || 'Status é obrigatório']"
-            />
-          </q-card-section>
-
-          <q-card-actions align="right" class="q-pa-md">
-            <q-btn flat label="Cancelar" v-close-popup color="grey-7" />
-            <q-btn
-              label="Salvar Torneio"
-              type="submit"
-              color="primary"
-              unelevated
-              class="q-px-lg"
-              :loading="submitting"
-            />
-          </q-card-actions>
-        </q-form>
-      </q-card>
-    </q-dialog>
+      <template #actions>
+        <BtButton label="Cancelar" variant="flat" @click="showDialog = false" />
+        <BtButton
+          label="Salvar Torneio"
+          variant="primary"
+          :loading="submitting"
+          @click="onSubmit"
+        />
+      </template>
+    </BtDialog>
   </q-page>
 </template>
 

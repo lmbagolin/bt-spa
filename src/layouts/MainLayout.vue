@@ -1,37 +1,39 @@
 <template>
   <q-layout view="hHh Lpr lFf">
-    <!-- Header principal largura total -->
-    <q-header class="q-py-xs shadow-sm bg-white text-surface-900 border-bottom">
-      <q-toolbar>
+    <!-- TOPBAR (Header) - Sakai Pattern -->
+    <q-header class="bt-header">
+      <q-toolbar class="bt-toolbar">
         <q-btn
           flat
           dense
           round
           icon="menu"
           aria-label="Menu"
-          color="surface-600"
+          color="text-primary"
           @click="toggleLeftDrawer"
         />
 
+        <!-- Logo and App Name -->
         <div class="row items-center q-ml-md">
           <q-icon name="sports_tennis" color="primary" size="32px" />
           <span class="text-h6 text-bold text-primary q-ml-sm gt-xs">Beach Tennis</span>
-          <q-separator vertical inset class="q-mx-md gt-xs" color="surface-100" />
-          <span class="text-subtitle2 text-surface-400 gt-sm">Plataforma</span>
+          <q-separator vertical inset class="q-mx-md gt-xs" style="background-color: var(--card-border)" />
+          <span class="text-subtitle2 text-secondary gt-sm">Plataforma</span>
         </div>
 
         <q-space />
 
+        <!-- Right Section - User Info -->
         <div v-if="auth.user" class="row items-center q-gutter-md">
-          <div class="row items-center q-gutter-sm q-pl-md border-left">
+          <div class="row items-center q-gutter-sm q-pl-md" style="border-left: 1px solid var(--card-border)">
             <div class="column items-end gt-xs">
-              <span class="text-caption text-bold text-surface-900 leading-none">{{ auth.user.name }}</span>
-              <span class="text-xs text-surface-400">Usuário</span>
+              <span class="text-caption text-bold text-primary leading-none">{{ auth.user.name }}</span>
+              <span class="text-xs text-secondary">Usuário</span>
             </div>
             <q-avatar size="36px" color="primary" text-color="white">
               {{ auth.user.name.charAt(0).toUpperCase() }}
             </q-avatar>
-            <q-btn flat round dense icon="logout" color="surface-400" @click="onLogout" class="q-ml-sm">
+            <q-btn flat round dense icon="logout" color="text-secondary" @click="onLogout" class="q-ml-sm">
               <q-tooltip>Sair</q-tooltip>
             </q-btn>
           </div>
@@ -42,15 +44,22 @@
       </q-toolbar>
     </q-header>
 
-    <!-- Sidebar escura abaixo do header -->
-    <q-drawer v-model="leftDrawerOpen" show-if-above :width="280" class="sakai-sidebar">
+    <!-- SIDEBAR (Navigation) - Sakai Dark Pattern -->
+    <q-drawer
+      v-model="leftDrawerOpen"
+      show-if-above
+      :width="250"
+      :breakpoint="1024"
+      class="bt-sidebar"
+    >
       <main-sidebar />
     </q-drawer>
 
+    <!-- MAIN CONTENT AREA -->
     <q-page-container>
-      <div class="page-content">
+      <q-page class="bt-page">
         <router-view />
-      </div>
+      </q-page>
     </q-page-container>
   </q-layout>
 </template>
@@ -86,21 +95,8 @@ async function onLogout() {
 }
 </script>
 
-<style scoped>
-.border-bottom {
-  border-bottom: 1px solid var(--surface-100);
-}
-
-.border-left {
-  border-left: 1px solid var(--surface-100);
-}
-
-.sakai-sidebar {
-  border-right: none;
-}
-
-.page-content {
-  min-height: calc(100vh - 60px);
-  background-color: var(--surface-50);
+<style scoped lang="scss">
+.leading-none {
+  line-height: 1;
 }
 </style>

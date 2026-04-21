@@ -10,23 +10,16 @@
 
       <q-card-section>
         <q-form @submit="onSubmit" class="q-gutter-y-md">
-          <div>
-            <label class="text-caption text-weight-medium text-surface-500 q-mb-xs block">E-mail</label>
-            <q-input
-              v-model="email"
-              type="email"
-              placeholder="seu@email.com"
-              outlined
-              dense
-              lazy-rules
-              :rules="[val => !!val || 'E-mail é obrigatório']"
-              bg-color="white"
-            >
-              <template v-slot:prepend>
-                <q-icon name="email" size="20px" color="surface-400" />
-              </template>
-            </q-input>
-          </div>
+          <BtInput
+            v-model="email"
+            label="E-mail"
+            type="email"
+            placeholder="seu@email.com"
+          >
+            <template #prefix>
+              <q-icon name="email" size="20px" color="surface-400" />
+            </template>
+          </BtInput>
 
           <div class="q-mt-lg">
             <q-btn

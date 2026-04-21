@@ -16,8 +16,8 @@
         </div>
 
         <!-- Coluna de Formulário -->
-        <div class="col-12 col-md-7 flex flex-center bg-surface-50">
-          <div class="full-width q-pa-md" style="max-width: 500px">
+        <div class="col-12 col-md-7 flex flex-center" style="background-color: var(--main-bg)">
+          <div class="full-width q-pa-md bt-form-container">
             <router-view />
           </div>
         </div>
@@ -29,14 +29,15 @@
 <script setup>
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .auth-side-panel {
-  background: linear-gradient(160deg, #0f172a 0%, #0284c7 100%);
+  background: linear-gradient(160deg, #0f172a 0%, #1976d2 100%);
   min-height: 100vh;
-}
+  padding: 24px;
 
-.bg-surface-50 {
-  background-color: var(--surface-50);
+  @media (max-width: 600px) {
+    display: none;
+  }
 }
 
 .opacity-70 {
@@ -77,5 +78,12 @@
 
 .z-top {
   z-index: 10;
+}
+
+.bt-form-container {
+  max-width: 500px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 </style>

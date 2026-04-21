@@ -1,27 +1,32 @@
 <template>
-  <div class="column full-height bg-surface-800">
-    <!-- Dashboard / Home Info -->
-    <div class="q-pa-lg flex items-center no-wrap">
-      <q-avatar size="40px" class="bg-blue-500 shadow-sm">
-        <q-icon name="home" color="white" size="24px" />
+  <div class="sidebar-container column full-height">
+    <!-- Sidebar Header -->
+    <div class="sidebar-header q-pa-lg row items-center no-wrap">
+      <q-avatar size="40px" color="primary" text-color="white">
+        <q-icon name="home" size="24px" />
       </q-avatar>
       <div class="column q-ml-md">
         <span class="text-sm text-bold text-white leading-none">Início</span>
-        <span class="text-xs text-surface-400">Beach Tennis Tournaments</span>
+        <span class="text-xs" style="color: var(--sidebar-text)">Tournaments</span>
       </div>
     </div>
 
-    <q-separator color="white" dark opacity="0.05" />
+    <q-separator style="background-color: var(--sidebar-hover)" />
 
-    <!-- Navigation -->
+    <!-- Player Section Navigation -->
     <q-list padding class="q-mt-md">
-      <q-item-label
-        class="text-xs text-bold text-surface-500 q-mb-sm tracking-widest text-uppercase q-px-md"
-      >
-        ÁREA DO JOGADOR
+      <q-item-label header class="text-xs text-bold text-uppercase" style="color: var(--sidebar-text)">
+        Área do Jogador
       </q-item-label>
 
-      <q-item clickable v-ripple to="/" exact class="nav-item q-mb-xs" active-class="nav-active">
+      <q-item
+        clickable
+        v-ripple
+        to="/"
+        exact
+        class="nav-item q-mb-xs"
+        active-class="nav-active"
+      >
         <q-item-section avatar>
           <q-icon name="explore" size="22px" />
         </q-item-section>
@@ -42,19 +47,17 @@
           <q-icon name="person" size="22px" />
         </q-item-section>
         <q-item-section>
-          <q-item-label class="text-weight-medium">Área do Jogador</q-item-label>
+          <q-item-label class="text-weight-medium">Meu Perfil</q-item-label>
         </q-item-section>
       </q-item>
     </q-list>
 
-    <q-separator color="white" dark opacity="0.05" />
+    <q-separator style="background-color: var(--sidebar-hover); margin: 0 24px" />
 
-    <!-- Navigation -->
+    <!-- Admin Section Navigation -->
     <q-list padding class="q-mt-md">
-      <q-item-label
-        class="text-xs text-bold text-surface-500 q-mb-sm tracking-widest text-uppercase q-px-md"
-      >
-        ADMINISTRADOR DE ARENAS
+      <q-item-label header class="text-xs text-bold text-uppercase" style="color: var(--sidebar-text)">
+        Gerenciador de Arenas
       </q-item-label>
 
       <q-item
@@ -76,12 +79,11 @@
 
     <q-space />
 
-    <!-- Footer discreto -->
-    <div class="q-mt-auto">
-      <q-separator color="white" dark opacity="0.05" class="q-mb-md" />
-
-      <div class="q-pa-md">
-        <div class="text-center text-surface-500 text-xs">© 2026 Beach Tennis Manager</div>
+    <!-- Footer -->
+    <div class="sidebar-footer">
+      <q-separator style="background-color: var(--sidebar-hover); margin: 0 0 16px 0" />
+      <div class="text-center text-xs" style="color: var(--sidebar-text)">
+        © 2026 Beach Tennis Manager
       </div>
     </div>
   </div>
@@ -91,32 +93,48 @@
 // Componente de navegação lateral para o MainLayout
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+.sidebar-container {
+  background-color: var(--sidebar-bg);
+  color: var(--sidebar-text);
+}
+
+.sidebar-header {
+  border-bottom: 1px solid var(--sidebar-hover);
+  padding: 24px !important;
+}
+
+.sidebar-footer {
+  padding: 16px;
+}
+
 .nav-item {
-  color: var(--surface-400);
+  color: var(--sidebar-text);
   padding: 10px 16px;
+  margin: 4px 8px;
+  border-radius: var(--radius-md);
   transition: all 0.2s ease;
-}
 
-.nav-item:hover {
-  background-color: var(--sidebar-hover);
-  color: white;
-}
+  &:hover {
+    background-color: var(--sidebar-hover);
+    color: var(--sidebar-text-hover);
 
-.nav-active {
-  background-color: var(--sidebar-active-bg) !important;
-  color: var(--sidebar-active-text) !important;
-}
+    :deep(.q-icon) {
+      color: var(--sidebar-text-hover);
+    }
+  }
 
-.nav-active i {
-  color: var(--sidebar-active-text) !important;
+  &.nav-active {
+    background-color: var(--sidebar-active);
+    color: #ffffff;
+
+    :deep(.q-icon) {
+      color: #ffffff;
+    }
+  }
 }
 
 .leading-none {
   line-height: 1;
-}
-
-.bg-blue-500 {
-  background-color: #0ea5e9;
 }
 </style>

@@ -9,61 +9,39 @@
 
       <q-card-section>
         <q-form @submit="onSubmit" class="q-gutter-y-sm">
-          <div>
-            <label class="text-caption text-weight-medium text-surface-500 q-mb-xs block">E-mail</label>
-            <q-input
-              v-model="form.email"
-              type="email"
-              outlined
-              dense
-              readonly
-              bg-color="grey-2"
-            >
-              <template v-slot:prepend>
-                <q-icon name="email" size="20px" color="surface-400" />
-              </template>
-            </q-input>
-          </div>
+          <BtInput
+            v-model="form.email"
+            label="E-mail"
+            type="email"
+            readonly
+          >
+            <template #prefix>
+              <q-icon name="email" size="20px" color="surface-400" />
+            </template>
+          </BtInput>
 
-          <div class="q-mt-sm">
-            <label class="text-caption text-weight-medium text-surface-500 q-mb-xs block">Nova Senha</label>
-            <q-input
-              v-model="form.password"
-              type="password"
-              outlined
-              dense
-              lazy-rules
-              :rules="[
-                val => !!val || 'Senha é obrigatória',
-                val => val.length >= 8 || 'Mínimo 8 caracteres'
-              ]"
-              bg-color="white"
-            >
-              <template v-slot:prepend>
-                <q-icon name="lock" size="20px" color="surface-400" />
-              </template>
-            </q-input>
-          </div>
+          <BtInput
+            v-model="form.password"
+            label="Nova Senha"
+            type="password"
+            placeholder="Mínimo 8 caracteres"
+            hint="Use pelo menos 8 caracteres"
+          >
+            <template #prefix>
+              <q-icon name="lock" size="20px" color="surface-400" />
+            </template>
+          </BtInput>
 
-          <div class="q-mt-sm">
-            <label class="text-caption text-weight-medium text-surface-500 q-mb-xs block">Confirmar Senha</label>
-            <q-input
-              v-model="form.password_confirmation"
-              type="password"
-              outlined
-              dense
-              lazy-rules
-              :rules="[
-                val => !!val || 'Confirmação é obrigatória',
-                val => val === form.password || 'As senhas não coincidem'
-              ]"
-              bg-color="white"
-            >
-              <template v-slot:prepend>
-                <q-icon name="lock" size="20px" color="surface-400" />
-              </template>
-            </q-input>
-          </div>
+          <BtInput
+            v-model="form.password_confirmation"
+            label="Confirmar Senha"
+            type="password"
+            placeholder="Repita sua senha"
+          >
+            <template #prefix>
+              <q-icon name="lock" size="20px" color="surface-400" />
+            </template>
+          </BtInput>
 
           <div class="q-mt-lg">
             <q-btn

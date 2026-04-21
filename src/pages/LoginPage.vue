@@ -9,41 +9,31 @@
 
       <q-card-section>
         <q-form @submit="onSubmit" class="q-gutter-y-sm">
-          <div>
-            <label class="text-caption text-weight-medium text-surface-500 q-mb-xs block">E-mail</label>
-            <q-input
-              v-model="form.email"
-              type="email"
-              placeholder="seu@email.com"
-              outlined
-              dense
-              lazy-rules
-              :rules="[val => !!val || 'E-mail é obrigatório']"
-              bg-color="white"
-            >
-              <template v-slot:prepend>
-                <q-icon name="email" size="20px" color="surface-400" />
-              </template>
-            </q-input>
-          </div>
+          <BtInput
+            v-model="form.email"
+            label="E-mail"
+            type="email"
+            placeholder="seu@email.com"
+            :error="!!emailError"
+            :error-message="emailError"
+          >
+            <template #prefix>
+              <q-icon name="email" size="20px" color="surface-400" />
+            </template>
+          </BtInput>
 
-          <div class="q-mt-sm">
-            <label class="text-caption text-weight-medium text-surface-500 q-mb-xs block">Senha</label>
-            <q-input
-              v-model="form.password"
-              type="password"
-              placeholder="Sua senha"
-              outlined
-              dense
-              lazy-rules
-              :rules="[val => !!val || 'Senha é obrigatória']"
-              bg-color="white"
-            >
-              <template v-slot:prepend>
-                <q-icon name="lock" size="20px" color="surface-400" />
-              </template>
-            </q-input>
-          </div>
+          <BtInput
+            v-model="form.password"
+            label="Senha"
+            type="password"
+            placeholder="Sua senha"
+            :error="!!passwordError"
+            :error-message="passwordError"
+          >
+            <template #prefix>
+              <q-icon name="lock" size="20px" color="surface-400" />
+            </template>
+          </BtInput>
 
           <div class="row justify-end q-mt-xs">
             <q-btn flat no-caps label="Esqueceu a senha?" color="primary" size="sm" dense to="/forgot-password" />

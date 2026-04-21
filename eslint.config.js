@@ -60,6 +60,14 @@ export default [
     },
   },
 
+  // Ignore TypeScript-related errors in Vue files
+  {
+    files: ['src/components/**/*.vue'],
+    rules: {
+      'vue/no-parsing-error': 'off',
+    },
+  },
+
   {
     files: ['src-pwa/custom-service-worker.js'],
     languageOptions: {

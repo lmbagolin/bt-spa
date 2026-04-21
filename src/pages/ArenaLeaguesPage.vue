@@ -103,140 +103,81 @@
     </div>
 
     <!-- Diálogo de Liga -->
-    <q-dialog v-model="showDialog" persistent backdrop-filter="blur(8px)">
-      <q-card class="radius-xl shadow-xl overflow-hidden" style="width: 520px; max-width: 95vw;">
-        <q-card-section class="row items-center q-pa-xl bg-surface-50">
-          <q-avatar icon="sports_soccer" color="primary" text-color="white" class="shadow-md" />
-          <div class="column q-ml-md">
-            <div class="text-xl text-bold text-surface-900">
-              {{ form.id ? 'Editar Liga' : 'Nova Liga' }}
+    <BtDialog v-model="showDialog" :title="form.id ? 'Editar Liga' : 'Nova Liga'" closable>
+      <div class="q-gutter-y-lg">
+        <div class="q-gutter-y-xs">
+          <label class="text-xs font-bold text-surface-500 block uppercase tracking-widest q-mb-sm">Nome da Liga *</label>
+          <BtInput
+            v-model="form.nome"
+            placeholder="Ex: Liga Verão 2026"
+          />
+        </div>
+
+        <div class="row q-col-gutter-lg">
+          <div class="col-12 col-sm-6">
+            <div class="q-gutter-y-xs">
+              <label class="text-xs font-bold text-surface-500 block uppercase tracking-widest q-mb-sm">Data de Início *</label>
+              <BtDatePicker
+                v-model="form.data_inicio"
+              />
             </div>
-            <div class="text-xs text-surface-400">Gerenciamento de Ligas</div>
           </div>
-          <q-space />
-          <q-btn icon="close" flat round dense v-close-popup color="surface-400" />
-        </q-card-section>
-
-        <q-separator color="surface-100" />
-
-        <q-form @submit="onSubmit">
-          <q-card-section class="q-pa-xl q-gutter-y-lg">
+          <div class="col-12 col-sm-6">
             <div class="q-gutter-y-xs">
-              <label class="text-xs font-bold text-surface-500 block uppercase tracking-widest q-mb-sm">Nome da Liga *</label>
-              <q-input
-                v-model="form.nome"
-                placeholder="Ex: Liga Verão 2026"
-                outlined
-                dense
-                bg-color="white"
-                lazy-rules
-                :rules="[val => !!val || 'Nome é obrigatório']"
+              <label class="text-xs font-bold text-surface-500 block uppercase tracking-widest q-mb-sm">Data Prevista de Término</label>
+              <BtDatePicker
+                v-model="form.data_prevista_termino"
               />
             </div>
+          </div>
+        </div>
 
-            <div class="row q-col-gutter-lg">
-              <div class="col-12 col-sm-6">
-                <div class="q-gutter-y-xs">
-                  <label class="text-xs font-bold text-surface-500 block uppercase tracking-widest q-mb-sm">Data de Início *</label>
-                  <q-input
-                    v-model="form.data_inicio"
-                    type="date"
-                    outlined
-                    dense
-                    bg-color="white"
-                    lazy-rules
-                    :rules="[val => !!val || 'Data obrigatória']"
-                  />
-                </div>
-              </div>
-              <div class="col-12 col-sm-6">
-                <div class="q-gutter-y-xs">
-                  <label class="text-xs font-bold text-surface-500 block uppercase tracking-widest q-mb-sm">Data Prevista de Término *</label>
-                  <q-input
-                    v-model="form.data_prevista_termino"
-                    type="date"
-                    outlined
-                    dense
-                    bg-color="white"
-                    lazy-rules
-                    :rules="[val => !!val || 'Data obrigatória']"
-                  />
-                </div>
-              </div>
-            </div>
-
-            <div class="row q-col-gutter-lg">
-              <div class="col-12 col-sm-6">
-                <div class="q-gutter-y-xs">
-                  <label class="text-xs font-bold text-surface-500 block uppercase tracking-widest q-mb-sm">Número de Etapas *</label>
-                  <q-input
-                    v-model.number="form.numero_etapas"
-                    type="number"
-                    min="1"
-                    placeholder="Ex: 5"
-                    outlined
-                    dense
-                    bg-color="white"
-                    lazy-rules
-                    :rules="[val => !!val || 'Número de etapas obrigatório']"
-                  />
-                </div>
-              </div>
-              <div class="col-12 col-sm-6">
-                <div class="q-gutter-y-xs">
-                  <label class="text-xs font-bold text-surface-500 block uppercase tracking-widest q-mb-sm">Nível</label>
-                  <q-input
-                    v-model="form.nivel"
-                    placeholder="Ex: Amador, Profissional"
-                    outlined
-                    dense
-                    bg-color="white"
-                  />
-                </div>
-              </div>
-            </div>
-
+        <div class="row q-col-gutter-lg">
+          <div class="col-12 col-sm-6">
             <div class="q-gutter-y-xs">
-              <label class="text-xs font-bold text-surface-500 block uppercase tracking-widest q-mb-sm">Descrição</label>
-              <q-input
-                v-model="form.descricao"
-                placeholder="Descreva a liga..."
-                type="textarea"
-                outlined
-                dense
-                bg-color="white"
-                rows="3"
+              <label class="text-xs font-bold text-surface-500 block uppercase tracking-widest q-mb-sm">Número de Etapas *</label>
+              <BtInput
+                v-model.number="form.numero_etapas"
+                type="number"
+                placeholder="Ex: 5"
               />
             </div>
-
+          </div>
+          <div class="col-12 col-sm-6">
             <div class="q-gutter-y-xs">
-              <label class="text-xs font-bold text-surface-500 block uppercase tracking-widest q-mb-sm">Premiação</label>
-              <q-input
-                v-model="form.premiacao"
-                placeholder="Descreva a premiação..."
-                type="textarea"
-                outlined
-                dense
-                bg-color="white"
-                rows="3"
+              <label class="text-xs font-bold text-surface-500 block uppercase tracking-widest q-mb-sm">Nível</label>
+              <BtInput
+                v-model="form.nivel"
+                placeholder="Ex: Amador, Profissional"
               />
             </div>
-          </q-card-section>
+          </div>
+        </div>
 
-          <q-card-actions align="right" class="q-pa-xl bg-surface-50 border-surface-100">
-            <q-btn flat label="Cancelar" v-close-popup color="surface-500" no-caps class="text-bold" />
-            <q-btn
-              label="Salvar Liga"
-              type="submit"
-              color="primary"
-              unelevated
-              class="q-px-xl text-bold no-caps shadow-md"
-              :loading="saving"
-            />
-          </q-card-actions>
-        </q-form>
-      </q-card>
-    </q-dialog>
+        <div class="q-gutter-y-xs">
+          <label class="text-xs font-bold text-surface-500 block uppercase tracking-widest q-mb-sm">Descrição</label>
+          <BtTextarea
+            v-model="form.descricao"
+            placeholder="Descreva a liga..."
+            :rows="3"
+          />
+        </div>
+
+        <div class="q-gutter-y-xs">
+          <label class="text-xs font-bold text-surface-500 block uppercase tracking-widest q-mb-sm">Premiação</label>
+          <BtTextarea
+            v-model="form.premiacao"
+            placeholder="Descreva a premiação..."
+            :rows="3"
+          />
+        </div>
+      </div>
+
+      <template #actions>
+        <BtButton label="Cancelar" variant="flat" @click="showDialog = false" />
+        <BtButton label="Salvar Liga" variant="primary" :loading="saving" @click="onSubmit" />
+      </template>
+    </BtDialog>
   </q-page>
 </template>
 

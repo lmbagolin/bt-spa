@@ -1,0 +1,460 @@
+// ═══════════════════════════════════════════════════════════════════════════════════
+// BEACH TENNIS SPA - SAKAI COMPONENT STYLES
+// ═══════════════════════════════════════════════════════════════════════════════════
+// Global component styles following Sakai design system
+
+@import './bt-variables.scss';
+
+// ═══════════════════════════════════════════════════════════════════════════════════
+// CARD STYLES
+// ═══════════════════════════════════════════════════════════════════════════════════
+
+.bt-card {
+  background-color: $color-card-bg;
+  border-radius: $border-radius-lg;
+  border: none;
+  @include sakai-shadow('md');
+  margin-bottom: $spacing-lg;
+  overflow: hidden;
+
+  // Card header
+  .bt-card-header {
+    background-color: $color-bg-light;
+    border-bottom: $border-width solid $color-card-border;
+    padding: $spacing-md;
+    @include flex-between();
+
+    .bt-card-title {
+      font-size: $font-size-2xl;
+      font-weight: $font-weight-semibold;
+      color: $color-text-primary;
+      margin: 0;
+    }
+  }
+
+  // Card body
+  .q-card__section {
+    padding: $spacing-md;
+
+    &:last-child {
+      padding-bottom: $spacing-md;
+    }
+  }
+
+  // Card footer
+  .bt-card-footer {
+    border-top: $border-width solid $color-card-border;
+    padding: $spacing-md;
+    background-color: $color-bg-light;
+    @include flex-between();
+  }
+
+  // Hover effect
+  @include hover-lift();
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════════
+// TABLE STYLES
+// ═══════════════════════════════════════════════════════════════════════════════════
+
+.bt-table {
+  // Card wrapper
+  .q-table__card {
+    background-color: $color-card-bg;
+    border-radius: $border-radius-lg;
+    box-shadow: $shadow-md;
+    overflow: hidden;
+  }
+
+  // Header
+  .q-table__head {
+    background-color: $color-bg-light;
+
+    tr {
+      border-bottom: $border-width solid $color-card-border;
+    }
+
+    th {
+      color: $color-text-primary;
+      font-weight: $font-weight-semibold;
+      font-size: $font-size-sm;
+      padding: $spacing-md;
+      text-transform: none;
+    }
+  }
+
+  // Rows
+  .q-table__row {
+    border-bottom: $border-width solid $color-card-border;
+    transition: background-color $transition-fast;
+
+    &:hover {
+      background-color: $color-bg-light;
+    }
+
+    td {
+      padding: $spacing-md;
+      color: $color-text-primary;
+      font-size: $font-size-base;
+    }
+  }
+
+  // No data message
+  .q-table__body-nodata {
+    padding: $spacing-xl;
+    text-align: center;
+    color: $color-text-secondary;
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════════
+// FORM INPUT STYLES
+// ═══════════════════════════════════════════════════════════════════════════════════
+
+.q-field {
+  margin-bottom: $spacing-md;
+
+  // Label
+  .q-field__label {
+    font-size: $font-size-sm;
+    font-weight: $font-weight-medium;
+    color: $color-text-primary;
+    margin-bottom: $spacing-xs;
+  }
+
+  // Control area
+  .q-field__control {
+    font-size: $font-size-base;
+    color: $color-text-primary;
+  }
+
+  // Outlined variant (default)
+  &.q-field--outlined {
+    .q-field__control {
+      padding: 10px 14px;
+      border-radius: $border-radius-sm;
+      border: $border-width solid $color-card-border;
+      background-color: #ffffff;
+      transition:
+        border-color $transition-fast,
+        box-shadow $transition-fast;
+
+      &:hover {
+        border-color: $color-text-light;
+      }
+
+      &:focus-within {
+        border-color: $color-primary;
+        box-shadow: 0 0 0 2px rgba(25, 118, 210, 0.1);
+      }
+    }
+
+    // Placeholder
+    input::placeholder {
+      color: $color-text-secondary;
+    }
+
+    // Error state
+    &.q-field--error {
+      .q-field__control {
+        border-color: $color-danger;
+        box-shadow: 0 0 0 2px rgba(231, 76, 60, 0.1);
+      }
+    }
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════════
+// BUTTON STYLES
+// ═══════════════════════════════════════════════════════════════════════════════════
+
+.q-btn {
+  border-radius: $border-radius-sm;
+  font-weight: $font-weight-medium;
+  font-size: $font-size-sm;
+  padding: 8px 16px;
+  text-transform: none;
+  transition: all $transition-fast;
+
+  // Primary
+  &.bg-primary {
+    background-color: $color-primary;
+
+    &:hover {
+      background-color: darken($color-primary, 5%);
+    }
+  }
+
+  // Outline
+  &.q-btn--outline {
+    border: $border-width solid $color-primary;
+    color: $color-primary;
+
+    &:hover {
+      background-color: rgba(25, 118, 210, 0.05);
+    }
+  }
+
+  // Danger/Negative
+  &.bg-negative {
+    background-color: $color-danger;
+
+    &:hover {
+      background-color: darken($color-danger, 5%);
+    }
+  }
+
+  // Success/Positive
+  &.bg-positive {
+    background-color: $color-success;
+
+    &:hover {
+      background-color: darken($color-success, 5%);
+    }
+  }
+
+  // Warning
+  &.bg-warning {
+    background-color: $color-warning;
+
+    &:hover {
+      background-color: darken($color-warning, 5%);
+    }
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════════
+// SIDEBAR STYLES
+// ═══════════════════════════════════════════════════════════════════════════════════
+
+.bt-sidebar {
+  background-color: $color-sidebar-bg;
+  color: $color-sidebar-text;
+
+  .q-item {
+    padding: $spacing-sm $spacing-md;
+    margin: $spacing-xs $spacing-sm;
+    border-radius: $border-radius-md;
+    color: $color-sidebar-text;
+    transition: all $transition-normal;
+    font-size: $font-size-sm;
+
+    // Icons
+    .q-icon {
+      color: $color-sidebar-text;
+      margin-right: $spacing-md;
+    }
+
+    // Hover state
+    &:hover {
+      background-color: $color-sidebar-hover;
+      color: $color-sidebar-text-hover;
+
+      .q-icon {
+        color: $color-sidebar-text-hover;
+      }
+    }
+
+    // Active state
+    &.q-router-link--active {
+      background-color: $color-sidebar-active;
+      color: #ffffff;
+
+      .q-icon {
+        color: #ffffff;
+      }
+    }
+  }
+
+  // Expansion items
+  .q-expansion-item {
+    .q-expansion-item__header {
+      padding: $spacing-sm $spacing-md;
+      border-radius: $border-radius-md;
+
+      &:hover {
+        background-color: $color-sidebar-hover;
+      }
+    }
+
+    .q-expansion-item__content {
+      background-color: rgba(0, 0, 0, 0.1);
+      padding: 0;
+    }
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════════
+// HEADER/TOPBAR STYLES
+// ═══════════════════════════════════════════════════════════════════════════════════
+
+.bt-header {
+  background-color: $color-topbar-bg;
+  border-bottom: $border-width solid $color-topbar-border;
+  box-shadow: 0 2px 4px $color-topbar-shadow;
+}
+
+.bt-toolbar {
+  height: 70px;
+  padding: 0 $layout-main-padding;
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════════
+// PAGE/MAIN CONTENT STYLES
+// ═══════════════════════════════════════════════════════════════════════════════════
+
+.bt-page {
+  background-color: $color-main-bg;
+  @include responsive-padding();
+  min-height: calc(100vh - 70px);
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════════
+// BANNER/ALERT STYLES
+// ═══════════════════════════════════════════════════════════════════════════════════
+
+.bt-banner {
+  border-radius: $border-radius-md;
+  padding: $spacing-md;
+  margin-bottom: $spacing-lg;
+
+  &.bt-banner--success {
+    background-color: rgba(39, 174, 96, 0.1);
+    border-left: 4px solid $color-success;
+    color: $color-success;
+  }
+
+  &.bt-banner--warning {
+    background-color: rgba(243, 156, 18, 0.1);
+    border-left: 4px solid $color-warning;
+    color: $color-warning;
+  }
+
+  &.bt-banner--danger {
+    background-color: rgba(231, 76, 60, 0.1);
+    border-left: 4px solid $color-danger;
+    color: $color-danger;
+  }
+
+  &.bt-banner--info {
+    background-color: rgba(52, 152, 219, 0.1);
+    border-left: 4px solid $color-info;
+    color: $color-info;
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════════
+// SPACING UTILITIES
+// ═══════════════════════════════════════════════════════════════════════════════════
+
+.mt-xs {
+  margin-top: $spacing-xs;
+}
+.mt-sm {
+  margin-top: $spacing-sm;
+}
+.mt-md {
+  margin-top: $spacing-md;
+}
+.mt-lg {
+  margin-top: $spacing-lg;
+}
+.mt-xl {
+  margin-top: $spacing-xl;
+}
+
+.mb-xs {
+  margin-bottom: $spacing-xs;
+}
+.mb-sm {
+  margin-bottom: $spacing-sm;
+}
+.mb-md {
+  margin-bottom: $spacing-md;
+}
+.mb-lg {
+  margin-bottom: $spacing-lg;
+}
+.mb-xl {
+  margin-bottom: $spacing-xl;
+}
+
+.p-xs {
+  padding: $spacing-xs;
+}
+.p-sm {
+  padding: $spacing-sm;
+}
+.p-md {
+  padding: $spacing-md;
+}
+.p-lg {
+  padding: $spacing-lg;
+}
+.p-xl {
+  padding: $spacing-xl;
+}
+
+.gap-sm {
+  gap: $spacing-sm;
+}
+.gap-md {
+  gap: $spacing-md;
+}
+.gap-lg {
+  gap: $spacing-lg;
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════════
+// COLOR UTILITIES
+// ═══════════════════════════════════════════════════════════════════════════════════
+
+.text-primary {
+  color: $color-primary !important;
+}
+.text-success {
+  color: $color-success !important;
+}
+.text-warning {
+  color: $color-warning !important;
+}
+.text-danger {
+  color: $color-danger !important;
+}
+.text-info {
+  color: $color-info !important;
+}
+
+.bg-primary {
+  background-color: $color-primary !important;
+}
+.bg-success {
+  background-color: $color-success !important;
+}
+.bg-warning {
+  background-color: $color-warning !important;
+}
+.bg-danger {
+  background-color: $color-danger !important;
+}
+.bg-info {
+  background-color: $color-info !important;
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════════
+// RESPONSIVE UTILITIES
+// ═══════════════════════════════════════════════════════════════════════════════════
+
+@media (max-width: $breakpoint-sm) {
+  .bt-page {
+    @include responsive-padding();
+  }
+
+  .bt-card {
+    margin-bottom: $spacing-md;
+  }
+
+  .q-toolbar {
+    padding: 0 $spacing-md !important;
+  }
+}
