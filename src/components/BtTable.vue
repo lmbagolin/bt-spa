@@ -56,7 +56,7 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed } from 'vue';
 
 const props = defineProps({
   rows: {
@@ -109,7 +109,7 @@ const props = defineProps({
     type: String,
     default: 'horizontal',
   },
-})
+});
 
 const pagination = ref({
   sortBy: 'name',
@@ -117,7 +117,7 @@ const pagination = ref({
   page: 1,
   rowsPerPage: props.rowsPerPage,
   rowsNumber: props.rows.length,
-})
+});
 
 const tableAttrs = computed(() => ({
   selection: false,
@@ -131,9 +131,9 @@ const tableAttrs = computed(() => ({
   separator: props.separator,
   pagination: pagination.value,
   'onUpdate:pagination': (newPagination) => {
-    pagination.value = newPagination
+    pagination.value = newPagination;
   },
-}))
+}));
 </script>
 
 <style scoped lang="scss">

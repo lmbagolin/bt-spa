@@ -6,22 +6,22 @@
 
 ## 🎯 Quick Lookup
 
-| UI Need | Sakai Pattern | Quasar Component | Docs |
-|---------|---------------|------------------|------|
-| Header/Topbar | Fixed header | `<q-header>` + `<q-toolbar>` | [q-header](https://quasar.dev/layout/header-and-footer) |
-| Navigation menu | Dark sidebar | `<q-drawer>` + `<q-list>` | [q-drawer](https://quasar.dev/layout/drawer), [q-list](https://quasar.dev/components/list) |
-| Button | Various styles | `<q-btn>` | [q-btn](https://quasar.dev/components/button) |
-| Card/Section | White card box | `<q-card>` | [q-card](https://quasar.dev/components/card) |
-| Form input | Text field | `<q-input>` | [q-input](https://quasar.dev/components/input) |
-| Select/Dropdown | Select options | `<q-select>` | [q-select](https://quasar.dev/components/select) |
-| Table/Grid | Data table | `<q-table>` | [q-table](https://quasar.dev/components/table) |
-| Dialog/Modal | Popup window | `<q-dialog>` | [q-dialog](https://quasar.dev/components/dialog) |
-| Alert/Toast | Notification | `<q-banner>` or Notify plugin | [q-banner](https://quasar.dev/components/banner), [Notify](https://quasar.dev/plugins/notify) |
-| Tabs | Tabbed content | `<q-tabs>` | [q-tabs](https://quasar.dev/components/tabs) |
-| Progress | Loading bar | `<q-linear-progress>` | [q-linear-progress](https://quasar.dev/components/linear-progress) |
-| Checkbox | Toggle option | `<q-checkbox>` | [q-checkbox](https://quasar.dev/components/checkbox) |
-| Radio | Single choice | `<q-radio>` | [q-radio](https://quasar.dev/components/radio) |
-| Toggle | On/Off switch | `<q-toggle>` | [q-toggle](https://quasar.dev/components/toggle) |
+| UI Need         | Sakai Pattern  | Quasar Component              | Docs                                                                                          |
+| --------------- | -------------- | ----------------------------- | --------------------------------------------------------------------------------------------- |
+| Header/Topbar   | Fixed header   | `<q-header>` + `<q-toolbar>`  | [q-header](https://quasar.dev/layout/header-and-footer)                                       |
+| Navigation menu | Dark sidebar   | `<q-drawer>` + `<q-list>`     | [q-drawer](https://quasar.dev/layout/drawer), [q-list](https://quasar.dev/components/list)    |
+| Button          | Various styles | `<q-btn>`                     | [q-btn](https://quasar.dev/components/button)                                                 |
+| Card/Section    | White card box | `<q-card>`                    | [q-card](https://quasar.dev/components/card)                                                  |
+| Form input      | Text field     | `<q-input>`                   | [q-input](https://quasar.dev/components/input)                                                |
+| Select/Dropdown | Select options | `<q-select>`                  | [q-select](https://quasar.dev/components/select)                                              |
+| Table/Grid      | Data table     | `<q-table>`                   | [q-table](https://quasar.dev/components/table)                                                |
+| Dialog/Modal    | Popup window   | `<q-dialog>`                  | [q-dialog](https://quasar.dev/components/dialog)                                              |
+| Alert/Toast     | Notification   | `<q-banner>` or Notify plugin | [q-banner](https://quasar.dev/components/banner), [Notify](https://quasar.dev/plugins/notify) |
+| Tabs            | Tabbed content | `<q-tabs>`                    | [q-tabs](https://quasar.dev/components/tabs)                                                  |
+| Progress        | Loading bar    | `<q-linear-progress>`         | [q-linear-progress](https://quasar.dev/components/linear-progress)                            |
+| Checkbox        | Toggle option  | `<q-checkbox>`                | [q-checkbox](https://quasar.dev/components/checkbox)                                          |
+| Radio           | Single choice  | `<q-radio>`                   | [q-radio](https://quasar.dev/components/radio)                                                |
+| Toggle          | On/Off switch  | `<q-toggle>`                  | [q-toggle](https://quasar.dev/components/toggle)                                              |
 
 ---
 
@@ -30,11 +30,13 @@
 ### Topbar (Header)
 
 **Sakai Pattern:**
+
 ```
 [Logo] [Hamburger] [Title] [Spacer] [Notifications] [User Menu]
 ```
 
 **Quasar Implementation:**
+
 ```vue
 <q-header elevated>
   <q-toolbar>
@@ -48,6 +50,7 @@
 ```
 
 **SCSS Styling:**
+
 ```scss
 :deep(.q-header) {
   background-color: #ffffff;
@@ -66,6 +69,7 @@
 ### Sidebar (Navigation Menu)
 
 **Sakai Pattern:**
+
 ```
 [Logo]
 ─────────────
@@ -77,6 +81,7 @@
 ```
 
 **Quasar Implementation:**
+
 ```vue
 <q-drawer side="left" bordered :breakpoint="1024">
   <q-list>
@@ -115,10 +120,11 @@
 ```
 
 **SCSS Styling:**
+
 ```scss
 :deep(.q-drawer) {
   background-color: #2c3e50;
-  
+
   .q-item {
     color: #bdc3c7;
     margin: 4px 8px;
@@ -145,6 +151,7 @@
 ### Text Input
 
 **Sakai Pattern:**
+
 ```
 Label
 ┌──────────────────┐
@@ -153,17 +160,13 @@ Label
 ```
 
 **Quasar Implementation:**
+
 ```vue
-<q-input
-  v-model="formData.name"
-  label="Tournament Name"
-  outlined
-  dense
-  class="sakai-input"
-/>
+<q-input v-model="formData.name" label="Tournament Name" outlined dense class="sakai-input" />
 ```
 
 **SCSS Styling:**
+
 ```scss
 :deep(.q-field) {
   margin-bottom: 16px;
@@ -198,6 +201,7 @@ Label
 ### Select/Dropdown
 
 **Quasar Implementation:**
+
 ```vue
 <q-select
   v-model="formData.category"
@@ -213,21 +217,17 @@ Label
 ### Checkbox
 
 **Quasar Implementation:**
+
 ```vue
-<q-checkbox
-  v-model="formData.isActive"
-  label="Active"
-/>
+<q-checkbox v-model="formData.isActive" label="Active" />
 ```
 
 ### Toggle/Switch
 
 **Quasar Implementation:**
+
 ```vue
-<q-toggle
-  v-model="formData.isPublic"
-  label="Public"
-/>
+<q-toggle v-model="formData.isPublic" label="Public" />
 ```
 
 ---
@@ -237,6 +237,7 @@ Label
 ### Card (Section Container)
 
 **Sakai Pattern:**
+
 ```
 ┌─────────────────────┐
 │ Card Title          │
@@ -247,6 +248,7 @@ Label
 ```
 
 **Quasar Implementation:**
+
 ```vue
 <q-card class="sakai-card">
   <q-card-section class="sakai-card-header">
@@ -260,6 +262,7 @@ Label
 ```
 
 **SCSS Styling:**
+
 ```scss
 .sakai-card {
   background-color: #ffffff;
@@ -283,6 +286,7 @@ Label
 ### Table
 
 **Sakai Pattern:**
+
 ```
 ┌────────────┬──────────┬──────────┐
 │ Name       │ Status   │ Action   │
@@ -293,18 +297,13 @@ Label
 ```
 
 **Quasar Implementation:**
+
 ```vue
-<q-table
-  :rows="tournaments"
-  :columns="columns"
-  row-key="id"
-  class="sakai-table"
-  bordered
-  square
-/>
+<q-table :rows="tournaments" :columns="columns" row-key="id" class="sakai-table" bordered square />
 ```
 
 **SCSS Styling:**
+
 ```scss
 .sakai-table {
   :deep(.q-table__card) {
@@ -313,8 +312,7 @@ Label
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
   }
 
-  :deep(.q-table__head tr,
-        .q-table__row) {
+  :deep(.q-table__head tr, .q-table__row) {
     border-bottom: 1px solid #e0e0e0;
   }
 
@@ -343,21 +341,25 @@ Label
 ### Button Styles
 
 **Primary (Blue)**
+
 ```vue
 <q-btn label="Save" color="primary" unelevated />
 ```
 
 **Secondary (Outlined)**
+
 ```vue
 <q-btn label="Cancel" outline color="primary" />
 ```
 
 **Danger (Red)**
+
 ```vue
 <q-btn label="Delete" color="negative" unelevated />
 ```
 
 **SCSS:**
+
 ```scss
 :deep(.q-btn) {
   border-radius: 4px;
@@ -383,35 +385,33 @@ Label
 ### Notifications (Toast)
 
 **Quasar Implementation:**
-```javascript
-import { useQuasar } from 'quasar'
 
-const $q = useQuasar()
+```javascript
+import { useQuasar } from 'quasar';
+
+const $q = useQuasar();
 
 // Success
 $q.notify({
   type: 'positive',
   message: 'Tournament created successfully',
-  icon: 'check_circle'
-})
+  icon: 'check_circle',
+});
 
 // Error
 $q.notify({
   type: 'negative',
   message: 'Error saving tournament',
-  icon: 'error'
-})
+  icon: 'error',
+});
 ```
 
 ### Banner/Alert
 
 **Quasar Implementation:**
+
 ```vue
-<q-banner
-  v-if="hasErrors"
-  class="bg-red-2 text-red-9"
-  icon="warning"
->
+<q-banner v-if="hasErrors" class="bg-red-2 text-red-9" icon="warning">
   Please fix the following errors...
 </q-banner>
 ```
@@ -423,6 +423,7 @@ $q.notify({
 **Sakai Pattern:** Uses a grid-based layout inside main content.
 
 **Quasar Implementation:**
+
 ```vue
 <div class="row q-col-gutter-lg">
   <div class="col-12 col-md-6 col-lg-4">
@@ -438,6 +439,7 @@ $q.notify({
 ```
 
 **Column Classes:**
+
 - `col-12`: Full width (mobile)
 - `col-md-6`: Half width (tablet)
 - `col-lg-4`: Third width (desktop)

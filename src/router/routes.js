@@ -4,10 +4,39 @@ const routes = [
     component: () => import('layouts/MainLayout.vue'),
     children: [
       { path: '', component: () => import('pages/IndexPage.vue'), meta: { requiresAuth: true } },
-      { path: 'arenas', component: () => import('pages/ArenaPage.vue'), meta: { requiresAuth: true } },
-      { path: 'discover', component: () => import('pages/DiscoverArenasPage.vue'), meta: { requiresAuth: true } },
-      { path: 'profile', component: () => import('pages/PlayerProfilePage.vue'), meta: { requiresAuth: true } },
-      { path: 'arena/:id/public', name: 'arena-public', component: () => import('pages/ArenaPublicPage.vue'), meta: { requiresAuth: true } }
+      {
+        path: 'arenas',
+        component: () => import('pages/ArenaPage.vue'),
+        meta: { requiresAuth: true },
+      },
+      {
+        path: 'discover',
+        component: () => import('pages/DiscoverArenasPage.vue'),
+        meta: { requiresAuth: true },
+      },
+      {
+        path: 'profile',
+        component: () => import('pages/PlayerProfilePage.vue'),
+        meta: { requiresAuth: true },
+      },
+      {
+        path: 'arena/:id/public',
+        name: 'arena-public',
+        component: () => import('pages/ArenaPublicPage.vue'),
+        meta: { requiresAuth: true },
+      },
+      {
+        path: 'leagues',
+        name: 'player-leagues',
+        component: () => import('pages/PlayerLeaguesTournamentsPage.vue'),
+        meta: { requiresAuth: true },
+      },
+      {
+        path: 'leagues/:leagueId',
+        name: 'player-league-detail',
+        component: () => import('pages/PlayerLeagueDetailPage.vue'),
+        meta: { requiresAuth: true },
+      },
     ],
   },
   {
@@ -20,8 +49,13 @@ const routes = [
       { path: 'players', component: () => import('pages/ArenaPlayersPage.vue') },
       { path: 'leagues', component: () => import('pages/ArenaLeaguesPage.vue') },
       { path: 'leagues/:leagueId', component: () => import('pages/ArenaLeagueDetailPage.vue') },
-      { path: 'settings', component: () => import('pages/ArenaSettingsPage.vue') }
-    ]
+      {
+        path: 'leagues/:leagueId/stages/:stageId',
+        name: 'stage-detail',
+        component: () => import('pages/ArenaLeagueStageDetailPage.vue'),
+      },
+      { path: 'settings', component: () => import('pages/ArenaSettingsPage.vue') },
+    ],
   },
   {
     path: '/',
@@ -31,7 +65,7 @@ const routes = [
       { path: 'register', component: () => import('pages/RegisterPage.vue') },
       { path: 'forgot-password', component: () => import('pages/ForgotPasswordPage.vue') },
       { path: 'reset-password', component: () => import('pages/ResetPasswordPage.vue') },
-    ]
+    ],
   },
 
   // Always leave this as last one,
@@ -40,6 +74,6 @@ const routes = [
     path: '/:catchAll(.*)*',
     component: () => import('pages/ErrorNotFound.vue'),
   },
-]
+];
 
-export default routes
+export default routes;

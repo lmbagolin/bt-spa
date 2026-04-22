@@ -13,27 +13,37 @@
           @click="toggleLeftDrawer"
         />
 
-        <!-- Logo and App Name -->
+        <!-- Logo -->
         <div class="row items-center q-ml-md">
-          <q-icon name="sports_tennis" color="primary" size="32px" />
-          <span class="text-h6 text-bold text-primary q-ml-sm gt-xs">Beach Tennis</span>
-          <q-separator vertical inset class="q-mx-md gt-xs" style="background-color: var(--card-border)" />
-          <span class="text-subtitle2 text-secondary gt-sm">Plataforma</span>
+          <img src="~assets/logo.png" alt="Pontua" class="app-logo" />
         </div>
 
         <q-space />
 
         <!-- Right Section - User Info -->
         <div v-if="auth.user" class="row items-center q-gutter-md">
-          <div class="row items-center q-gutter-sm q-pl-md" style="border-left: 1px solid var(--card-border)">
+          <div
+            class="row items-center q-gutter-sm q-pl-md"
+            style="border-left: 1px solid var(--card-border)"
+          >
             <div class="column items-end gt-xs">
-              <span class="text-caption text-bold text-primary leading-none">{{ auth.user.name }}</span>
+              <span class="text-caption text-bold text-primary leading-none">{{
+                auth.user.name
+              }}</span>
               <span class="text-xs text-secondary">Usuário</span>
             </div>
             <q-avatar size="36px" color="primary" text-color="white">
               {{ auth.user.name.charAt(0).toUpperCase() }}
             </q-avatar>
-            <q-btn flat round dense icon="logout" color="text-secondary" @click="onLogout" class="q-ml-sm">
+            <q-btn
+              flat
+              round
+              dense
+              icon="logout"
+              color="text-secondary"
+              @click="onLogout"
+              class="q-ml-sm"
+            >
               <q-tooltip>Sair</q-tooltip>
             </q-btn>
           </div>
@@ -65,20 +75,20 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import { useAuthStore } from 'src/stores/auth'
-import { useRouter } from 'vue-router'
-import { useQuasar } from 'quasar'
-import MainSidebar from 'src/components/MainSidebar.vue'
+import { ref } from 'vue';
+import { useAuthStore } from 'src/stores/auth';
+import { useRouter } from 'vue-router';
+import { useQuasar } from 'quasar';
+import MainSidebar from 'src/components/MainSidebar.vue';
 
-const auth = useAuthStore()
-const router = useRouter()
-const $q = useQuasar()
+const auth = useAuthStore();
+const router = useRouter();
+const $q = useQuasar();
 
-const leftDrawerOpen = ref(false)
+const leftDrawerOpen = ref(false);
 
 function toggleLeftDrawer() {
-  leftDrawerOpen.value = !leftDrawerOpen.value
+  leftDrawerOpen.value = !leftDrawerOpen.value;
 }
 
 async function onLogout() {
@@ -89,14 +99,19 @@ async function onLogout() {
     ok: { label: 'Sair', color: 'primary', unelevated: true, class: 'no-caps text-bold' },
     cancel: { label: 'Voltar', color: 'surface-500', flat: true, class: 'no-caps text-bold' },
   }).onOk(async () => {
-    await auth.logout()
-    router.push('/login')
-  })
+    await auth.logout();
+    router.push('/login');
+  });
 }
 </script>
 
 <style scoped lang="scss">
 .leading-none {
   line-height: 1;
+}
+
+.app-logo {
+  height: 38px;
+  width: auto;
 }
 </style>

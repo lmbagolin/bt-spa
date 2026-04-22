@@ -3,6 +3,7 @@
 ## 🏗️ Overall Structure
 
 Sakai uses a **3-part layout**:
+
 1. **Topbar** (Header) - Fixed top
 2. **Sidebar** (Navigation) - Left side, collapsible
 3. **Main Content** - Scrollable area
@@ -23,17 +24,18 @@ Sakai uses a **3-part layout**:
 
 ## 📐 Dimensions
 
-| Element | Width | Height | Notes |
-|---------|-------|--------|-------|
-| Topbar | 100% | 70px | Fixed, spans full width |
-| Sidebar | 250px | Full height | Collapsible to 0 on mobile |
-| Main Content | Remaining | Full | Scrollable, padding: 24px |
+| Element      | Width     | Height      | Notes                      |
+| ------------ | --------- | ----------- | -------------------------- |
+| Topbar       | 100%      | 70px        | Fixed, spans full width    |
+| Sidebar      | 250px     | Full height | Collapsible to 0 on mobile |
+| Main Content | Remaining | Full        | Scrollable, padding: 24px  |
 
 ---
 
 ## 🎨 Colors (Sakai Pattern)
 
 ### Topbar
+
 ```scss
 // Light version
 background-color: #ffffff;
@@ -47,6 +49,7 @@ box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 ```
 
 ### Sidebar
+
 ```scss
 // Always dark in Sakai pattern
 background-color: #2c3e50;
@@ -66,6 +69,7 @@ border-right: 1px solid #34495e;
 ```
 
 ### Main Content
+
 ```scss
 background-color: #f5f5f5; // Light gray
 // or
@@ -88,16 +92,9 @@ background-color: #2c3e50; // Dark mode
     <!-- TOPBAR -->
     <q-header elevated class="sakai-header">
       <q-toolbar class="sakai-toolbar">
-        <q-btn
-          flat
-          dense
-          round
-          icon="menu"
-          aria-label="Menu"
-          @click="toggleSidebar"
-        />
+        <q-btn flat dense round icon="menu" aria-label="Menu" @click="toggleSidebar" />
         <q-toolbar-title>Application Name</q-toolbar-title>
-        
+
         <!-- Right side icons -->
         <q-space />
         <q-btn flat round dense icon="notifications" />
@@ -144,13 +141,13 @@ background-color: #2c3e50; // Dark mode
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref } from 'vue';
 
-const showSidebar = ref(true)
+const showSidebar = ref(true);
 
 const toggleSidebar = () => {
-  showSidebar.value = !showSidebar.value
-}
+  showSidebar.value = !showSidebar.value;
+};
 
 const menuItems = [
   { label: 'Dashboard', icon: 'dashboard', path: '/dashboard' },
@@ -158,7 +155,7 @@ const menuItems = [
   { label: 'Matches', icon: 'sports', path: '/matches' },
   { label: 'Players', icon: 'people', path: '/players' },
   { label: 'Settings', icon: 'settings', path: '/settings' },
-]
+];
 </script>
 
 <style scoped lang="scss">
@@ -176,7 +173,7 @@ const menuItems = [
 .sakai-sidebar {
   background-color: #2c3e50;
   color: #ffffff;
-  
+
   :deep(.q-item) {
     padding: 12px 16px;
     margin: 4px 8px;
@@ -192,7 +189,7 @@ const menuItems = [
     &.q-router-link--active {
       background-color: #1976d2;
       color: #ffffff;
-      
+
       .q-icon {
         color: #ffffff;
       }
@@ -218,16 +215,19 @@ const menuItems = [
 ## 📱 Responsive Behavior
 
 ### Desktop (> 1024px)
+
 - Sidebar always visible
 - Width: 250px
 - Menu labels visible
 
 ### Tablet (600px - 1024px)
+
 - Sidebar collapsible
 - Width: 250px when open
 - Hamburger menu visible
 
 ### Mobile (< 600px)
+
 - Sidebar hidden by default
 - Full width when opened
 - Overlay mode (sidebar above content)
@@ -239,6 +239,7 @@ const menuItems = [
 ## 🎯 Key Sakai Pattern Elements
 
 ### Topbar Features
+
 - Logo/App name (left)
 - Menu toggle button (hamburger)
 - Notifications (bell icon)
@@ -246,6 +247,7 @@ const menuItems = [
 - Breadcrumbs (optional, in some Sakai variants)
 
 ### Sidebar Features
+
 - Logo/branding (top)
 - Main menu items with icons
 - Sub-menu/expandable items
@@ -254,6 +256,7 @@ const menuItems = [
 - Dark background
 
 ### Main Content Features
+
 - Padding around edges (24px)
 - Grid-based layout inside
 - Cards for grouped content

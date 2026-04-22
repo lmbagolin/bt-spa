@@ -9,12 +9,7 @@
 
       <q-card-section>
         <q-form @submit="onSubmit" class="q-gutter-y-sm">
-          <BtInput
-            v-model="form.email"
-            label="E-mail"
-            type="email"
-            readonly
-          >
+          <BtInput v-model="form.email" label="E-mail" type="email" readonly>
             <template #prefix>
               <q-icon name="email" size="20px" color="surface-400" />
             </template>
@@ -60,58 +55,58 @@
 </template>
 
 <script setup>
-import { reactive, ref, onMounted } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
-import { useAuthStore } from 'src/stores/auth'
-import { useQuasar } from 'quasar'
+import { reactive, ref, onMounted } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+import { useAuthStore } from 'src/stores/auth';
+import { useQuasar } from 'quasar';
 
-const $q = useQuasar()
-const route = useRoute()
-const router = useRouter()
-const authStore = useAuthStore()
+const $q = useQuasar();
+const route = useRoute();
+const router = useRouter();
+const authStore = useAuthStore();
 
-const loading = ref(false)
+const loading = ref(false);
 const form = reactive({
   token: '',
   email: '',
   password: '',
-  password_confirmation: ''
-})
+  password_confirmation: '',
+});
 
 onMounted(() => {
-  form.token = route.query.token || ''
-  form.email = route.query.email || ''
+  form.token = route.query.token || '';
+  form.email = route.query.email || '';
 
   if (!form.token) {
     $q.notify({
       type: 'warning',
       message: 'Token de redefinição ausente. Solicite um novo link.',
-      position: 'top'
-    })
-    router.push('/forgot-password')
+      position: 'top',
+    });
+    router.push('/forgot-password');
   }
-})
+});
 
 async function onSubmit() {
-  loading.value = true
+  loading.value = true;
   try {
-    await authStore.resetPassword(form)
+    await authStore.resetPassword(form);
     $q.notify({
       type: 'positive',
       message: 'Senha redefinida com sucesso! Faça login.',
       position: 'top',
-      icon: 'check_circle'
-    })
-    router.push('/login')
+      icon: 'check_circle',
+    });
+    router.push('/login');
   } catch (error) {
-    console.error(error)
+    console.error(error);
     $q.notify({
       type: 'negative',
       message: error.response?.data?.message || 'Erro ao redefinir senha. Verifique o link.',
-      position: 'top'
-    })
+      position: 'top',
+    });
   } finally {
-    loading.value = false
+    loading.value = false;
   }
 }
 </script>

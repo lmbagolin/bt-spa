@@ -13,12 +13,18 @@
           @click="toggleLeftDrawer"
         />
 
-        <!-- Logo and App Name -->
+        <!-- Logo -->
         <div class="row items-center q-ml-md">
-          <q-icon name="sports_tennis" color="primary" size="32px" />
-          <span class="text-h6 text-bold text-primary q-ml-sm gt-xs">Beach Tennis</span>
-          <q-separator vertical inset class="q-mx-md gt-xs" style="background-color: var(--card-border)" />
-          <span class="text-subtitle2 text-secondary gt-sm">{{ arenaStore.currentArena?.name }}</span>
+          <img src="~assets/logo.png" alt="Pontua" class="app-logo" />
+          <q-separator
+            vertical
+            inset
+            class="q-mx-md gt-xs"
+            style="background-color: var(--card-border)"
+          />
+          <span class="text-subtitle2 text-secondary gt-sm">{{
+            arenaStore.currentArena?.name
+          }}</span>
         </div>
 
         <q-space />
@@ -29,15 +35,28 @@
             <q-badge color="red" floating size="xs">2</q-badge>
           </q-btn>
 
-          <div class="row items-center q-gutter-sm q-pl-md" style="border-left: 1px solid var(--card-border)">
+          <div
+            class="row items-center q-gutter-sm q-pl-md"
+            style="border-left: 1px solid var(--card-border)"
+          >
             <div class="column items-end gt-xs">
-              <span class="text-caption text-bold text-primary leading-none">{{ authStore.user?.name }}</span>
+              <span class="text-caption text-bold text-primary leading-none">{{
+                authStore.user?.name
+              }}</span>
               <span class="text-xs text-secondary">Administrador</span>
             </div>
             <q-avatar size="36px" color="primary" text-color="white">
               {{ authStore.user?.name.charAt(0).toUpperCase() || 'U' }}
             </q-avatar>
-            <q-btn flat round dense icon="logout" color="text-secondary" @click="onLogout" class="q-ml-sm" />
+            <q-btn
+              flat
+              round
+              dense
+              icon="logout"
+              color="text-secondary"
+              @click="onLogout"
+              class="q-ml-sm"
+            />
           </div>
         </div>
       </q-toolbar>
@@ -69,7 +88,11 @@
 
       <!-- Navigation Menu -->
       <q-list class="col q-px-md q-mt-md">
-        <q-item-label header class="text-xs text-bold text-uppercase" style="color: var(--sidebar-text)">
+        <q-item-label
+          header
+          class="text-xs text-bold text-uppercase"
+          style="color: var(--sidebar-text)"
+        >
           Menu Principal
         </q-item-label>
 
@@ -116,20 +139,20 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watch } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
-import { useArenaStore } from 'src/stores/arena'
-import { useAuthStore } from 'src/stores/auth'
-import { useQuasar } from 'quasar'
+import { ref, onMounted, watch } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+import { useArenaStore } from 'src/stores/arena';
+import { useAuthStore } from 'src/stores/auth';
+import { useQuasar } from 'quasar';
 
-const $q = useQuasar()
-const authStore = useAuthStore()
-const arenaStore = useArenaStore()
-const route = useRoute()
-const router = useRouter()
-const leftDrawerOpen = ref(false)
+const $q = useQuasar();
+const authStore = useAuthStore();
+const arenaStore = useArenaStore();
+const route = useRoute();
+const router = useRouter();
+const leftDrawerOpen = ref(false);
 
-const arenaId = ref(route.params.id)
+const arenaId = ref(route.params.id);
 
 const links = ref([
   { title: 'Dashboard', icon: 'dashboard', to: `/admin/arena/${arenaId.value}/dashboard` },
@@ -137,23 +160,26 @@ const links = ref([
   { title: 'Jogadores', icon: 'people', to: `/admin/arena/${arenaId.value}/players` },
   { title: 'Ligas', icon: 'sports_soccer', to: `/admin/arena/${arenaId.value}/leagues` },
   { title: 'Configurações', icon: 'settings', to: `/admin/arena/${arenaId.value}/settings` },
-])
+]);
 
-watch(() => route.params.id, (newId) => {
-  if (newId) {
-    arenaId.value = newId
-    links.value = [
-      { title: 'Dashboard', icon: 'dashboard', to: `/admin/arena/${newId}/dashboard` },
-      { title: 'Torneios', icon: 'emoji_events', to: `/admin/arena/${newId}/tournaments` },
-      { title: 'Jogadores', icon: 'people', to: `/admin/arena/${newId}/players` },
-      { title: 'Ligas', icon: 'sports_soccer', to: `/admin/arena/${newId}/leagues` },
-      { title: 'Configurações', icon: 'settings', to: `/admin/arena/${newId}/settings` },
-    ]
-  }
-})
+watch(
+  () => route.params.id,
+  (newId) => {
+    if (newId) {
+      arenaId.value = newId;
+      links.value = [
+        { title: 'Dashboard', icon: 'dashboard', to: `/admin/arena/${newId}/dashboard` },
+        { title: 'Torneios', icon: 'emoji_events', to: `/admin/arena/${newId}/tournaments` },
+        { title: 'Jogadores', icon: 'people', to: `/admin/arena/${newId}/players` },
+        { title: 'Ligas', icon: 'sports_soccer', to: `/admin/arena/${newId}/leagues` },
+        { title: 'Configurações', icon: 'settings', to: `/admin/arena/${newId}/settings` },
+      ];
+    }
+  },
+);
 
 function toggleLeftDrawer() {
-  leftDrawerOpen.value = !leftDrawerOpen.value
+  leftDrawerOpen.value = !leftDrawerOpen.value;
 }
 
 async function onLogout() {
@@ -164,23 +190,28 @@ async function onLogout() {
     ok: { label: 'Sair', color: 'primary', unelevated: true, class: 'no-caps text-bold' },
     cancel: { label: 'Voltar', color: 'surface-500', flat: true, class: 'no-caps text-bold' },
   }).onOk(async () => {
-    await authStore.logout()
-    router.push('/login')
-  })
+    await authStore.logout();
+    router.push('/login');
+  });
 }
 
 onMounted(async () => {
   if (arenaStore.arenas.length === 0) {
-    await arenaStore.fetchArenas()
+    await arenaStore.fetchArenas();
   }
-  const arena = arenaStore.arenas.find((a) => a.id == arenaId.value)
+  const arena = arenaStore.arenas.find((a) => a.id == arenaId.value);
   if (arena) {
-    arenaStore.setCurrentArena(arena)
+    arenaStore.setCurrentArena(arena);
   }
-})
+});
 </script>
 
 <style scoped lang="scss">
+.app-logo {
+  height: 38px;
+  width: auto;
+}
+
 .sidebar-header {
   border-bottom: 1px solid var(--sidebar-hover);
 }

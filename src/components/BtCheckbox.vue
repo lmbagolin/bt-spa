@@ -13,7 +13,7 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { computed } from 'vue';
 
 const props = defineProps({
   modelValue: [Boolean, Array, String, null],
@@ -39,9 +39,9 @@ const props = defineProps({
     type: String,
     default: 'primary',
   },
-})
+});
 
-defineEmits(['update:modelValue'])
+defineEmits(['update:modelValue']);
 
 const checkboxAttrs = computed(() => ({
   label: props.label,
@@ -51,12 +51,12 @@ const checkboxAttrs = computed(() => ({
   indeterminate: props.indeterminate,
   color: props.color,
   dense: props.size === 'sm',
-}))
+}));
 
 const checkboxClasses = computed(() => ({
   'bt-checkbox--small': props.size === 'sm',
   'bt-checkbox--large': props.size === 'lg',
-}))
+}));
 </script>
 
 <style scoped lang="scss">

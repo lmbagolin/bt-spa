@@ -13,7 +13,7 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { computed } from 'vue';
 
 const props = defineProps({
   modelValue: null,
@@ -35,9 +35,9 @@ const props = defineProps({
     type: String,
     default: 'primary',
   },
-})
+});
 
-defineEmits(['update:modelValue'])
+defineEmits(['update:modelValue']);
 
 const radioAttrs = computed(() => ({
   val: props.value,
@@ -46,12 +46,12 @@ const radioAttrs = computed(() => ({
   readonly: props.readonly,
   color: props.color,
   dense: props.size === 'sm',
-}))
+}));
 
 const radioClasses = computed(() => ({
   'bt-radio--small': props.size === 'sm',
   'bt-radio--large': props.size === 'lg',
-}))
+}));
 </script>
 
 <style scoped lang="scss">

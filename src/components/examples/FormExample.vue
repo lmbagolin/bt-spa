@@ -144,17 +144,17 @@
 </template>
 
 <script setup>
-import { ref, reactive } from 'vue'
-import BtCard from '@/components/BtCard.vue'
-import BtInput from '@/components/BtInput.vue'
-import BtTextarea from '@/components/BtTextarea.vue'
-import BtDatePicker from '@/components/BtDatePicker.vue'
-import BtSelect from '@/components/BtSelect.vue'
-import BtCheckbox from '@/components/BtCheckbox.vue'
-import BtRadio from '@/components/BtRadio.vue'
-import BtButton from '@/components/BtButton.vue'
-import BtBanner from '@/components/BtBanner.vue'
-import BtDialog from '@/components/BtDialog.vue'
+import { ref, reactive } from 'vue';
+import BtCard from '@/components/BtCard.vue';
+import BtInput from '@/components/BtInput.vue';
+import BtTextarea from '@/components/BtTextarea.vue';
+import BtDatePicker from '@/components/BtDatePicker.vue';
+import BtSelect from '@/components/BtSelect.vue';
+import BtCheckbox from '@/components/BtCheckbox.vue';
+import BtRadio from '@/components/BtRadio.vue';
+import BtButton from '@/components/BtButton.vue';
+import BtBanner from '@/components/BtBanner.vue';
+import BtDialog from '@/components/BtDialog.vue';
 
 const form = reactive({
   name: '',
@@ -166,7 +166,7 @@ const form = reactive({
   status: 'draft',
   requiresRegistration: true,
   isPublic: false,
-})
+});
 
 const errors = reactive({
   name: '',
@@ -175,89 +175,89 @@ const errors = reactive({
   endDate: '',
   category: '',
   maxPlayers: '',
-})
+});
 
 const categories = ref([
   { label: 'Profissional', value: 'professional' },
   { label: 'Amador', value: 'amateur' },
   { label: 'Iniciante', value: 'beginner' },
-])
+]);
 
-const isLoading = ref(false)
-const showSuccess = ref(false)
-const showError = ref(false)
-const showPreview = ref(false)
-const errorTitle = ref('')
-const errorMessage = ref('')
+const isLoading = ref(false);
+const showSuccess = ref(false);
+const showError = ref(false);
+const showPreview = ref(false);
+const errorTitle = ref('');
+const errorMessage = ref('');
 
 const validateForm = () => {
   Object.keys(errors).forEach((key) => {
-    errors[key] = ''
-  })
+    errors[key] = '';
+  });
 
   if (!form.name.trim()) {
-    errors.name = 'Nome é obrigatório'
+    errors.name = 'Nome é obrigatório';
   }
 
   if (!form.description.trim()) {
-    errors.description = 'Descrição é obrigatória'
+    errors.description = 'Descrição é obrigatória';
   }
 
   if (!form.startDate) {
-    errors.startDate = 'Data inicial é obrigatória'
+    errors.startDate = 'Data inicial é obrigatória';
   }
 
   if (!form.endDate) {
-    errors.endDate = 'Data final é obrigatória'
+    errors.endDate = 'Data final é obrigatória';
   }
 
   if (!form.category) {
-    errors.category = 'Categoria é obrigatória'
+    errors.category = 'Categoria é obrigatória';
   }
 
   if (!form.maxPlayers || form.maxPlayers < 2) {
-    errors.maxPlayers = 'Mínimo de 2 jogadores'
+    errors.maxPlayers = 'Mínimo de 2 jogadores';
   }
 
-  return Object.values(errors).every((e) => !e)
-}
+  return Object.values(errors).every((e) => !e);
+};
 
 const handleSubmit = async () => {
   if (!validateForm()) {
-    showError.value = true
-    errorTitle.value = 'Formulário inválido'
-    errorMessage.value = 'Preencha todos os campos obrigatórios'
-    return
+    showError.value = true;
+    errorTitle.value = 'Formulário inválido';
+    errorMessage.value = 'Preencha todos os campos obrigatórios';
+    return;
   }
 
-  isLoading.value = true
+  isLoading.value = true;
 
   try {
     // Simular API call
-    await new Promise((resolve) => setTimeout(resolve, 2000))
+    await new Promise((resolve) => setTimeout(resolve, 2000));
 
-    showSuccess.value = true
-    resetForm()
+    showSuccess.value = true;
+    resetForm();
 
     setTimeout(() => {
-      showSuccess.value = false
-    }, 3000)
+      showSuccess.value = false;
+    }, 3000);
   } catch {
-    showError.value = true
-    errorTitle.value = 'Erro ao criar'
-    errorMessage.value = 'Não foi possível criar o torneio. Tente novamente.'
+    showError.value = true;
+    errorTitle.value = 'Erro ao criar';
+    errorMessage.value = 'Não foi possível criar o torneio. Tente novamente.';
   } finally {
-    isLoading.value = false
+    isLoading.value = false;
   }
-}
+};
 
 const saveDraft = () => {
-  console.log('Salvando rascunho:', form)
-  showSuccess.value = true
+  console.log('Salvando rascunho:', form);
+  showSuccess.value = true;
   setTimeout(() => {
-    showSuccess.value = false
-  }, 2000)
-}
+    showSuccess.value = false;
+  }, 2000);
+};
 
 const resetForm = () => {
   Object.assign(form, {
@@ -270,12 +270,12 @@ const resetForm = () => {
     status: 'draft',
     requiresRegistration: true,
     isPublic: false,
-  })
+  });
 
   Object.keys(errors).forEach((key) => {
-    errors[key] = ''
-  })
-}
+    errors[key] = '';
+  });
+};
 </script>
 
 <style scoped lang="scss">

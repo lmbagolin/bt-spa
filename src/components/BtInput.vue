@@ -26,7 +26,7 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { computed } from 'vue';
 
 const props = defineProps({
   modelValue: [String, Number],
@@ -64,9 +64,9 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
-})
+});
 
-defineEmits(['update:modelValue'])
+defineEmits(['update:modelValue']);
 
 const inputAttrs = computed(() => ({
   type: props.type,
@@ -79,13 +79,13 @@ const inputAttrs = computed(() => ({
   icon: props.icon,
   clearable: props.clearable,
   autofocus: props.autofocus,
-}))
+}));
 
 const inputClasses = computed(() => ({
   'bt-input--small': props.size === 'sm',
   'bt-input--large': props.size === 'lg',
   'bt-input--error': props.error,
-}))
+}));
 </script>
 
 <style scoped lang="scss">

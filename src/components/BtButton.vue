@@ -11,7 +11,7 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { computed } from 'vue';
 
 const props = defineProps({
   label: String,
@@ -68,7 +68,7 @@ const props = defineProps({
     type: String,
     default: 'button',
   },
-})
+});
 
 const buttonAttrs = computed(() => ({
   label: props.label,
@@ -87,7 +87,7 @@ const buttonAttrs = computed(() => ({
   dense: props.dense,
   'no-caps': props.noCaps,
   class: 'text-weight-medium',
-}))
+}));
 
 const buttonClasses = computed(() => ({
   'bt-btn--primary': props.variant === 'primary',
@@ -103,7 +103,7 @@ const buttonClasses = computed(() => ({
   'bt-btn--full-width': props.fullWidth,
   'bt-btn--rounded': props.rounded,
   'bt-btn--loading': props.loading,
-}))
+}));
 
 function getColor() {
   const variantColors = {
@@ -115,8 +115,8 @@ function getColor() {
     info: 'info',
     outline: 'primary',
     flat: 'primary',
-  }
-  return variantColors[props.variant] || 'primary'
+  };
+  return variantColors[props.variant] || 'primary';
 }
 </script>
 

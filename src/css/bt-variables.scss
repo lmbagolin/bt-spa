@@ -87,7 +87,8 @@ $dark-text-secondary: #95a5a6;
 // TYPOGRAPHY
 // ═══════════════════════════════════════════════════════════════════════════════════
 
-$font-family-base: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell',
+$font-family-base:
+  -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell',
   'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
 $font-family-mono: 'Monaco', 'Menlo', 'Courier New', monospace;
 
@@ -187,7 +188,9 @@ $z-tooltip: 700;
 // ═══════════════════════════════════════════════════════════════════════════════════
 
 @mixin hover-lift() {
-  transition: transform $transition-normal, box-shadow $transition-normal;
+  transition:
+    transform $transition-normal,
+    box-shadow $transition-normal;
 
   &:hover {
     transform: translateY(-2px);

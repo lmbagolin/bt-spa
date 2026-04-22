@@ -23,7 +23,7 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { computed } from 'vue';
 
 const props = defineProps({
   modelValue: [String, null],
@@ -52,9 +52,9 @@ const props = defineProps({
     type: Boolean,
     default: true,
   },
-})
+});
 
-defineEmits(['update:modelValue'])
+defineEmits(['update:modelValue']);
 
 const textareaAttrs = computed(() => ({
   label: props.label,
@@ -66,11 +66,11 @@ const textareaAttrs = computed(() => ({
   rows: props.rows,
   maxlength: props.maxLength,
   counter: props.showCounter && props.maxLength,
-}))
+}));
 
 const textareaClasses = computed(() => ({
   'bt-textarea--error': props.error,
-}))
+}));
 </script>
 
 <style scoped lang="scss">

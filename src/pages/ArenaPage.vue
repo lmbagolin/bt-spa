@@ -27,18 +27,33 @@
 
         <div v-if="!arenaStore.loading">
           <div v-if="arenaStore.arenas.length > 0" class="row q-col-gutter-md">
-            <div v-for="arena in arenaStore.arenas" :key="arena.id" class="col-12 col-sm-6 col-lg-4">
+            <div
+              v-for="arena in arenaStore.arenas"
+              :key="arena.id"
+              class="col-12 col-sm-6 col-lg-4"
+            >
               <q-card class="arena-card transition-all overflow-hidden full-height flex column">
                 <q-card-section class="q-pa-lg col">
                   <div class="row items-center no-wrap">
-                    <q-avatar v-if="arena.logo_url" size="56px" rounded class="q-mr-md shadow-sm bg-white">
-                      <img :src="arena.logo_url">
+                    <q-avatar
+                      v-if="arena.logo_url"
+                      size="56px"
+                      rounded
+                      class="q-mr-md shadow-sm bg-white"
+                    >
+                      <img :src="arena.logo_url" />
                     </q-avatar>
-                    <div v-else class="q-mr-md bg-surface-100 flex flex-center rounded-borders" style="width: 56px; height: 56px">
+                    <div
+                      v-else
+                      class="q-mr-md bg-surface-100 flex flex-center rounded-borders"
+                      style="width: 56px; height: 56px"
+                    >
                       <q-icon name="sports_tennis" size="md" color="surface-400" />
                     </div>
                     <div class="col overflow-hidden">
-                      <div class="text-lg text-bold text-surface-900 ellipsis">{{ arena.name }}</div>
+                      <div class="text-lg text-bold text-surface-900 ellipsis">
+                        {{ arena.name }}
+                      </div>
                       <div class="text-sm text-surface-500 flex items-center ellipsis">
                         <q-icon name="location_on" color="primary" size="14px" class="q-mr-xs" />
                         {{ arena.city || 'Cidade não informada' }}
@@ -107,7 +122,9 @@
       <q-card style="width: 480px; max-width: 90vw; border-radius: var(--radius-xl)">
         <q-card-section class="row items-center q-pb-none">
           <q-avatar icon="add_business" color="primary" text-white size="40px" class="q-mr-md" />
-          <div class="text-xl text-bold text-surface-900">{{ editingId ? 'Editar Arena' : 'Nova Arena' }}</div>
+          <div class="text-xl text-bold text-surface-900">
+            {{ editingId ? 'Editar Arena' : 'Nova Arena' }}
+          </div>
           <q-space />
           <q-btn icon="close" flat round dense v-close-popup class="text-surface-400" />
         </q-card-section>
@@ -120,20 +137,16 @@
               v-model="form.name"
               label="Nome da Arena"
               outlined
-              :rules="[val => !!val || 'Nome é obrigatório']"
+              :rules="[(val) => !!val || 'Nome é obrigatório']"
             />
-            <q-input
-              v-model="form.city"
-              label="Cidade"
-              outlined
-            />
-            
+            <q-input v-model="form.city" label="Cidade" outlined />
+
             <div class="row items-center q-gutter-md">
               <q-avatar size="80px" rounded class="bg-surface-100 shadow-sm overflow-hidden">
-                <img v-if="logoPreview" :src="logoPreview">
+                <img v-if="logoPreview" :src="logoPreview" />
                 <q-icon v-else name="image" color="surface-400" />
               </q-avatar>
-              
+
               <div class="col">
                 <q-file
                   v-model="form.logo"
@@ -147,9 +160,7 @@
                     <q-icon name="cloud_upload" />
                   </template>
                 </q-file>
-                <div class="text-caption text-surface-400 q-mt-xs">
-                  JPG ou PNG. Máximo 2MB.
-                </div>
+                <div class="text-caption text-surface-400 q-mt-xs">JPG ou PNG. Máximo 2MB.</div>
               </div>
             </div>
           </q-card-section>
@@ -172,81 +183,81 @@
 </template>
 
 <script setup>
-import { onMounted, reactive, ref } from 'vue'
-import { useArenaStore } from 'src/stores/arena'
-import { useQuasar } from 'quasar'
-import { useRouter } from 'vue-router'
+import { onMounted, reactive, ref } from 'vue';
+import { useArenaStore } from 'src/stores/arena';
+import { useQuasar } from 'quasar';
+import { useRouter } from 'vue-router';
 
-const arenaStore = useArenaStore()
-const $q = useQuasar()
-const router = useRouter()
+const arenaStore = useArenaStore();
+const $q = useQuasar();
+const router = useRouter();
 
-const showDialog = ref(false)
-const submitting = ref(false)
-const editingId = ref(null)
+const showDialog = ref(false);
+const submitting = ref(false);
+const editingId = ref(null);
 
 const form = reactive({
   name: '',
   city: '',
-  logo: null
-})
+  logo: null,
+});
 
-const logoPreview = ref(null)
+const logoPreview = ref(null);
 
 function onLogoChange(file) {
   if (file) {
-    logoPreview.value = URL.createObjectURL(file)
+    logoPreview.value = URL.createObjectURL(file);
   } else {
-    logoPreview.value = null
+    logoPreview.value = null;
   }
 }
 
 onMounted(() => {
-  arenaStore.fetchArenas()
-})
+  arenaStore.fetchArenas();
+});
 
 function manageArena(arena) {
-  arenaStore.setCurrentArena(arena)
-  router.push(`/admin/arena/${arena.id}/dashboard`)
+  arenaStore.setCurrentArena(arena);
+  router.push(`/admin/arena/${arena.id}/dashboard`);
 }
 
 function openForm(arena = null) {
   if (arena) {
-    editingId.value = arena.id
-    form.name = arena.name
-    form.city = arena.city
-    form.logo = null
-    logoPreview.value = arena.logo_url
+    editingId.value = arena.id;
+    form.name = arena.name;
+    form.city = arena.city;
+    form.logo = null;
+    logoPreview.value = arena.logo_url;
   } else {
-    editingId.value = null
-    form.name = ''
-    form.city = ''
-    form.logo = null
-    logoPreview.value = null
+    editingId.value = null;
+    form.name = '';
+    form.city = '';
+    form.logo = null;
+    logoPreview.value = null;
   }
-  showDialog.value = true
+  showDialog.value = true;
 }
 
 async function onSubmit() {
-  submitting.value = true
+  submitting.value = true;
   try {
-    await arenaStore.saveArena({ id: editingId.value, ...form })
+    await arenaStore.saveArena({ id: editingId.value, ...form });
     $q.notify({
       type: 'positive',
       message: editingId.value ? 'Arena atualizada com sucesso!' : 'Arena cadastrada com sucesso!',
       position: 'top',
-      icon: 'check_circle'
-    })
-    showDialog.value = false
+      icon: 'check_circle',
+    });
+    showDialog.value = false;
   } catch {
     $q.notify({
       type: 'negative',
       message: 'Erro ao salvar informações.',
       position: 'top',
-      icon: 'error'
-    })
+      icon: 'error',
+    });
   } finally {
-    submitting.value = false
+    submitting.value = false;
   }
 }
 
@@ -257,30 +268,30 @@ function confirmDelete(arena) {
     cancel: {
       flat: true,
       color: 'surface-500',
-      label: 'Cancelar'
+      label: 'Cancelar',
     },
     ok: {
       color: 'negative',
       label: 'Sim, Excluir',
-      unelevated: true
+      unelevated: true,
     },
-    persistent: true
+    persistent: true,
   }).onOk(async () => {
     try {
-      await arenaStore.deleteArena(arena.id)
+      await arenaStore.deleteArena(arena.id);
       $q.notify({
         type: 'positive',
         message: 'Arena excluída com sucesso.',
-        icon: 'check_circle'
-      })
+        icon: 'check_circle',
+      });
     } catch {
       $q.notify({
         type: 'negative',
         message: 'Erro ao excluir arena.',
-        icon: 'error'
-      })
+        icon: 'error',
+      });
     }
-  })
+  });
 }
 </script>
 

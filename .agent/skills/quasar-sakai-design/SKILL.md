@@ -13,43 +13,44 @@ allowed-tools: Read, Write, Edit, Glob, Grep, Bash
 
 ## 🎯 Quick Reference
 
-| Need | File |
-|------|------|
-| Layout structure (sidebar + topbar) | [layout-structure.md](layout-structure.md) |
-| Color & theme system | [color-theme.md](color-theme.md) |
-| Typography & spacing | [typography-spacing.md](typography-spacing.md) |
-| Quasar components mapping | [quasar-components-mapping.md](quasar-components-mapping.md) |
-| SCSS utilities & patterns | [scss-patterns.md](scss-patterns.md) |
-| Dashboard patterns | [dashboard-patterns.md](dashboard-patterns.md) |
-| Responsive design | [responsive-design.md](responsive-design.md) |
+| Need                                | File                                                         |
+| ----------------------------------- | ------------------------------------------------------------ |
+| Layout structure (sidebar + topbar) | [layout-structure.md](layout-structure.md)                   |
+| Color & theme system                | [color-theme.md](color-theme.md)                             |
+| Typography & spacing                | [typography-spacing.md](typography-spacing.md)               |
+| Quasar components mapping           | [quasar-components-mapping.md](quasar-components-mapping.md) |
+| SCSS utilities & patterns           | [scss-patterns.md](scss-patterns.md)                         |
+| Dashboard patterns                  | [dashboard-patterns.md](dashboard-patterns.md)               |
+| Responsive design                   | [responsive-design.md](responsive-design.md)                 |
 
 ---
 
 ## 📋 Mandatory Files (Read These First)
 
-| File | Why |
-|------|-----|
-| [layout-structure.md](layout-structure.md) | Defines Sakai sidebar/topbar/main layout |
+| File                                                         | Why                                      |
+| ------------------------------------------------------------ | ---------------------------------------- |
+| [layout-structure.md](layout-structure.md)                   | Defines Sakai sidebar/topbar/main layout |
 | [quasar-components-mapping.md](quasar-components-mapping.md) | Maps Sakai patterns to Quasar components |
-| [color-theme.md](color-theme.md) | Sakai color palette + Quasar theming |
+| [color-theme.md](color-theme.md)                             | Sakai color palette + Quasar theming     |
 
 ---
 
 ## 🔗 Related Skills
 
-| Need | Skill |
-|------|-------|
-| Vue 3 component patterns | `@[skills/vue3-typescript]` |
-| State management | `@[skills/pinia-state-management]` |
-| SCSS & CSS utilities | Use `[scss-patterns.md](scss-patterns.md)` in this skill |
-| Quasar docs | https://quasar.dev |
-| Sakai template | https://sakai.primevue.org/ |
+| Need                     | Skill                                                    |
+| ------------------------ | -------------------------------------------------------- |
+| Vue 3 component patterns | `@[skills/vue3-typescript]`                              |
+| State management         | `@[skills/pinia-state-management]`                       |
+| SCSS & CSS utilities     | Use `[scss-patterns.md](scss-patterns.md)` in this skill |
+| Quasar docs              | https://quasar.dev                                       |
+| Sakai template           | https://sakai.primevue.org/                              |
 
 ---
 
 ## 🏗️ Sakai Key Concepts
 
 ### Layout Structure
+
 ```
 ┌─────────────────────────────┐
 │         TOPBAR (Header)     │  - Fixed, contains logo/user/notifications
@@ -62,6 +63,7 @@ allowed-tools: Read, Write, Edit, Glob, Grep, Bash
 ```
 
 ### Visual Characteristics
+
 - **Sidebar**: Dark background (#2c3e50 or #34495e), white/light text
 - **Topbar**: Clean, minimal, often dark or white with shadow
 - **Main**: Light background with subtle cards/sections
@@ -84,17 +86,20 @@ allowed-tools: Read, Write, Edit, Glob, Grep, Bash
 ## 🚀 Common Tasks
 
 ### "Create a dashboard page"
+
 1. Use [dashboard-patterns.md](dashboard-patterns.md)
 2. Reference Sakai layout: https://sakai.primevue.org/dashboard
 3. Map Quasar components from [quasar-components-mapping.md](quasar-components-mapping.md)
 4. Apply SCSS from [scss-patterns.md](scss-patterns.md)
 
 ### "Style a form"
+
 1. Check [quasar-components-mapping.md](quasar-components-mapping.md) → Form section
 2. Read [color-theme.md](color-theme.md) for input styling
 3. Reference [typography-spacing.md](typography-spacing.md)
 
 ### "Make layout responsive"
+
 1. Read [responsive-design.md](responsive-design.md)
 2. Use Quasar's `$q.screen` breakpoints
 3. Apply SCSS mixins from [scss-patterns.md](scss-patterns.md)
@@ -103,12 +108,12 @@ allowed-tools: Read, Write, Edit, Glob, Grep, Bash
 
 ## 📚 Resources
 
-| Resource | URL |
-|----------|-----|
-| Quasar Components | https://quasar.dev/components |
-| Quasar Layout System | https://quasar.dev/layout |
-| Quasar CSS | https://quasar.dev/style |
-| Sakai Template | https://sakai.primevue.org/ |
+| Resource              | URL                                           |
+| --------------------- | --------------------------------------------- |
+| Quasar Components     | https://quasar.dev/components                 |
+| Quasar Layout System  | https://quasar.dev/layout                     |
+| Quasar CSS            | https://quasar.dev/style                      |
+| Sakai Template        | https://sakai.primevue.org/                   |
 | Sakai Source (GitHub) | https://github.com/primefaces/sakai-quasar ⭐ |
 
 ---
@@ -148,12 +153,12 @@ $info: #3498db;
 
 ## ⚠️ Common Pitfalls
 
-| Pitfall | Solution |
-|---------|----------|
-| Quasar default styling too "Material Design" | Override with SCSS from [scss-patterns.md](scss-patterns.md) |
-| Sidebar doesn't match Sakai dark theme | Use [color-theme.md](color-theme.md) dark mode settings |
-| Spacing feels cramped | Apply [typography-spacing.md](typography-spacing.md) padding rules |
-| Layout breaks on mobile | Follow [responsive-design.md](responsive-design.md) |
+| Pitfall                                      | Solution                                                           |
+| -------------------------------------------- | ------------------------------------------------------------------ |
+| Quasar default styling too "Material Design" | Override with SCSS from [scss-patterns.md](scss-patterns.md)       |
+| Sidebar doesn't match Sakai dark theme       | Use [color-theme.md](color-theme.md) dark mode settings            |
+| Spacing feels cramped                        | Apply [typography-spacing.md](typography-spacing.md) padding rules |
+| Layout breaks on mobile                      | Follow [responsive-design.md](responsive-design.md)                |
 
 ---
 

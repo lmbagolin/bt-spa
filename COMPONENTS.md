@@ -38,7 +38,7 @@ Se registrados globalmente em `main.js`:
 
 ```vue
 <script setup>
-import BtInput from '@/components/BtInput.vue'
+import BtInput from '@/components/BtInput.vue';
 </script>
 
 <template>
@@ -69,13 +69,13 @@ import BtInput from '@/components/BtInput.vue'
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref } from 'vue';
 
-const email = ref('')
+const email = ref('');
 
 const onEmailChange = (value) => {
-  console.log('Email:', value)
-}
+  console.log('Email:', value);
+};
 </script>
 ```
 
@@ -115,14 +115,14 @@ const onEmailChange = (value) => {
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref } from 'vue';
 
-const selectedCity = ref(null)
+const selectedCity = ref(null);
 const cities = ref([
   { label: 'São Paulo', value: 'sp' },
   { label: 'Rio de Janeiro', value: 'rj' },
   { label: 'Belo Horizonte', value: 'bh' },
-])
+]);
 </script>
 ```
 
@@ -145,8 +145,8 @@ const cities = ref([
 
 ```typescript
 interface SelectOption {
-  label: string
-  value: any
+  label: string;
+  value: any;
 }
 ```
 
@@ -224,9 +224,9 @@ interface SelectOption {
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref } from 'vue';
 
-const isLoading = ref(false)
+const isLoading = ref(false);
 </script>
 ```
 
@@ -264,9 +264,9 @@ const isLoading = ref(false)
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref } from 'vue';
 
-const birthDate = ref(null)
+const birthDate = ref(null);
 </script>
 ```
 
@@ -302,9 +302,9 @@ const birthDate = ref(null)
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref } from 'vue';
 
-const description = ref('')
+const description = ref('');
 </script>
 ```
 
@@ -337,10 +337,10 @@ const description = ref('')
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref } from 'vue';
 
-const agreed = ref(false)
-const selectedFeatures = ref([])
+const agreed = ref(false);
+const selectedFeatures = ref([]);
 </script>
 ```
 
@@ -370,9 +370,9 @@ const selectedFeatures = ref([])
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref } from 'vue';
 
-const selectedOption = ref('option1')
+const selectedOption = ref('option1');
 </script>
 ```
 
@@ -409,14 +409,14 @@ const selectedOption = ref('option1')
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref } from 'vue';
 
-const dialogOpen = ref(false)
+const dialogOpen = ref(false);
 
 const handleConfirm = () => {
-  console.log('Confirmado!')
-  dialogOpen.value = false
-}
+  console.log('Confirmado!');
+  dialogOpen.value = false;
+};
 </script>
 ```
 
@@ -475,21 +475,21 @@ const handleConfirm = () => {
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref } from 'vue';
 
 const tournaments = ref([
   { id: 1, name: 'Tournament 1', status: 'active' },
   { id: 2, name: 'Tournament 2', status: 'completed' },
-])
+]);
 
 const columns = [
   { name: 'name', label: 'Name', field: 'name', align: 'left' },
   { name: 'status', label: 'Status', field: 'status', align: 'center' },
   { name: 'actions', label: 'Actions', field: 'actions', align: 'right' },
-]
+];
 
-const editTournament = (id) => console.log('Edit:', id)
-const deleteTournament = (id) => console.log('Delete:', id)
+const editTournament = (id) => console.log('Edit:', id);
+const deleteTournament = (id) => console.log('Delete:', id);
 </script>
 ```
 
@@ -558,12 +558,12 @@ const deleteTournament = (id) => console.log('Delete:', id)
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref } from 'vue';
 
-const showSuccess = ref(true)
-const showWarning = ref(true)
-const showError = ref(true)
-const showInfo = ref(true)
+const showSuccess = ref(true);
+const showWarning = ref(true);
+const showError = ref(true);
+const showInfo = ref(true);
 </script>
 ```
 

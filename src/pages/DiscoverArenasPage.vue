@@ -3,7 +3,9 @@
     <div class="row items-center q-mb-xl">
       <div class="col">
         <h1 class="text-h4 text-bold text-primary q-my-none">Explorar Arenas</h1>
-        <div class="text-subtitle1 text-grey-7">Encontre o lugar perfeito para o seu próximo jogo</div>
+        <div class="text-subtitle1 text-grey-7">
+          Encontre o lugar perfeito para o seu próximo jogo
+        </div>
       </div>
     </div>
 
@@ -58,7 +60,10 @@
       <q-spinner-dots color="primary" size="40px" />
     </div>
 
-    <div v-else-if="arenaStore.publicArenas.length === 0" class="row justify-center q-pa-xl text-center">
+    <div
+      v-else-if="arenaStore.publicArenas.length === 0"
+      class="row justify-center q-pa-xl text-center"
+    >
       <div class="col-12 text-grey-6">
         <q-icon name="search_off" size="64px" class="q-mb-md" />
         <div class="text-h6">Nenhuma arena encontrada</div>
@@ -72,14 +77,12 @@
         :key="arena.id"
         class="col-12 col-sm-6 col-md-4 col-lg-3"
       >
-        <q-card class="arena-card rounded-borders shadow-3 full-height cursor-pointer" @click="viewArena(arena.id)">
+        <q-card
+          class="arena-card rounded-borders shadow-3 full-height cursor-pointer"
+          @click="viewArena(arena.id)"
+        >
           <div class="arena-image-container relative-position">
-            <q-img
-              v-if="arena.logo_url"
-              :src="arena.logo_url"
-              class="arena-image"
-              ratio="16/9"
-            />
+            <q-img v-if="arena.logo_url" :src="arena.logo_url" class="arena-image" ratio="16/9" />
             <div v-else class="arena-placeholder bg-grey-2 flex flex-center">
               <q-icon name="sports_tennis" size="64px" color="grey-4" />
             </div>
@@ -111,46 +114,48 @@
 </template>
 
 <script setup>
-import { ref, reactive, onMounted } from 'vue'
-import { useArenaStore } from 'src/stores/arena'
-import { useRouter } from 'vue-router'
+import { ref, reactive, onMounted } from 'vue';
+import { useArenaStore } from 'src/stores/arena';
+import { useRouter } from 'vue-router';
 
-const arenaStore = useArenaStore()
-const router = useRouter()
-const loading = ref(false)
+const arenaStore = useArenaStore();
+const router = useRouter();
+const loading = ref(false);
 
 const filters = reactive({
   name: '',
   city: '',
-})
+});
 
 onMounted(async () => {
-  await onSearch()
-})
+  await onSearch();
+});
 
 async function onSearch() {
-  loading.value = true
+  loading.value = true;
   try {
-    await arenaStore.fetchPublicArenas(filters)
+    await arenaStore.fetchPublicArenas(filters);
   } finally {
-    loading.value = false
+    loading.value = false;
   }
 }
 
 function viewArena(id) {
-  router.push({ name: 'arena-public', params: { id } })
+  router.push({ name: 'arena-public', params: { id } });
 }
 </script>
 
 <style scoped>
 .arena-card {
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
   overflow: hidden;
 }
 
 .arena-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 10px 25px rgba(0,0,0,0.1) !important;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1) !important;
 }
 
 .arena-image-container {

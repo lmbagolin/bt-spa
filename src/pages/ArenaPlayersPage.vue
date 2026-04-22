@@ -98,20 +98,15 @@
               :color="props.row.gender === 'male' ? 'blue' : 'pink'"
               size="20px"
             />
-            <span class="q-ml-xs text-surface-600">{{ props.row.gender === 'male' ? 'Masc' : 'Fem' }}</span>
+            <span class="q-ml-xs text-surface-600">{{
+              props.row.gender === 'male' ? 'Masc' : 'Fem'
+            }}</span>
           </q-td>
         </template>
 
         <template v-slot:body-cell-actions="props">
           <q-td :props="props" class="q-gutter-x-sm">
-            <q-btn
-              flat
-              round
-              dense
-              icon="edit"
-              color="surface-400"
-              @click="editPlayer(props.row)"
-            >
+            <q-btn flat round dense icon="edit" color="surface-400" @click="editPlayer(props.row)">
               <q-tooltip>Editar</q-tooltip>
             </q-btn>
             <q-btn
@@ -131,7 +126,7 @@
 
     <!-- Diálogo de Jogador -->
     <q-dialog v-model="showDialog" persistent backdrop-filter="blur(8px)">
-      <q-card class="radius-xl shadow-xl overflow-hidden" style="width: 480px; max-width: 95vw;">
+      <q-card class="radius-xl shadow-xl overflow-hidden" style="width: 480px; max-width: 95vw">
         <q-card-section class="row items-center q-pa-xl bg-surface-50">
           <q-avatar icon="person" color="primary" text-color="white" class="shadow-md" />
           <div class="column q-ml-md">
@@ -149,7 +144,10 @@
         <q-form @submit="onSubmit">
           <q-card-section class="q-pa-xl q-gutter-y-lg">
             <div class="q-gutter-y-xs">
-              <label class="text-xs font-bold text-surface-500 block uppercase tracking-widest q-mb-sm">Nome Completo *</label>
+              <label
+                class="text-xs font-bold text-surface-500 block uppercase tracking-widest q-mb-sm"
+                >Nome Completo *</label
+              >
               <q-input
                 v-model="form.name"
                 placeholder="Ex: João da Silva"
@@ -157,12 +155,15 @@
                 dense
                 bg-color="white"
                 lazy-rules
-                :rules="[val => !!val || 'Nome é obrigatório']"
+                :rules="[(val) => !!val || 'Nome é obrigatório']"
               />
             </div>
 
             <div class="q-gutter-y-xs">
-              <label class="text-xs font-bold text-surface-500 block uppercase tracking-widest q-mb-sm">Apelido</label>
+              <label
+                class="text-xs font-bold text-surface-500 block uppercase tracking-widest q-mb-sm"
+                >Apelido</label
+              >
               <q-input
                 v-model="form.nickname"
                 placeholder="Ex: Japa"
@@ -174,7 +175,10 @@
 
             <div class="row q-col-gutter-lg">
               <div class="col-12 col-sm-6">
-                <label class="text-xs font-bold text-surface-500 q-mb-sm block uppercase tracking-widest">Gênero</label>
+                <label
+                  class="text-xs font-bold text-surface-500 q-mb-sm block uppercase tracking-widest"
+                  >Gênero</label
+                >
                 <q-select
                   v-model="form.gender"
                   :options="genderOptions"
@@ -186,7 +190,10 @@
                 />
               </div>
               <div class="col-12 col-sm-6">
-                <label class="text-xs font-bold text-surface-500 q-mb-sm block uppercase tracking-widest">Nível</label>
+                <label
+                  class="text-xs font-bold text-surface-500 q-mb-sm block uppercase tracking-widest"
+                  >Nível</label
+                >
                 <q-select
                   v-model="form.level"
                   :options="levelOptions"
@@ -200,7 +207,10 @@
             </div>
 
             <div class="q-gutter-y-xs">
-              <label class="text-xs font-bold text-surface-500 block uppercase tracking-widest q-mb-sm">Cidade</label>
+              <label
+                class="text-xs font-bold text-surface-500 block uppercase tracking-widest q-mb-sm"
+                >Cidade</label
+              >
               <q-input
                 v-model="form.city"
                 placeholder="Ex: Porto Alegre"
@@ -216,7 +226,14 @@
           </q-card-section>
 
           <q-card-actions align="right" class="q-pa-xl bg-surface-50 border-surface-100">
-            <q-btn flat label="Cancelar" v-close-popup color="surface-500" no-caps class="text-bold" />
+            <q-btn
+              flat
+              label="Cancelar"
+              v-close-popup
+              color="surface-500"
+              no-caps
+              class="text-bold"
+            />
             <q-btn
               label="Salvar Jogador"
               type="submit"
@@ -233,26 +250,26 @@
 </template>
 
 <script setup>
-import { ref, reactive, computed, onMounted } from 'vue'
-import { useRoute } from 'vue-router'
-import { usePlayerStore } from 'src/stores/player'
-import { useArenaStore } from 'src/stores/arena'
-import { useQuasar } from 'quasar'
+import { ref, reactive, computed, onMounted } from 'vue';
+import { useRoute } from 'vue-router';
+import { usePlayerStore } from 'src/stores/player';
+import { useArenaStore } from 'src/stores/arena';
+import { useQuasar } from 'quasar';
 
-const $q = useQuasar()
-const playerStore = usePlayerStore()
-const arenaStore = useArenaStore()
-const route = useRoute()
-const arenaId = route.params.id
+const $q = useQuasar();
+const playerStore = usePlayerStore();
+const arenaStore = useArenaStore();
+const route = useRoute();
+const arenaId = route.params.id;
 
-const search = ref('')
-const filterLevel = ref(null)
-const showDialog = ref(false)
-const saving = ref(false)
+const search = ref('');
+const filterLevel = ref(null);
+const showDialog = ref(false);
+const saving = ref(false);
 
 const pagination = {
-  rowsPerPage: 10
-}
+  rowsPerPage: 10,
+};
 
 const form = reactive({
   id: null,
@@ -260,92 +277,90 @@ const form = reactive({
   nickname: '',
   gender: 'male',
   level: 'Iniciante',
-  city: ''
-})
+  city: '',
+});
 
 const columns = [
   { name: 'name', align: 'left', label: 'Jogador', field: 'name', sortable: true },
   { name: 'level', align: 'left', label: 'Nível', field: 'level', sortable: true },
   { name: 'gender', align: 'left', label: 'Gênero', field: 'gender', sortable: true },
   { name: 'city', align: 'left', label: 'Cidade', field: 'city', sortable: true },
-  { name: 'actions', align: 'center', label: 'Ações' }
-]
+  { name: 'actions', align: 'center', label: 'Ações' },
+];
 
 const genderOptions = [
   { label: 'Masculino', value: 'male' },
   { label: 'Feminino', value: 'female' },
-  { label: 'Outro', value: 'other' }
-]
+  { label: 'Outro', value: 'other' },
+];
 
-const levelOptions = [
-  'Iniciante', 'Intermediário', 'Avançado', 'Pro', 'A', 'B', 'C', 'D'
-]
+const levelOptions = ['Iniciante', 'Intermediário', 'Avançado', 'Pro', 'A', 'B', 'C', 'D'];
 
 const filteredPlayers = computed(() => {
-  let result = playerStore.players
-  
+  let result = playerStore.players;
+
   if (search.value) {
-    const s = search.value.toLowerCase()
-    result = result.filter(p => 
-      p.name.toLowerCase().includes(s) || 
-      (p.nickname && p.nickname.toLowerCase().includes(s))
-    )
+    const s = search.value.toLowerCase();
+    result = result.filter(
+      (p) =>
+        p.name.toLowerCase().includes(s) || (p.nickname && p.nickname.toLowerCase().includes(s)),
+    );
   }
-  
+
   if (filterLevel.value) {
-    result = result.filter(p => p.level === filterLevel.value)
+    result = result.filter((p) => p.level === filterLevel.value);
   }
-  
-  return result
-})
+
+  return result;
+});
 
 onMounted(async () => {
-  await playerStore.fetchPlayers(arenaId)
-})
+  await playerStore.fetchPlayers(arenaId);
+});
 
 function openPlayerDialog() {
-  resetForm()
-  showDialog.value = true
+  resetForm();
+  showDialog.value = true;
 }
 
 function resetForm() {
-  form.id = null
-  form.name = ''
-  form.nickname = ''
-  form.gender = 'male'
-  form.level = 'Iniciante'
-  form.city = ''
+  form.id = null;
+  form.name = '';
+  form.nickname = '';
+  form.gender = 'male';
+  form.level = 'Iniciante';
+  form.city = '';
 }
 
 function editPlayer(player) {
-  form.id = player.id
-  form.name = player.name
-  form.nickname = player.nickname
-  form.gender = player.gender
-  form.level = player.level
-  form.city = player.city
-  showDialog.value = true
+  form.id = player.id;
+  form.name = player.name;
+  form.nickname = player.nickname;
+  form.gender = player.gender;
+  form.level = player.level;
+  form.city = player.city;
+  showDialog.value = true;
 }
 
 async function onSubmit() {
-  saving.value = true
+  saving.value = true;
   try {
-    await playerStore.savePlayer(arenaId, { ...form })
+    await playerStore.savePlayer(arenaId, { ...form });
     $q.notify({
       type: 'positive',
       message: `Jogador ${form.id ? 'atualizado' : 'cadastrado'} com sucesso!`,
       position: 'top',
-      icon: 'check_circle'
-    })
-    showDialog.value = false
+      icon: 'check_circle',
+    });
+    showDialog.value = false;
   } catch {
     $q.notify({
       type: 'negative',
       message: 'Erro ao salvar jogador.',
-      position: 'top'
-    })
+      position: 'top',
+    });
   } finally {
-    saving.value = false
+    saving.value = false;
   }
 }
 
@@ -355,37 +370,37 @@ function confirmDelete(player) {
     message: `Deseja realmente excluir ${player.name}? Esta ação não pode ser desfeita.`,
     persistent: true,
     ok: { label: 'Excluir', color: 'negative', unelevated: true, noCaps: true },
-    cancel: { label: 'Cancelar', flat: true, color: 'surface-500', noCaps: true }
+    cancel: { label: 'Cancelar', flat: true, color: 'surface-500', noCaps: true },
   }).onOk(async () => {
     try {
-      await playerStore.deletePlayer(arenaId, player.id)
+      await playerStore.deletePlayer(arenaId, player.id);
       $q.notify({
         type: 'positive',
         message: 'Jogador removido com sucesso.',
-        position: 'top'
-      })
+        position: 'top',
+      });
     } catch {
       $q.notify({
         type: 'negative',
         message: 'Erro ao remover jogador.',
-        position: 'top'
-      })
+        position: 'top',
+      });
     }
-  })
+  });
 }
 
 function getLevelBadge(level) {
   const map = {
-    'Iniciante': { color: 'blue-1', textColor: 'blue-10' },
-    'Intermediário': { color: 'orange-1', textColor: 'orange-10' },
-    'Avançado': { color: 'purple-1', textColor: 'purple-10' },
-    'Pro': { color: 'red-1', textColor: 'red-10' },
-    'A': { color: 'indigo-1', textColor: 'indigo-10' },
-    'B': { color: 'cyan-1', textColor: 'cyan-10' },
-    'C': { color: 'teal-1', textColor: 'teal-10' },
-    'D': { color: 'grey-2', textColor: 'grey-8' }
-  }
-  return map[level] || { color: 'surface-100', textColor: 'surface-500' }
+    Iniciante: { color: 'blue-1', textColor: 'blue-10' },
+    Intermediário: { color: 'orange-1', textColor: 'orange-10' },
+    Avançado: { color: 'purple-1', textColor: 'purple-10' },
+    Pro: { color: 'red-1', textColor: 'red-10' },
+    A: { color: 'indigo-1', textColor: 'indigo-10' },
+    B: { color: 'cyan-1', textColor: 'cyan-10' },
+    C: { color: 'teal-1', textColor: 'teal-10' },
+    D: { color: 'grey-2', textColor: 'grey-8' },
+  };
+  return map[level] || { color: 'surface-100', textColor: 'surface-500' };
 }
 </script>
 

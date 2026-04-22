@@ -3,27 +3,18 @@
     <q-card class="auth-card q-pa-lg shadow-24">
       <q-card-section class="text-center">
         <div class="text-h4 text-primary text-bold q-mb-xs">Criar Conta</div>
-        <div class="text-subtitle1 text-grey-7">Junte-se à maior plataforma de Beach Tennis</div>
+        <div class="text-subtitle1 text-grey-7">Gestão de ligas sem complicação</div>
       </q-card-section>
 
       <q-card-section>
         <q-form @submit="onSubmit" class="q-gutter-md">
-          <BtInput
-            v-model="form.name"
-            label="Nome Completo"
-            placeholder="Seu nome completo"
-          >
+          <BtInput v-model="form.name" label="Nome Completo" placeholder="Seu nome completo">
             <template #prefix>
               <q-icon name="person" color="primary" />
             </template>
           </BtInput>
 
-          <BtInput
-            v-model="form.email"
-            type="email"
-            label="E-mail"
-            placeholder="seu@email.com"
-          >
+          <BtInput v-model="form.email" type="email" label="E-mail" placeholder="seu@email.com">
             <template #prefix>
               <q-icon name="email" color="primary" />
             </template>
@@ -63,10 +54,10 @@
           </div>
 
           <div class="text-center q-mt-md">
-             Já tem uma conta?
-             <router-link to="/login" class="text-primary text-bold" style="text-decoration: none">
-               Acesse agora
-             </router-link>
+            Já tem uma conta?
+            <router-link to="/login" class="text-primary text-bold" style="text-decoration: none">
+              Acesse agora
+            </router-link>
           </div>
         </q-form>
       </q-card-section>
@@ -75,42 +66,42 @@
 </template>
 
 <script setup>
-import { reactive, ref } from 'vue'
-import { useRouter } from 'vue-router'
-import { useAuthStore } from 'src/stores/auth'
-import { useQuasar } from 'quasar'
+import { reactive, ref } from 'vue';
+import { useRouter } from 'vue-router';
+import { useAuthStore } from 'src/stores/auth';
+import { useQuasar } from 'quasar';
 
-const $q = useQuasar()
-const router = useRouter()
-const auth = useAuthStore()
+const $q = useQuasar();
+const router = useRouter();
+const auth = useAuthStore();
 
-const loading = ref(false)
+const loading = ref(false);
 const form = reactive({
   name: '',
   email: '',
   password: '',
-  password_confirmation: ''
-})
+  password_confirmation: '',
+});
 
 async function onSubmit() {
-  loading.value = true
+  loading.value = true;
   try {
-    await auth.register(form)
+    await auth.register(form);
     $q.notify({
       type: 'positive',
       message: 'Conta criada com sucesso!',
-      position: 'top'
-    })
-    router.push('/')
+      position: 'top',
+    });
+    router.push('/');
   } catch (error) {
-    console.error(error)
+    console.error(error);
     $q.notify({
       type: 'negative',
       message: error.response?.data?.message || 'Erro ao criar conta. Verifique os dados.',
-      position: 'top'
-    })
+      position: 'top',
+    });
   } finally {
-    loading.value = false
+    loading.value = false;
   }
 }
 </script>

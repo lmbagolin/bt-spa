@@ -2,7 +2,7 @@
   <div class="login-wrapper">
     <q-card class="auth-card q-pa-md">
       <q-card-section class="text-center q-pb-md">
-        <q-icon name="sports_tennis" color="primary" size="48px" class="q-mb-md" />
+        <img src="~assets/logo-mini-100.png" alt="Pontua" class="login-logo q-mb-sm" />
         <h1 class="text-h5 text-bold text-surface-900 q-my-none">Bem-vindo de volta</h1>
         <p class="text-body2 text-surface-500 q-mb-none">Entre na sua conta para continuar</p>
       </q-card-section>
@@ -36,7 +36,15 @@
           </BtInput>
 
           <div class="row justify-end q-mt-xs">
-            <q-btn flat no-caps label="Esqueceu a senha?" color="primary" size="sm" dense to="/forgot-password" />
+            <q-btn
+              flat
+              no-caps
+              label="Esqueceu a senha?"
+              color="primary"
+              size="sm"
+              dense
+              to="/forgot-password"
+            />
           </div>
 
           <div class="q-mt-lg">
@@ -52,7 +60,15 @@
 
           <div class="text-center q-mt-xl text-body2">
             <span class="text-surface-500">Não tem uma conta?</span>
-            <q-btn flat no-caps to="/register" color="primary" label="Cadastre-se" dense class="q-ml-xs text-bold" />
+            <q-btn
+              flat
+              no-caps
+              to="/register"
+              color="primary"
+              label="Cadastre-se"
+              dense
+              class="q-ml-xs text-bold"
+            />
           </div>
         </q-form>
       </q-card-section>
@@ -61,41 +77,42 @@
 </template>
 
 <script setup>
-import { reactive, ref } from 'vue'
-import { useRouter } from 'vue-router'
-import { useAuthStore } from 'src/stores/auth'
-import { useQuasar } from 'quasar'
+import { reactive, ref } from 'vue';
+import { useRouter } from 'vue-router';
+import { useAuthStore } from 'src/stores/auth';
+import { useQuasar } from 'quasar';
 
-const $q = useQuasar()
-const router = useRouter()
-const auth = useAuthStore()
+const $q = useQuasar();
+const router = useRouter();
+const auth = useAuthStore();
 
-const loading = ref(false)
+const loading = ref(false);
 const form = reactive({
   email: '',
-  password: ''
-})
+  password: '',
+});
 
 async function onSubmit() {
-  loading.value = true
+  loading.value = true;
   try {
-    await auth.login(form)
+    await auth.login(form);
     $q.notify({
       type: 'positive',
       message: 'Login realizado com sucesso!',
       position: 'top',
-      icon: 'check_circle'
-    })
-    router.push('/')
+      icon: 'check_circle',
+    });
+    router.push('/');
   } catch (error) {
-    console.error(error)
+    console.error(error);
     $q.notify({
       type: 'negative',
-      message: error.response?.data?.message || 'Erro ao realizar login. Verifique suas credenciais.',
-      position: 'top'
-    })
+      message:
+        error.response?.data?.message || 'Erro ao realizar login. Verifique suas credenciais.',
+      position: 'top',
+    });
   } finally {
-    loading.value = false
+    loading.value = false;
   }
 }
 </script>
@@ -107,6 +124,11 @@ async function onSubmit() {
   border-radius: var(--radius-xl);
   background: white;
   box-shadow: var(--shadow-xl) !important;
+}
+
+.login-logo {
+  height: 72px;
+  width: auto;
 }
 
 .text-surface-900 {

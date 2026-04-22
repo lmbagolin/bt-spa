@@ -13,25 +13,25 @@ allowed-tools: Read, Write, Edit, Glob, Grep, Bash
 
 ## 📋 Quick Reference
 
-| Need | File |
-|------|------|
-| API client setup | [client-setup.md](client-setup.md) |
-| Service layer | [service-layer.md](service-layer.md) |
-| Error handling | [error-handling.md](error-handling.md) |
-| Interceptors | [interceptors.md](interceptors.md) |
-| Authentication | [authentication.md](authentication.md) |
+| Need                   | File                                   |
+| ---------------------- | -------------------------------------- |
+| API client setup       | [client-setup.md](client-setup.md)     |
+| Service layer          | [service-layer.md](service-layer.md)   |
+| Error handling         | [error-handling.md](error-handling.md) |
+| Interceptors           | [interceptors.md](interceptors.md)     |
+| Authentication         | [authentication.md](authentication.md) |
 | Request/response types | [response-types.md](response-types.md) |
 
 ---
 
 ## 🔗 Related Skills
 
-| Need | Skill |
-|------|-------|
-| State management | `@[skills/pinia-state-management]` |
-| Vue 3 components | `@[skills/vue3-typescript]` |
-| TypeScript | `@[skills/vue3-typescript#typescript-patterns.md]` |
-| Backend API | Laravel documentation |
+| Need             | Skill                                              |
+| ---------------- | -------------------------------------------------- |
+| State management | `@[skills/pinia-state-management]`                 |
+| Vue 3 components | `@[skills/vue3-typescript]`                        |
+| TypeScript       | `@[skills/vue3-typescript#typescript-patterns.md]` |
+| Backend API      | Laravel documentation                              |
 
 ---
 
@@ -48,25 +48,28 @@ allowed-tools: Read, Write, Edit, Glob, Grep, Bash
 **Create API client (`src/services/api.ts`):**
 
 ```typescript
-import axios from 'axios'
-import type { AxiosInstance } from 'axios'
+import axios from 'axios';
+import type { AxiosInstance } from 'axios';
 
 const api: AxiosInstance = axios.create({
   baseURL: process.env.VUE_APP_API_URL || 'http://localhost:8000/api',
   headers: {
     'Content-Type': 'application/json',
-    'Accept': 'application/json',
+    Accept: 'application/json',
   },
-})
+});
 
 // Request interceptor - add auth token
-api.interceptors.request.use((config) => {
-  const token = localStorage.getItem('auth_token')
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`
-  }
-  return config
-}, (error) => Promise.reject(error))
+api.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem('auth_token');
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => Promise.reject(error),
+);
 
 // Response interceptor - handle errors
 api.interceptors.response.use(
@@ -74,73 +77,73 @@ api.interceptors.response.use(
   (error) => {
     if (error.response?.status === 401) {
       // Handle unauthorized
-      localStorage.removeItem('auth_token')
-      window.location.href = '/login'
+      localStorage.removeItem('auth_token');
+      window.location.href = '/login';
     }
-    return Promise.reject(error)
-  }
-)
+    return Promise.reject(error);
+  },
+);
 
-export default api
+export default api;
 ```
 
 **Create service (`src/services/tournament.ts`):**
 
 ```typescript
-import api from './api'
-import type { Tournament, CreateTournamentInput } from '@/types/models'
-import type { ApiResponse } from '@/types/api'
+import api from './api';
+import type { Tournament, CreateTournamentInput } from '@/types/models';
+import type { ApiResponse } from '@/types/api';
 
 export async function getTournaments(): Promise<Tournament[]> {
-  const response = await api.get<ApiResponse<Tournament[]>>('/tournaments')
-  return response.data
+  const response = await api.get<ApiResponse<Tournament[]>>('/tournaments');
+  return response.data;
 }
 
 export async function getTournament(id: string): Promise<Tournament> {
-  const response = await api.get<ApiResponse<Tournament>>(`/tournaments/${id}`)
-  return response.data
+  const response = await api.get<ApiResponse<Tournament>>(`/tournaments/${id}`);
+  return response.data;
 }
 
 export async function createTournament(data: CreateTournamentInput): Promise<Tournament> {
-  const response = await api.post<ApiResponse<Tournament>>('/tournaments', data)
-  return response.data
+  const response = await api.post<ApiResponse<Tournament>>('/tournaments', data);
+  return response.data;
 }
 
 export async function updateTournament(id: string, data: Partial<Tournament>): Promise<Tournament> {
-  const response = await api.put<ApiResponse<Tournament>>(`/tournaments/${id}`, data)
-  return response.data
+  const response = await api.put<ApiResponse<Tournament>>(`/tournaments/${id}`, data);
+  return response.data;
 }
 
 export async function deleteTournament(id: string): Promise<void> {
-  await api.delete(`/tournaments/${id}`)
+  await api.delete(`/tournaments/${id}`);
 }
 ```
 
 **Use in store:**
 
 ```typescript
-import { useTournamentStore } from '@/stores/tournament'
-import * as tournamentService from '@/services/tournament'
+import { useTournamentStore } from '@/stores/tournament';
+import * as tournamentService from '@/services/tournament';
 
 export const useTournamentStore = defineStore('tournament', () => {
-  const tournaments = ref<Tournament[]>([])
-  const loading = ref(false)
-  const error = ref<string | null>(null)
+  const tournaments = ref<Tournament[]>([]);
+  const loading = ref(false);
+  const error = ref<string | null>(null);
 
   const fetchTournaments = async () => {
-    loading.value = true
-    error.value = null
+    loading.value = true;
+    error.value = null;
     try {
-      tournaments.value = await tournamentService.getTournaments()
+      tournaments.value = await tournamentService.getTournaments();
     } catch (err) {
-      error.value = err instanceof Error ? err.message : 'Failed to fetch'
+      error.value = err instanceof Error ? err.message : 'Failed to fetch';
     } finally {
-      loading.value = false
+      loading.value = false;
     }
-  }
+  };
 
-  return { tournaments, loading, error, fetchTournaments }
-})
+  return { tournaments, loading, error, fetchTournaments };
+});
 ```
 
 ---
@@ -164,14 +167,14 @@ export const useTournamentStore = defineStore('tournament', () => {
 ```typescript
 // src/types/api.ts
 export interface ApiResponse<T> {
-  data: T
-  message?: string
-  errors?: Record<string, string[]>
+  data: T;
+  message?: string;
+  errors?: Record<string, string[]>;
 }
 
 export interface ApiError {
-  message: string
-  errors?: Record<string, string[]>
+  message: string;
+  errors?: Record<string, string[]>;
 }
 ```
 
@@ -184,25 +187,25 @@ export interface ApiError {
 ```typescript
 // In auth service
 export async function login(email: string, password: string): Promise<string> {
-  const response = await api.post<{ token: string }>('/login', { email, password })
-  const token = response.data.token
-  
+  const response = await api.post<{ token: string }>('/login', { email, password });
+  const token = response.data.token;
+
   // Store token
-  localStorage.setItem('auth_token', token)
-  
+  localStorage.setItem('auth_token', token);
+
   // Add to axios headers
-  api.defaults.headers.common['Authorization'] = `Bearer ${token}`
-  
-  return token
+  api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+
+  return token;
 }
 
 export function logout(): void {
-  localStorage.removeItem('auth_token')
-  delete api.defaults.headers.common['Authorization']
+  localStorage.removeItem('auth_token');
+  delete api.defaults.headers.common['Authorization'];
 }
 
 export function getToken(): string | null {
-  return localStorage.getItem('auth_token')
+  return localStorage.getItem('auth_token');
 }
 ```
 
@@ -214,25 +217,25 @@ export function getToken(): string | null {
 
 ```typescript
 // src/utils/error.ts
-import { useQuasar } from 'quasar'
+import { useQuasar } from 'quasar';
 
 export function handleApiError(error: unknown): string {
-  const $q = useQuasar()
-  
+  const $q = useQuasar();
+
   if (axios.isAxiosError(error)) {
-    const message = error.response?.data?.message || error.message
-    
+    const message = error.response?.data?.message || error.message;
+
     // Show toast notification
     $q.notify({
       type: 'negative',
       message,
       icon: 'error',
-    })
-    
-    return message
+    });
+
+    return message;
   }
-  
-  return 'Unknown error'
+
+  return 'Unknown error';
 }
 ```
 
@@ -240,59 +243,63 @@ export function handleApiError(error: unknown): string {
 
 ## 📚 Resources
 
-| Resource | URL |
-|----------|-----|
-| Axios Docs | https://axios-http.com |
-| Axios Interceptors | https://axios-http.com/docs/interceptors |
-| Laravel API Auth | https://laravel.com/docs/13/sanctum |
-| TypeScript Axios | https://github.com/microsoft/TypeScript-Axios |
+| Resource           | URL                                           |
+| ------------------ | --------------------------------------------- |
+| Axios Docs         | https://axios-http.com                        |
+| Axios Interceptors | https://axios-http.com/docs/interceptors      |
+| Laravel API Auth   | https://laravel.com/docs/13/sanctum           |
+| TypeScript Axios   | https://github.com/microsoft/TypeScript-Axios |
 
 ---
 
 ## 🎯 Common Patterns
 
 ### Fetching Data with Loading State
+
 ```typescript
-const loading = ref(false)
-const data = ref<Data[]>([])
+const loading = ref(false);
+const data = ref<Data[]>([]);
 
 const fetch = async () => {
-  loading.value = true
+  loading.value = true;
   try {
-    data.value = await service.getData()
+    data.value = await service.getData();
   } finally {
-    loading.value = false
+    loading.value = false;
   }
-}
+};
 ```
 
 ### Pagination
+
 ```typescript
 const fetchPage = async (page: number) => {
-  const response = await api.get('/items', { params: { page } })
-  return response.data
-}
+  const response = await api.get('/items', { params: { page } });
+  return response.data;
+};
 ```
 
 ### Search with Query
+
 ```typescript
 const search = async (query: string) => {
-  const response = await api.get('/search', { params: { q: query } })
-  return response.data
-}
+  const response = await api.get('/search', { params: { q: query } });
+  return response.data;
+};
 ```
 
 ### File Upload
+
 ```typescript
 const uploadFile = async (file: File) => {
-  const formData = new FormData()
-  formData.append('file', file)
-  
+  const formData = new FormData();
+  formData.append('file', file);
+
   const response = await api.post('/upload', formData, {
     headers: { 'Content-Type': 'multipart/form-data' },
-  })
-  return response.data
-}
+  });
+  return response.data;
+};
 ```
 
 ---
@@ -310,6 +317,7 @@ const uploadFile = async (file: File) => {
 ---
 
 **For detailed patterns, see:**
+
 - [client-setup.md](client-setup.md) - Axios configuration
 - [service-layer.md](service-layer.md) - Service pattern
 - [error-handling.md](error-handling.md) - Error strategies

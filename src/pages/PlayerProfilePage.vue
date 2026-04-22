@@ -263,22 +263,22 @@
 </template>
 
 <script setup>
-import { ref, reactive, onMounted, watch } from 'vue'
-import { useAuthStore } from 'src/stores/auth'
-import { usePlayerStore } from 'src/stores/player'
-import { useQuasar } from 'quasar'
-import { useRouter } from 'vue-router'
+import { ref, reactive, onMounted, watch } from 'vue';
+import { useAuthStore } from 'src/stores/auth';
+import { usePlayerStore } from 'src/stores/player';
+import { useQuasar } from 'quasar';
+import { useRouter } from 'vue-router';
 
-const authStore = useAuthStore()
-const playerStore = usePlayerStore()
-const $q = useQuasar()
-const router = useRouter()
+const authStore = useAuthStore();
+const playerStore = usePlayerStore();
+const $q = useQuasar();
+const router = useRouter();
 
-const saving = ref(false)
-const savingImage = ref(false)
-const imageModal = ref(false)
-const imagePreview = ref(null)
-const newImage = ref(null)
+const saving = ref(false);
+const savingImage = ref(false);
+const imageModal = ref(false);
+const imagePreview = ref(null);
+const newImage = ref(null);
 
 const profileForm = reactive({
   name: '',
@@ -289,65 +289,65 @@ const profileForm = reactive({
   city: '',
   instagram: '',
   whatsapp: '',
-})
+});
 
 // Sincroniza nickname com name se o checkbox estiver marcado
 watch(
   () => [profileForm.name, profileForm.useSameName],
   ([newName, useSame]) => {
     if (useSame) {
-      profileForm.nickname = newName
+      profileForm.nickname = newName;
     }
   },
-)
+);
 
 function onImageChange(file) {
   if (file) {
-    imagePreview.value = URL.createObjectURL(file)
+    imagePreview.value = URL.createObjectURL(file);
   } else {
-    imagePreview.value = playerStore.currentPlayer?.image_url || null
+    imagePreview.value = playerStore.currentPlayer?.image_url || null;
   }
 }
 
 async function onUpdateImage() {
-  if (!newImage.value) return
+  if (!newImage.value) return;
 
-  savingImage.value = true
+  savingImage.value = true;
   try {
-    await playerStore.updateImage(newImage.value)
+    await playerStore.updateImage(newImage.value);
 
-    imageModal.value = false
-    newImage.value = null
+    imageModal.value = false;
+    newImage.value = null;
 
     $q.notify({
       type: 'positive',
       message: 'Foto de perfil atualizada!',
       position: 'top',
-    })
+    });
   } catch {
     $q.notify({
       type: 'negative',
       message: 'Erro ao atualizar foto.',
       position: 'top',
-    })
+    });
   } finally {
-    savingImage.value = false
+    savingImage.value = false;
   }
 }
 
 function onRejected(entries) {
   if (entries.length > 0) {
-    const entry = entries[0]
+    const entry = entries[0];
     if (entry.failedPropValidation === 'max-file-size') {
       $q.notify({
         type: 'negative',
         message: 'O arquivo é muito grande. O limite é 2MB.',
-      })
+      });
     } else if (entry.failedPropValidation === 'accept') {
       $q.notify({
         type: 'negative',
         message: 'Formato inválido. Use apenas JPG ou PNG.',
-      })
+      });
     }
   }
 }
@@ -356,56 +356,56 @@ const genderOptions = [
   { label: 'Masculino', value: 'male' },
   { label: 'Feminino', value: 'female' },
   { label: 'Outro', value: 'other' },
-]
+];
 
 const levelOptions = [
   { label: 'Iniciante', value: 'beginner' },
   { label: 'Intermediário', value: 'intermediate' },
   { label: 'Avançado', value: 'advanced' },
   { label: 'Profissional', value: 'professional' },
-]
+];
 
 onMounted(async () => {
   try {
-    const profile = await playerStore.fetchProfile()
+    const profile = await playerStore.fetchProfile();
     if (profile) {
-      profileForm.name = profile.name || authStore.user?.name || ''
-      profileForm.nickname = profile.nickname || ''
-      profileForm.useSameName = !profile.nickname || profile.nickname === profile.name
-      profileForm.gender = profile.gender || null
-      profileForm.level = profile.level || null
-      profileForm.city = profile.city || ''
-      profileForm.instagram = profile.instagram || ''
-      profileForm.whatsapp = profile.whatsapp || ''
-      imagePreview.value = profile.image_url || null
+      profileForm.name = profile.name || authStore.user?.name || '';
+      profileForm.nickname = profile.nickname || '';
+      profileForm.useSameName = !profile.nickname || profile.nickname === profile.name;
+      profileForm.gender = profile.gender || null;
+      profileForm.level = profile.level || null;
+      profileForm.city = profile.city || '';
+      profileForm.instagram = profile.instagram || '';
+      profileForm.whatsapp = profile.whatsapp || '';
+      imagePreview.value = profile.image_url || null;
     }
   } catch {
-    console.error('Failed to load profile')
+    console.error('Failed to load profile');
   }
-})
+});
 
 async function onUpdateProfile() {
-  saving.value = true
+  saving.value = true;
   try {
-    await playerStore.updateProfile({ ...profileForm })
+    await playerStore.updateProfile({ ...profileForm });
     $q.notify({
       type: 'positive',
       message: 'Perfil atualizado com sucesso!',
       position: 'top',
-    })
+    });
   } catch {
     $q.notify({
       type: 'negative',
       message: 'Erro ao atualizar perfil.',
       position: 'top',
-    })
+    });
   } finally {
-    saving.value = false
+    saving.value = false;
   }
 }
 
 function goToArena(id) {
-  router.push(`/arena/${id}/public`)
+  router.push(`/arena/${id}/public`);
 }
 </script>
 

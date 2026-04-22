@@ -1,7 +1,7 @@
 <template>
   <q-input
-    :model-value="modelValue"
-    @update:model-value="$emit('update:modelValue', $event)"
+    :model-value="displayValue"
+    @update:model-value="updateDisplayValue"
     v-bind="dateAttrs"
     outlined
     dense
@@ -20,7 +20,7 @@
           <q-date
             :model-value="modelValue"
             @update:model-value="$emit('update:modelValue', $event)"
-            mask="DD/MM/YYYY"
+            mask="YYYY/MM/DD"
             v-bind="datePickerAttrs"
           />
         </q-popup-proxy>
@@ -30,7 +30,8 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { computed } from 'vue';
+import { date } from 'quasar';
 
 const props = defineProps({
   modelValue: [String, null],
@@ -63,9 +64,29 @@ const props = defineProps({
     type: String,
     default: '##/##/####',
   },
-})
+});
 
-const emit = defineEmits(['update:modelValue'])
+const emit = defineEmits(['update:modelValue']);
+
+const displayValue = computed(() => {
+  if (!props.modelValue) return '';
+  // Assumes modelValue is YYYY/MM/DD
+  return date.formatDate(props.modelValue, 'DD/MM/YYYY');
+});
+
+function updateDisplayValue(val) {
+  if (!val) {
+    emit('update:modelValue', null);
+    return;
+  }
+
+  // val is DD/MM/YYYY due to QInput mask
+  const parts = val.split('/');
+  if (parts.length === 3 && parts[2].length === 4) {
+    const formatted = `${parts[2]}/${parts[1]}/${parts[0]}`;
+    emit('update:modelValue', formatted);
+  }
+}
 
 const dateAttrs = computed(() => ({
   type: 'text',
@@ -76,21 +97,21 @@ const dateAttrs = computed(() => ({
   'error-message': props.errorMessage,
   error: props.error,
   mask: props.mask,
-}))
+}));
 
 const datePickerAttrs = computed(() => ({
   'min-date': props.minDate,
   'max-date': props.maxDate,
   minimal: false,
-}))
+}));
 
 const dateClasses = computed(() => ({
   'bt-date-picker--error': props.error,
-}))
+}));
 
 function clearDate() {
   if (props.clearable) {
-    emit('update:modelValue', null)
+    emit('update:modelValue', null);
   }
 }
 </script>

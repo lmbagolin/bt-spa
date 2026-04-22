@@ -38,7 +38,7 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { computed } from 'vue';
 
 const props = defineProps({
   modelValue: {
@@ -78,9 +78,9 @@ const props = defineProps({
     type: String,
     default: 'slide-down',
   },
-})
+});
 
-const emit = defineEmits(['update:modelValue'])
+const emit = defineEmits(['update:modelValue']);
 
 const dialogAttrs = computed(() => ({
   persistent: props.persistent,
@@ -90,10 +90,10 @@ const dialogAttrs = computed(() => ({
   position: props.position,
   'transition-show': props.transitionShow,
   'transition-hide': props.transitionHide,
-}))
+}));
 
 function onClose() {
-  emit('update:modelValue', false)
+  emit('update:modelValue', false);
 }
 </script>
 

@@ -2,20 +2,24 @@
   <div class="auth-wrapper">
     <q-card class="auth-card q-pa-md">
       <q-card-section class="text-center q-pb-md">
-        <q-btn flat round color="primary" icon="arrow_back" class="absolute-left q-ma-sm" to="/login" />
+        <q-btn
+          flat
+          round
+          color="primary"
+          icon="arrow_back"
+          class="absolute-left q-ma-sm"
+          to="/login"
+        />
         <q-icon name="lock_reset" color="primary" size="48px" class="q-mb-md" />
         <h1 class="text-h5 text-bold text-surface-900 q-my-none">Esqueceu a senha?</h1>
-        <p class="text-body2 text-surface-500 q-mb-none">Insira seu e-mail para receber um link de redefinição.</p>
+        <p class="text-body2 text-surface-500 q-mb-none">
+          Insira seu e-mail para receber um link de redefinição.
+        </p>
       </q-card-section>
 
       <q-card-section>
         <q-form @submit="onSubmit" class="q-gutter-y-md">
-          <BtInput
-            v-model="email"
-            label="E-mail"
-            type="email"
-            placeholder="seu@email.com"
-          >
+          <BtInput v-model="email" label="E-mail" type="email" placeholder="seu@email.com">
             <template #prefix>
               <q-icon name="email" size="20px" color="surface-400" />
             </template>
@@ -42,36 +46,36 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import { useAuthStore } from 'src/stores/auth'
-import { useQuasar } from 'quasar'
+import { ref } from 'vue';
+import { useAuthStore } from 'src/stores/auth';
+import { useQuasar } from 'quasar';
 
-const $q = useQuasar()
-const authStore = useAuthStore()
+const $q = useQuasar();
+const authStore = useAuthStore();
 
-const email = ref('')
-const loading = ref(false)
+const email = ref('');
+const loading = ref(false);
 
 async function onSubmit() {
-  loading.value = true
+  loading.value = true;
   try {
-    await authStore.forgotPassword(email.value)
+    await authStore.forgotPassword(email.value);
     $q.notify({
       type: 'positive',
       message: 'Link enviado! Verifique sua caixa de entrada.',
       position: 'top',
-      icon: 'check_circle'
-    })
-    email.value = ''
+      icon: 'check_circle',
+    });
+    email.value = '';
   } catch (error) {
-    console.error(error)
+    console.error(error);
     $q.notify({
       type: 'negative',
       message: error.response?.data?.message || 'Erro ao enviar e-mail. Verifique os dados.',
-      position: 'top'
-    })
+      position: 'top',
+    });
   } finally {
-    loading.value = false
+    loading.value = false;
   }
 }
 </script>

@@ -55,7 +55,7 @@
                   label="Salvar Alterações"
                   type="submit"
                   color="primary"
-                    unelevated
+                  unelevated
                   class="q-px-xl q-py-sm text-bold"
                   :loading="submitting"
                 />
@@ -69,87 +69,91 @@
 </template>
 
 <script setup>
-import { ref, reactive, watch } from 'vue'
-import { useArenaStore } from 'src/stores/arena'
-import { useQuasar } from 'quasar'
+import { ref, reactive, watch } from 'vue';
+import { useArenaStore } from 'src/stores/arena';
+import { useQuasar } from 'quasar';
 
-const $q = useQuasar()
-const arenaStore = useArenaStore()
+const $q = useQuasar();
+const arenaStore = useArenaStore();
 
-const submitting = ref(false)
-const logoPreview = ref(null)
+const submitting = ref(false);
+const logoPreview = ref(null);
 
 const form = reactive({
   name: '',
   city: '',
   logo: null,
-})
+});
 
-watch(() => arenaStore.currentArena, (newArena) => {
-  if (newArena) {
-    loadArenaData(newArena)
-  }
-}, { immediate: true })
+watch(
+  () => arenaStore.currentArena,
+  (newArena) => {
+    if (newArena) {
+      loadArenaData(newArena);
+    }
+  },
+  { immediate: true },
+);
 
 function loadArenaData(arena) {
-  form.name = arena.name
-  form.city = arena.city
-  logoPreview.value = arena.logo_url
+  form.name = arena.name;
+  form.city = arena.city;
+  logoPreview.value = arena.logo_url;
 }
 
 function onLogoChange(file) {
   if (file) {
-    logoPreview.value = URL.createObjectURL(file)
+    logoPreview.value = URL.createObjectURL(file);
   } else {
-    logoPreview.value = arenaStore.currentArena?.logo_url || null
+    logoPreview.value = arenaStore.currentArena?.logo_url || null;
   }
 }
 
 function onRejected(entries) {
   if (entries.length > 0) {
-    const entry = entries[0]
+    const entry = entries[0];
     if (entry.failedPropValidation === 'max-file-size') {
       $q.notify({
         type: 'negative',
         message: 'O arquivo é muito grande. O limite é 2MB.',
-      })
+      });
     } else if (entry.failedPropValidation === 'accept') {
       $q.notify({
         type: 'negative',
         message: 'Formato inválido. Use apenas JPG ou PNG.',
-      })
+      });
     }
   }
 }
 
 async function onSubmit() {
-  submitting.value = true
+  submitting.value = true;
   try {
     const payload = {
       id: arenaStore.currentArena.id,
       name: form.name,
       city: form.city,
-    }
+    };
 
     if (form.logo) {
-      payload.logo = form.logo
+      payload.logo = form.logo;
     }
 
-    const updatedArena = await arenaStore.saveArena(payload)
-    arenaStore.setCurrentArena(updatedArena)
+    const updatedArena = await arenaStore.saveArena(payload);
+    arenaStore.setCurrentArena(updatedArena);
 
     $q.notify({
       type: 'positive',
       message: 'Configurações atualizadas com sucesso!',
       position: 'top',
-    })
+    });
   } catch {
     $q.notify({
       type: 'negative',
       message: 'Erro ao salvar configurações.',
-    })
+    });
   } finally {
-    submitting.value = false
+    submitting.value = false;
   }
 }
 </script>

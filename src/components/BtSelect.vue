@@ -34,7 +34,7 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { computed } from 'vue';
 
 const props = defineProps({
   modelValue: null,
@@ -75,9 +75,13 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
-})
+  dense: {
+    type: Boolean,
+    default: true,
+  },
+});
 
-defineEmits(['update:modelValue'])
+defineEmits(['update:modelValue']);
 
 const selectAttrs = computed(() => ({
   options: props.options,
@@ -93,13 +97,13 @@ const selectAttrs = computed(() => ({
   'hide-selected': false,
   multiple: props.multiple,
   'virtual-scroll-item-size': 48,
-}))
+}));
 
 const selectClasses = computed(() => ({
   'bt-select--small': props.size === 'sm',
   'bt-select--large': props.size === 'lg',
   'bt-select--error': props.error,
-}))
+}));
 </script>
 
 <style scoped lang="scss">

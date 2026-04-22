@@ -1,435 +1,963 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-BR">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Login — Beach Tennis Platform</title>
-<template id="__bundler_thumbnail" data-bg-color="#020b4a">
-  <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
-    <rect width="1200" height="800" fill="#020b4a"/>
-    <rect x="480" y="0" width="720" height="800" fill="#f8fafc"/>
-    <circle cx="240" cy="400" r="160" fill="rgba(255,255,255,0.06)"/>
-    <circle cx="240" cy="400" r="80" fill="rgba(255,255,255,0.08)"/>
-    <!-- racket icon -->
-    <circle cx="240" cy="340" r="44" fill="none" stroke="white" stroke-width="8" opacity="0.9"/>
-    <line x1="240" y1="384" x2="240" y2="430" stroke="white" stroke-width="8" stroke-linecap="round" opacity="0.9"/>
-    <!-- form card -->
-    <rect x="540" y="160" width="340" height="480" rx="16" fill="white" filter="url(#s)"/>
-    <defs><filter id="s"><feDropShadow dx="0" dy="4" stdDeviation="16" flood-opacity="0.10"/></filter></defs>
-    <rect x="596" y="260" width="228" height="36" rx="8" fill="#f1f5f9"/>
-    <rect x="596" y="316" width="228" height="36" rx="8" fill="#f1f5f9"/>
-    <rect x="596" y="388" width="228" height="40" rx="8" fill="#020fc5"/>
-    <circle cx="710" cy="210" r="24" fill="rgba(2,15,197,0.1)"/>
-  </svg>
-</template>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link href="https://unpkg.com/material-icons@1.13.12/iconfont/material-icons.css" rel="stylesheet">
-<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
-<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
-<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
-<style>
-*{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --primary:#020fc5;--primary-light:#3b47d4;--primary-dark:#010aa0;
-  --surface-0:#ffffff;--surface-50:#f8fafc;--surface-100:#f1f5f9;
-  --surface-200:#e2e8f0;--surface-400:#94a3b8;--surface-500:#64748b;
-  --surface-700:#334155;--surface-900:#0f172a;
-  --danger:#ef4444;--success:#22c55e;
-  --radius-md:10px;--radius-lg:14px;--radius-xl:20px;
-  --shadow-sm:0 1px 3px rgba(0,0,0,.06),0 1px 2px rgba(0,0,0,.04);
-  --shadow-xl:0 16px 40px rgba(0,0,0,.14);
-}
-body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;height:100vh;overflow:hidden;background:var(--surface-50)}
-.material-icons{font-size:inherit;vertical-align:middle}
-button{font-family:inherit;cursor:pointer}
-input{font-family:inherit}
-
-/* Layout 2-col */
-.auth-layout{display:flex;height:100vh}
-
-/* Left decorative panel */
-.auth-left{
-  width:40%;
-  background:linear-gradient(160deg,#020b4a 0%,#020fc5 100%);
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  position:relative;overflow:hidden;padding:48px;
-  flex-shrink:0;
-}
-.auth-left-content{position:relative;z-index:2;text-align:center}
-.auth-left-icon{font-size:110px!important;color:#fff;opacity:.95;margin-bottom:24px;display:block;filter:drop-shadow(0 8px 32px rgba(0,0,0,.3))}
-.auth-left-title{font-size:1.875rem;font-weight:700;color:#fff;line-height:1.2;margin-bottom:10px}
-.auth-left-sub{font-size:.875rem;color:rgba(255,255,255,.7);line-height:1.6;max-width:280px;margin:0 auto}
-
-/* Floating decorative dots */
-.dot{position:absolute;border-radius:50%;background:rgba(255,255,255,.06)}
-
-/* Stats row */
-.auth-stats{display:flex;gap:32px;margin-top:48px;padding-top:32px;border-top:1px solid rgba(255,255,255,.12)}
-.auth-stat{text-align:center}
-.auth-stat-val{font-size:1.5rem;font-weight:700;color:#fff}
-.auth-stat-label{font-size:.7rem;color:rgba(255,255,255,.6);text-transform:uppercase;letter-spacing:.06em;margin-top:2px}
-
-/* Right form panel */
-.auth-right{flex:1;background:var(--surface-50);display:flex;align-items:center;justify-content:center;padding:32px;overflow-y:auto}
-
-/* Card */
-.auth-card{background:var(--surface-0);border-radius:var(--radius-xl);box-shadow:var(--shadow-xl);padding:40px;width:100%;max-width:440px;border:1px solid var(--surface-100)}
-.card-icon{width:56px;height:56px;border-radius:50%;background:rgba(2,15,197,.1);display:flex;align-items:center;justify-content:center;color:var(--primary);font-size:28px;margin-bottom:20px}
-.card-title{font-size:1.5rem;font-weight:700;color:var(--surface-900);margin-bottom:6px}
-.card-sub{font-size:.875rem;color:var(--surface-500);margin-bottom:24px}
-.divider-line{border:none;border-top:1px solid var(--surface-100);margin:24px 0}
-
-/* Error banner */
-.error-banner{background:#fef2f2;border:1px solid #fecaca;border-radius:var(--radius-md);padding:12px 14px;display:flex;align-items:center;gap:10px;margin-bottom:20px;animation:slideDown .2s ease}
-.error-banner .material-icons{color:var(--danger);font-size:20px;flex-shrink:0}
-.error-banner span{font-size:.8rem;color:#b91c1c;font-weight:500}
-@keyframes slideDown{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
-
-/* Fields */
-.field{margin-bottom:18px}
-.field label{display:block;font-size:.75rem;font-weight:500;color:var(--surface-500);margin-bottom:7px}
-.input-wrap{position:relative}
-.input-icon{position:absolute;left:13px;top:50%;transform:translateY(-50%);color:var(--surface-400);font-size:18px;pointer-events:none}
-.input-wrap input{width:100%;padding:11px 42px;border:1.5px solid var(--surface-200);border-radius:var(--radius-md);font-size:.875rem;color:var(--surface-900);background:var(--surface-0);outline:none;transition:border .15s,box-shadow .15s}
-.input-wrap input:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(2,15,197,.08)}
-.input-wrap input.error{border-color:var(--danger);box-shadow:0 0 0 3px rgba(239,68,68,.08)}
-.toggle-vis{position:absolute;right:13px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--surface-400);cursor:pointer;padding:0;display:flex;align-items:center;font-size:18px;transition:color .15s}
-.toggle-vis:hover{color:var(--surface-600)}
-.field-footer{display:flex;justify-content:flex-end;margin-top:6px}
-.link{background:none;border:none;color:var(--primary);font-size:.75rem;font-weight:500;cursor:pointer;padding:0;text-decoration:none;transition:opacity .15s}
-.link:hover{opacity:.75;text-decoration:underline}
-
-/* Buttons */
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:11px 24px;border-radius:var(--radius-md);font-size:.875rem;font-weight:600;border:none;cursor:pointer;transition:all .15s ease;width:100%}
-.btn-primary{background:var(--primary);color:#fff}
-.btn-primary:hover:not(:disabled){background:var(--primary-dark);box-shadow:0 4px 12px rgba(2,15,197,.3)}
-.btn-primary:disabled{opacity:.6;cursor:not-allowed}
-.btn-primary .spinner{width:18px;height:18px;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite}
-@keyframes spin{to{transform:rotate(360deg)}}
-
-/* Or divider */
-.or-divider{display:flex;align-items:center;gap:12px;margin:20px 0}
-.or-divider::before,.or-divider::after{content:'';flex:1;height:1px;background:var(--surface-100)}
-.or-divider span{font-size:.75rem;color:var(--surface-400);font-weight:500}
-
-/* Register link */
-.register-row{text-align:center;font-size:.8rem;color:var(--surface-500)}
-.register-row button{color:var(--primary);font-weight:600;background:none;border:none;cursor:pointer;font-size:.8rem;font-family:inherit}
-.register-row button:hover{text-decoration:underline}
-
-/* Tweaks */
-.tweaks-panel{position:fixed;bottom:24px;right:24px;background:var(--surface-0);border:1px solid var(--surface-200);border-radius:20px;box-shadow:var(--shadow-xl);padding:20px;width:240px;z-index:300;display:none}
-.tweaks-panel.show{display:block}
-.tweaks-title{font-size:.875rem;font-weight:700;color:var(--surface-900);margin-bottom:14px;display:flex;align-items:center;gap:8px}
-.tweak-item{margin-bottom:10px}
-.tweak-label{font-size:.7rem;font-weight:500;color:var(--surface-500);margin-bottom:5px}
-.tweak-item select,.tweak-item input[type=color]{width:100%;padding:6px 10px;border:1.5px solid var(--surface-200);border-radius:var(--radius-md);font-size:.8rem;font-family:inherit;cursor:pointer}
-.tweak-item input[type=color]{height:36px;padding:2px 4px}
-
-@media(max-width:768px){
-  .auth-left{display:none}
-  .auth-right{padding:20px}
-  .auth-card{padding:28px 24px}
-}
-</style>
-</head>
-<body>
-<div id="root"></div>
-<script type="text/babel">
-const { useState, useEffect } = React;
-
-const DEMO_EMAIL = "joao@beivamar.com.br";
-const DEMO_PASS  = "senha123";
-
-function LoginForm({ onSwitch }) {
-  const [email, setEmail]       = useState("");
-  const [pass, setPass]         = useState("");
-  const [showPass, setShowPass] = useState(false);
-  const [loading, setLoading]   = useState(false);
-  const [error, setError]       = useState("");
-  const [fieldErr, setFieldErr] = useState({});
-
-  const validate = () => {
-    const e = {};
-    if (!email) e.email = true;
-    if (!pass)  e.pass  = true;
-    setFieldErr(e);
-    return Object.keys(e).length === 0;
-  };
-
-  const handleSubmit = e => {
-    e.preventDefault();
-    setError("");
-    if (!validate()) return;
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-      if (email === DEMO_EMAIL && pass === DEMO_PASS) {
-        window.location.href = "Beach Tennis Platform.html";
-      } else {
-        setError("E-mail ou senha incorretos. Tente joao@beivamar.com.br / senha123");
-        setFieldErr({ email: true, pass: true });
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login — Beach Tennis Platform</title>
+    <template id="__bundler_thumbnail" data-bg-color="#020b4a">
+      <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+        <rect width="1200" height="800" fill="#020b4a" />
+        <rect x="480" y="0" width="720" height="800" fill="#f8fafc" />
+        <circle cx="240" cy="400" r="160" fill="rgba(255,255,255,0.06)" />
+        <circle cx="240" cy="400" r="80" fill="rgba(255,255,255,0.08)" />
+        <!-- racket icon -->
+        <circle
+          cx="240"
+          cy="340"
+          r="44"
+          fill="none"
+          stroke="white"
+          stroke-width="8"
+          opacity="0.9"
+        />
+        <line
+          x1="240"
+          y1="384"
+          x2="240"
+          y2="430"
+          stroke="white"
+          stroke-width="8"
+          stroke-linecap="round"
+          opacity="0.9"
+        />
+        <!-- form card -->
+        <rect x="540" y="160" width="340" height="480" rx="16" fill="white" filter="url(#s)" />
+        <defs>
+          <filter id="s">
+            <feDropShadow dx="0" dy="4" stdDeviation="16" flood-opacity="0.10" />
+          </filter>
+        </defs>
+        <rect x="596" y="260" width="228" height="36" rx="8" fill="#f1f5f9" />
+        <rect x="596" y="316" width="228" height="36" rx="8" fill="#f1f5f9" />
+        <rect x="596" y="388" width="228" height="40" rx="8" fill="#020fc5" />
+        <circle cx="710" cy="210" r="24" fill="rgba(2,15,197,0.1)" />
+      </svg>
+    </template>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://unpkg.com/material-icons@1.13.12/iconfont/material-icons.css"
+      rel="stylesheet"
+    />
+    <script
+      src="https://unpkg.com/react@18.3.1/umd/react.development.js"
+      integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js"
+      integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js"
+      integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y"
+      crossorigin="anonymous"
+    ></script>
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
       }
-    }, 1600);
-  };
+      :root {
+        --primary: #020fc5;
+        --primary-light: #3b47d4;
+        --primary-dark: #010aa0;
+        --surface-0: #ffffff;
+        --surface-50: #f8fafc;
+        --surface-100: #f1f5f9;
+        --surface-200: #e2e8f0;
+        --surface-400: #94a3b8;
+        --surface-500: #64748b;
+        --surface-700: #334155;
+        --surface-900: #0f172a;
+        --danger: #ef4444;
+        --success: #22c55e;
+        --radius-md: 10px;
+        --radius-lg: 14px;
+        --radius-xl: 20px;
+        --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+        --shadow-xl: 0 16px 40px rgba(0, 0, 0, 0.14);
+      }
+      body {
+        font-family:
+          'Inter',
+          -apple-system,
+          BlinkMacSystemFont,
+          sans-serif;
+        height: 100vh;
+        overflow: hidden;
+        background: var(--surface-50);
+      }
+      .material-icons {
+        font-size: inherit;
+        vertical-align: middle;
+      }
+      button {
+        font-family: inherit;
+        cursor: pointer;
+      }
+      input {
+        font-family: inherit;
+      }
 
-  return (
-    <div className="auth-card">
-      <div className="card-icon"><span className="material-icons">sports_tennis</span></div>
-      <div className="card-title">Bem-vindo de volta</div>
-      <div className="card-sub">Entre na sua conta para continuar</div>
+      /* Layout 2-col */
+      .auth-layout {
+        display: flex;
+        height: 100vh;
+      }
 
-      {error && (
-        <div className="error-banner">
-          <span className="material-icons">error</span>
-          <span>{error}</span>
-        </div>
-      )}
+      /* Left decorative panel */
+      .auth-left {
+        width: 40%;
+        background: linear-gradient(160deg, #020b4a 0%, #020fc5 100%);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        overflow: hidden;
+        padding: 48px;
+        flex-shrink: 0;
+      }
+      .auth-left-content {
+        position: relative;
+        z-index: 2;
+        text-align: center;
+      }
+      .auth-left-icon {
+        font-size: 110px !important;
+        color: #fff;
+        opacity: 0.95;
+        margin-bottom: 24px;
+        display: block;
+        filter: drop-shadow(0 8px 32px rgba(0, 0, 0, 0.3));
+      }
+      .auth-left-title {
+        font-size: 1.875rem;
+        font-weight: 700;
+        color: #fff;
+        line-height: 1.2;
+        margin-bottom: 10px;
+      }
+      .auth-left-sub {
+        font-size: 0.875rem;
+        color: rgba(255, 255, 255, 0.7);
+        line-height: 1.6;
+        max-width: 280px;
+        margin: 0 auto;
+      }
 
-      <form onSubmit={handleSubmit} noValidate>
-        <div className="field">
-          <label>E-mail</label>
-          <div className="input-wrap">
-            <span className="material-icons input-icon">email</span>
-            <input
-              type="email" placeholder="seu@email.com"
-              value={email} onChange={e=>{setEmail(e.target.value);setFieldErr(f=>({...f,email:false}))}}
-              className={fieldErr.email?'error':''} disabled={loading}
-            />
-          </div>
-        </div>
+      /* Floating decorative dots */
+      .dot {
+        position: absolute;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.06);
+      }
 
-        <div className="field">
-          <label>Senha</label>
-          <div className="input-wrap">
-            <span className="material-icons input-icon">lock</span>
-            <input
-              type={showPass?'text':'password'} placeholder="••••••••"
-              value={pass} onChange={e=>{setPass(e.target.value);setFieldErr(f=>({...f,pass:false}))}}
-              className={fieldErr.pass?'error':''} disabled={loading}
-            />
-            <button type="button" className="toggle-vis" onClick={()=>setShowPass(s=>!s)}>
-              <span className="material-icons">{showPass?'visibility_off':'visibility'}</span>
-            </button>
-          </div>
-          <div className="field-footer">
-            <button type="button" className="link">Esqueceu a senha?</button>
-          </div>
-        </div>
+      /* Stats row */
+      .auth-stats {
+        display: flex;
+        gap: 32px;
+        margin-top: 48px;
+        padding-top: 32px;
+        border-top: 1px solid rgba(255, 255, 255, 0.12);
+      }
+      .auth-stat {
+        text-align: center;
+      }
+      .auth-stat-val {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #fff;
+      }
+      .auth-stat-label {
+        font-size: 0.7rem;
+        color: rgba(255, 255, 255, 0.6);
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        margin-top: 2px;
+      }
 
-        <button className="btn btn-primary" disabled={loading}>
-          {loading ? <div className="spinner"/> : <><span className="material-icons" style={{fontSize:18}}>login</span>Entrar</>}
-        </button>
-      </form>
+      /* Right form panel */
+      .auth-right {
+        flex: 1;
+        background: var(--surface-50);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 32px;
+        overflow-y: auto;
+      }
 
-      <div className="or-divider"><span>ou</span></div>
-      <div className="register-row">Não tem conta? <button onClick={onSwitch}>Cadastre-se</button></div>
+      /* Card */
+      .auth-card {
+        background: var(--surface-0);
+        border-radius: var(--radius-xl);
+        box-shadow: var(--shadow-xl);
+        padding: 40px;
+        width: 100%;
+        max-width: 440px;
+        border: 1px solid var(--surface-100);
+      }
+      .card-icon {
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        background: rgba(2, 15, 197, 0.1);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--primary);
+        font-size: 28px;
+        margin-bottom: 20px;
+      }
+      .card-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--surface-900);
+        margin-bottom: 6px;
+      }
+      .card-sub {
+        font-size: 0.875rem;
+        color: var(--surface-500);
+        margin-bottom: 24px;
+      }
+      .divider-line {
+        border: none;
+        border-top: 1px solid var(--surface-100);
+        margin: 24px 0;
+      }
 
-      <div style={{marginTop:20,padding:'12px 14px',background:'var(--surface-50)',borderRadius:'var(--radius-md)',border:'1px solid var(--surface-200)'}}>
-        <div style={{fontSize:'.7rem',fontWeight:600,color:'var(--surface-400)',letterSpacing:'.04em',marginBottom:6,textTransform:'uppercase'}}>Demo rápida</div>
-        <div style={{fontSize:'.75rem',color:'var(--surface-600)'}}>E-mail: <strong>{DEMO_EMAIL}</strong></div>
-        <div style={{fontSize:'.75rem',color:'var(--surface-600)'}}>Senha: <strong>{DEMO_PASS}</strong></div>
-      </div>
-    </div>
-  );
-}
-
-function RegisterForm({ onSwitch }) {
-  const [form, setForm] = useState({ name:'', email:'', pass:'', confirm:'' });
-  const [showPass, setShowPass] = useState(false);
-  const [loading, setLoading]   = useState(false);
-  const [error, setError]       = useState("");
-  const set = k => e => setForm(f=>({...f,[k]:e.target.value}));
-
-  const strength = p => {
-    if (!p) return 0;
-    let s = 0;
-    if (p.length >= 6) s++;
-    if (/[A-Z]/.test(p)) s++;
-    if (/[0-9]/.test(p)) s++;
-    if (/[^A-Za-z0-9]/.test(p)) s++;
-    return s;
-  };
-  const str = strength(form.pass);
-  const strLabel = ['','Fraca','Média','Forte','Muito forte'][str];
-  const strColor = ['#e2e8f0','#ef4444','#f59e0b','#22c55e','#0284c7'][str];
-
-  const handleSubmit = e => {
-    e.preventDefault();
-    setError('');
-    if (!form.name||!form.email||!form.pass) { setError('Preencha todos os campos obrigatórios.'); return; }
-    if (form.pass !== form.confirm) { setError('As senhas não coincidem.'); return; }
-    setLoading(true);
-    setTimeout(() => { setLoading(false); window.location.href = 'Beach Tennis Platform.html'; }, 1800);
-  };
-
-  return (
-    <div className="auth-card">
-      <div className="card-icon" style={{background:'rgba(2,15,197,.08)'}}><span className="material-icons">person_add</span></div>
-      <div className="card-title">Criar Conta</div>
-      <div className="card-sub">Junte-se à plataforma de Beach Tennis</div>
-
-      {error && (
-        <div className="error-banner">
-          <span className="material-icons">error</span>
-          <span>{error}</span>
-        </div>
-      )}
-
-      <form onSubmit={handleSubmit} noValidate>
-        <div className="field">
-          <label>Nome Completo *</label>
-          <div className="input-wrap">
-            <span className="material-icons input-icon">person</span>
-            <input type="text" placeholder="Seu nome completo" value={form.name} onChange={set('name')} disabled={loading}/>
-          </div>
-        </div>
-        <div className="field">
-          <label>E-mail *</label>
-          <div className="input-wrap">
-            <span className="material-icons input-icon">email</span>
-            <input type="email" placeholder="seu@email.com" value={form.email} onChange={set('email')} disabled={loading}/>
-          </div>
-        </div>
-        <div className="field">
-          <label>Senha *</label>
-          <div className="input-wrap">
-            <span className="material-icons input-icon">lock</span>
-            <input type={showPass?'text':'password'} placeholder="Mín. 6 caracteres" value={form.pass} onChange={set('pass')} disabled={loading}/>
-            <button type="button" className="toggle-vis" onClick={()=>setShowPass(s=>!s)}>
-              <span className="material-icons">{showPass?'visibility_off':'visibility'}</span>
-            </button>
-          </div>
-          {form.pass && (
-            <div style={{marginTop:8}}>
-              <div style={{display:'flex',gap:4,marginBottom:4}}>
-                {[1,2,3,4].map(i=>(
-                  <div key={i} style={{flex:1,height:3,borderRadius:2,background:i<=str?strColor:'var(--surface-200)',transition:'background .2s'}}/>
-                ))}
-              </div>
-              <div style={{fontSize:'.7rem',color:strColor,fontWeight:500}}>{strLabel}</div>
-            </div>
-          )}
-        </div>
-        <div className="field">
-          <label>Confirmar Senha *</label>
-          <div className="input-wrap">
-            <span className="material-icons input-icon">check_circle</span>
-            <input type="password" placeholder="Repita sua senha" value={form.confirm} onChange={set('confirm')} disabled={loading}
-              className={form.confirm && form.confirm!==form.pass?'error':''}/>
-          </div>
-        </div>
-
-        <button className="btn btn-primary" disabled={loading}>
-          {loading ? <div className="spinner"/> : <><span className="material-icons" style={{fontSize:18}}>person_add</span>Criar Conta</>}
-        </button>
-      </form>
-
-      <div className="or-divider"><span>ou</span></div>
-      <div className="register-row">Já tem conta? <button onClick={onSwitch}>Faça login</button></div>
-    </div>
-  );
-}
-
-function App() {
-  const [view, setView]   = useState('login'); // 'login' | 'register'
-  const [tweaks, setTweaks] = useState(false);
-  const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
-    "primaryColor": "#1623d4",
-    "leftBg": "160deg,#0f172a 0%,#0284c7 100%"
-  }/*EDITMODE-END*/;
-  const [twkVals, setTwkVals] = useState(TWEAK_DEFAULTS);
-
-  useEffect(()=>{
-    document.documentElement.style.setProperty('--primary', twkVals.primaryColor);
-  },[twkVals]);
-
-  useEffect(()=>{
-    const h = e => {
-      if(e.data?.type==='__activate_edit_mode')   setTweaks(true);
-      if(e.data?.type==='__deactivate_edit_mode') setTweaks(false);
-    };
-    window.addEventListener('message',h);
-    window.parent.postMessage({type:'__edit_mode_available'},'*');
-    return ()=>window.removeEventListener('message',h);
-  },[]);
-
-  const bg = `linear-gradient(${twkVals.leftBg})`;
-
-  return (
-    <div className="auth-layout">
-      {/* Left */}
-      <div className="auth-left" style={{background:bg}}>
-        {/* Floating dots */}
-        {[
-          {w:400,h:400,top:'-15%',left:'-15%'},
-          {w:250,h:250,bottom:'-8%',right:'-8%'},
-          {w:150,h:150,top:'40%',right:'10%'},
-          {w:80,h:80,top:'20%',left:'20%'},
-          {w:120,h:120,bottom:'20%',left:'8%'},
-        ].map((d,i)=>(
-          <div key={i} className="dot" style={{width:d.w,height:d.h,top:d.top,bottom:d.bottom,left:d.left,right:d.right}}/>
-        ))}
-
-        <div className="auth-left-content">
-          <span className="material-icons auth-left-icon">sports_tennis</span>
-          <div className="auth-left-title">Beach Tennis Platform</div>
-          <div className="auth-left-sub">Gerencie sua arena, torneios e jogadores com eficiência total</div>
-
-          <div className="auth-stats">
-            <div className="auth-stat"><div className="auth-stat-val">1.2k+</div><div className="auth-stat-label">Jogadores</div></div>
-            <div className="auth-stat"><div className="auth-stat-val">48</div><div className="auth-stat-label">Arenas</div></div>
-            <div className="auth-stat"><div className="auth-stat-val">200+</div><div className="auth-stat-label">Torneios</div></div>
-          </div>
-        </div>
-      </div>
-
-      {/* Right */}
-      <div className="auth-right">
-        {view==='login'
-          ? <LoginForm    onSwitch={()=>setView('register')}/>
-          : <RegisterForm onSwitch={()=>setView('login')}/>
+      /* Error banner */
+      .error-banner {
+        background: #fef2f2;
+        border: 1px solid #fecaca;
+        border-radius: var(--radius-md);
+        padding: 12px 14px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 20px;
+        animation: slideDown 0.2s ease;
+      }
+      .error-banner .material-icons {
+        color: var(--danger);
+        font-size: 20px;
+        flex-shrink: 0;
+      }
+      .error-banner span {
+        font-size: 0.8rem;
+        color: #b91c1c;
+        font-weight: 500;
+      }
+      @keyframes slideDown {
+        from {
+          opacity: 0;
+          transform: translateY(-8px);
         }
-      </div>
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
 
-      {/* Tweaks */}
-      <div className={`tweaks-panel ${tweaks?'show':''}`}>
-        <div className="tweaks-title"><span className="material-icons" style={{fontSize:16,color:'var(--primary)'}}>tune</span>Tweaks</div>
-        <div className="tweak-item">
-          <div className="tweak-label">Cor primária</div>
-          <input type="color" value={twkVals.primaryColor} onChange={e=>{
-            const v={...twkVals,primaryColor:e.target.value};
-            setTwkVals(v);window.parent.postMessage({type:'__edit_mode_set_keys',edits:v},'*');
-          }}/>
-        </div>
-        <div className="tweak-item">
-          <div className="tweak-label">Gradiente lateral</div>
-          <select value={twkVals.leftBg} onChange={e=>{
-            const v={...twkVals,leftBg:e.target.value};
-            setTwkVals(v);window.parent.postMessage({type:'__edit_mode_set_keys',edits:v},'*');
-          }}>
-            <option value="160deg,#020b4a 0%,#020fc5 100%">Azul profundo</option>
-            <option value="160deg,#0f172a 0%,#0284c7 100%">Oceano (original)</option>
-            <option value="160deg,#064e3b 0%,#059669 100%">Esmeralda</option>
-            <option value="160deg,#1e1b4b 0%,#7c3aed 100%">Índigo</option>
-            <option value="160deg,#1c1917 0%,#d97706 100%">Âmbar escuro</option>
-          </select>
-        </div>
-        <div className="tweak-item">
-          <div className="tweak-label">Formulário</div>
-          <select onChange={e=>setView(e.target.value)} value={view}>
-            <option value="login">Login</option>
-            <option value="register">Cadastro</option>
-          </select>
-        </div>
-      </div>
-    </div>
-  );
-}
+      /* Fields */
+      .field {
+        margin-bottom: 18px;
+      }
+      .field label {
+        display: block;
+        font-size: 0.75rem;
+        font-weight: 500;
+        color: var(--surface-500);
+        margin-bottom: 7px;
+      }
+      .input-wrap {
+        position: relative;
+      }
+      .input-icon {
+        position: absolute;
+        left: 13px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--surface-400);
+        font-size: 18px;
+        pointer-events: none;
+      }
+      .input-wrap input {
+        width: 100%;
+        padding: 11px 42px;
+        border: 1.5px solid var(--surface-200);
+        border-radius: var(--radius-md);
+        font-size: 0.875rem;
+        color: var(--surface-900);
+        background: var(--surface-0);
+        outline: none;
+        transition:
+          border 0.15s,
+          box-shadow 0.15s;
+      }
+      .input-wrap input:focus {
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(2, 15, 197, 0.08);
+      }
+      .input-wrap input.error {
+        border-color: var(--danger);
+        box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.08);
+      }
+      .toggle-vis {
+        position: absolute;
+        right: 13px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        color: var(--surface-400);
+        cursor: pointer;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        font-size: 18px;
+        transition: color 0.15s;
+      }
+      .toggle-vis:hover {
+        color: var(--surface-600);
+      }
+      .field-footer {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 6px;
+      }
+      .link {
+        background: none;
+        border: none;
+        color: var(--primary);
+        font-size: 0.75rem;
+        font-weight: 500;
+        cursor: pointer;
+        padding: 0;
+        text-decoration: none;
+        transition: opacity 0.15s;
+      }
+      .link:hover {
+        opacity: 0.75;
+        text-decoration: underline;
+      }
 
-ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
-</script>
-</body>
+      /* Buttons */
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 11px 24px;
+        border-radius: var(--radius-md);
+        font-size: 0.875rem;
+        font-weight: 600;
+        border: none;
+        cursor: pointer;
+        transition: all 0.15s ease;
+        width: 100%;
+      }
+      .btn-primary {
+        background: var(--primary);
+        color: #fff;
+      }
+      .btn-primary:hover:not(:disabled) {
+        background: var(--primary-dark);
+        box-shadow: 0 4px 12px rgba(2, 15, 197, 0.3);
+      }
+      .btn-primary:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+      .btn-primary .spinner {
+        width: 18px;
+        height: 18px;
+        border: 2px solid rgba(255, 255, 255, 0.4);
+        border-top-color: #fff;
+        border-radius: 50%;
+        animation: spin 0.7s linear infinite;
+      }
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      /* Or divider */
+      .or-divider {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin: 20px 0;
+      }
+      .or-divider::before,
+      .or-divider::after {
+        content: '';
+        flex: 1;
+        height: 1px;
+        background: var(--surface-100);
+      }
+      .or-divider span {
+        font-size: 0.75rem;
+        color: var(--surface-400);
+        font-weight: 500;
+      }
+
+      /* Register link */
+      .register-row {
+        text-align: center;
+        font-size: 0.8rem;
+        color: var(--surface-500);
+      }
+      .register-row button {
+        color: var(--primary);
+        font-weight: 600;
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-size: 0.8rem;
+        font-family: inherit;
+      }
+      .register-row button:hover {
+        text-decoration: underline;
+      }
+
+      /* Tweaks */
+      .tweaks-panel {
+        position: fixed;
+        bottom: 24px;
+        right: 24px;
+        background: var(--surface-0);
+        border: 1px solid var(--surface-200);
+        border-radius: 20px;
+        box-shadow: var(--shadow-xl);
+        padding: 20px;
+        width: 240px;
+        z-index: 300;
+        display: none;
+      }
+      .tweaks-panel.show {
+        display: block;
+      }
+      .tweaks-title {
+        font-size: 0.875rem;
+        font-weight: 700;
+        color: var(--surface-900);
+        margin-bottom: 14px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .tweak-item {
+        margin-bottom: 10px;
+      }
+      .tweak-label {
+        font-size: 0.7rem;
+        font-weight: 500;
+        color: var(--surface-500);
+        margin-bottom: 5px;
+      }
+      .tweak-item select,
+      .tweak-item input[type='color'] {
+        width: 100%;
+        padding: 6px 10px;
+        border: 1.5px solid var(--surface-200);
+        border-radius: var(--radius-md);
+        font-size: 0.8rem;
+        font-family: inherit;
+        cursor: pointer;
+      }
+      .tweak-item input[type='color'] {
+        height: 36px;
+        padding: 2px 4px;
+      }
+
+      @media (max-width: 768px) {
+        .auth-left {
+          display: none;
+        }
+        .auth-right {
+          padding: 20px;
+        }
+        .auth-card {
+          padding: 28px 24px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="text/babel">
+      const { useState, useEffect } = React;
+
+      const DEMO_EMAIL = 'joao@beivamar.com.br';
+      const DEMO_PASS = 'senha123';
+
+      function LoginForm({ onSwitch }) {
+        const [email, setEmail] = useState('');
+        const [pass, setPass] = useState('');
+        const [showPass, setShowPass] = useState(false);
+        const [loading, setLoading] = useState(false);
+        const [error, setError] = useState('');
+        const [fieldErr, setFieldErr] = useState({});
+
+        const validate = () => {
+          const e = {};
+          if (!email) e.email = true;
+          if (!pass) e.pass = true;
+          setFieldErr(e);
+          return Object.keys(e).length === 0;
+        };
+
+        const handleSubmit = (e) => {
+          e.preventDefault();
+          setError('');
+          if (!validate()) return;
+          setLoading(true);
+          setTimeout(() => {
+            setLoading(false);
+            if (email === DEMO_EMAIL && pass === DEMO_PASS) {
+              window.location.href = 'Beach Tennis Platform.html';
+            } else {
+              setError('E-mail ou senha incorretos. Tente joao@beivamar.com.br / senha123');
+              setFieldErr({ email: true, pass: true });
+            }
+          }, 1600);
+        };
+
+        return (
+          <div className="auth-card">
+            <div className="card-icon">
+              <span className="material-icons">sports_tennis</span>
+            </div>
+            <div className="card-title">Bem-vindo de volta</div>
+            <div className="card-sub">Entre na sua conta para continuar</div>
+
+            {error && (
+              <div className="error-banner">
+                <span className="material-icons">error</span>
+                <span>{error}</span>
+              </div>
+            )}
+
+            <form onSubmit={handleSubmit} noValidate>
+              <div className="field">
+                <label>E-mail</label>
+                <div className="input-wrap">
+                  <span className="material-icons input-icon">email</span>
+                  <input
+                    type="email"
+                    placeholder="seu@email.com"
+                    value={email}
+                    onChange={(e) => {
+                      setEmail(e.target.value);
+                      setFieldErr((f) => ({ ...f, email: false }));
+                    }}
+                    className={fieldErr.email ? 'error' : ''}
+                    disabled={loading}
+                  />
+                </div>
+              </div>
+
+              <div className="field">
+                <label>Senha</label>
+                <div className="input-wrap">
+                  <span className="material-icons input-icon">lock</span>
+                  <input
+                    type={showPass ? 'text' : 'password'}
+                    placeholder="••••••••"
+                    value={pass}
+                    onChange={(e) => {
+                      setPass(e.target.value);
+                      setFieldErr((f) => ({ ...f, pass: false }));
+                    }}
+                    className={fieldErr.pass ? 'error' : ''}
+                    disabled={loading}
+                  />
+                  <button
+                    type="button"
+                    className="toggle-vis"
+                    onClick={() => setShowPass((s) => !s)}
+                  >
+                    <span className="material-icons">
+                      {showPass ? 'visibility_off' : 'visibility'}
+                    </span>
+                  </button>
+                </div>
+                <div className="field-footer">
+                  <button type="button" className="link">
+                    Esqueceu a senha?
+                  </button>
+                </div>
+              </div>
+
+              <button className="btn btn-primary" disabled={loading}>
+                {loading ? (
+                  <div className="spinner" />
+                ) : (
+                  <>
+                    <span className="material-icons" style={{ fontSize: 18 }}>
+                      login
+                    </span>
+                    Entrar
+                  </>
+                )}
+              </button>
+            </form>
+
+            <div className="or-divider">
+              <span>ou</span>
+            </div>
+            <div className="register-row">
+              Não tem conta? <button onClick={onSwitch}>Cadastre-se</button>
+            </div>
+
+            <div
+              style={{
+                marginTop: 20,
+                padding: '12px 14px',
+                background: 'var(--surface-50)',
+                borderRadius: 'var(--radius-md)',
+                border: '1px solid var(--surface-200)',
+              }}
+            >
+              <div
+                style={{
+                  fontSize: '.7rem',
+                  fontWeight: 600,
+                  color: 'var(--surface-400)',
+                  letterSpacing: '.04em',
+                  marginBottom: 6,
+                  textTransform: 'uppercase',
+                }}
+              >
+                Demo rápida
+              </div>
+              <div style={{ fontSize: '.75rem', color: 'var(--surface-600)' }}>
+                E-mail: <strong>{DEMO_EMAIL}</strong>
+              </div>
+              <div style={{ fontSize: '.75rem', color: 'var(--surface-600)' }}>
+                Senha: <strong>{DEMO_PASS}</strong>
+              </div>
+            </div>
+          </div>
+        );
+      }
+
+      function RegisterForm({ onSwitch }) {
+        const [form, setForm] = useState({ name: '', email: '', pass: '', confirm: '' });
+        const [showPass, setShowPass] = useState(false);
+        const [loading, setLoading] = useState(false);
+        const [error, setError] = useState('');
+        const set = (k) => (e) => setForm((f) => ({ ...f, [k]: e.target.value }));
+
+        const strength = (p) => {
+          if (!p) return 0;
+          let s = 0;
+          if (p.length >= 6) s++;
+          if (/[A-Z]/.test(p)) s++;
+          if (/[0-9]/.test(p)) s++;
+          if (/[^A-Za-z0-9]/.test(p)) s++;
+          return s;
+        };
+        const str = strength(form.pass);
+        const strLabel = ['', 'Fraca', 'Média', 'Forte', 'Muito forte'][str];
+        const strColor = ['#e2e8f0', '#ef4444', '#f59e0b', '#22c55e', '#0284c7'][str];
+
+        const handleSubmit = (e) => {
+          e.preventDefault();
+          setError('');
+          if (!form.name || !form.email || !form.pass) {
+            setError('Preencha todos os campos obrigatórios.');
+            return;
+          }
+          if (form.pass !== form.confirm) {
+            setError('As senhas não coincidem.');
+            return;
+          }
+          setLoading(true);
+          setTimeout(() => {
+            setLoading(false);
+            window.location.href = 'Beach Tennis Platform.html';
+          }, 1800);
+        };
+
+        return (
+          <div className="auth-card">
+            <div className="card-icon" style={{ background: 'rgba(2,15,197,.08)' }}>
+              <span className="material-icons">person_add</span>
+            </div>
+            <div className="card-title">Criar Conta</div>
+            <div className="card-sub">Junte-se à plataforma de Beach Tennis</div>
+
+            {error && (
+              <div className="error-banner">
+                <span className="material-icons">error</span>
+                <span>{error}</span>
+              </div>
+            )}
+
+            <form onSubmit={handleSubmit} noValidate>
+              <div className="field">
+                <label>Nome Completo *</label>
+                <div className="input-wrap">
+                  <span className="material-icons input-icon">person</span>
+                  <input
+                    type="text"
+                    placeholder="Seu nome completo"
+                    value={form.name}
+                    onChange={set('name')}
+                    disabled={loading}
+                  />
+                </div>
+              </div>
+              <div className="field">
+                <label>E-mail *</label>
+                <div className="input-wrap">
+                  <span className="material-icons input-icon">email</span>
+                  <input
+                    type="email"
+                    placeholder="seu@email.com"
+                    value={form.email}
+                    onChange={set('email')}
+                    disabled={loading}
+                  />
+                </div>
+              </div>
+              <div className="field">
+                <label>Senha *</label>
+                <div className="input-wrap">
+                  <span className="material-icons input-icon">lock</span>
+                  <input
+                    type={showPass ? 'text' : 'password'}
+                    placeholder="Mín. 6 caracteres"
+                    value={form.pass}
+                    onChange={set('pass')}
+                    disabled={loading}
+                  />
+                  <button
+                    type="button"
+                    className="toggle-vis"
+                    onClick={() => setShowPass((s) => !s)}
+                  >
+                    <span className="material-icons">
+                      {showPass ? 'visibility_off' : 'visibility'}
+                    </span>
+                  </button>
+                </div>
+                {form.pass && (
+                  <div style={{ marginTop: 8 }}>
+                    <div style={{ display: 'flex', gap: 4, marginBottom: 4 }}>
+                      {[1, 2, 3, 4].map((i) => (
+                        <div
+                          key={i}
+                          style={{
+                            flex: 1,
+                            height: 3,
+                            borderRadius: 2,
+                            background: i <= str ? strColor : 'var(--surface-200)',
+                            transition: 'background .2s',
+                          }}
+                        />
+                      ))}
+                    </div>
+                    <div style={{ fontSize: '.7rem', color: strColor, fontWeight: 500 }}>
+                      {strLabel}
+                    </div>
+                  </div>
+                )}
+              </div>
+              <div className="field">
+                <label>Confirmar Senha *</label>
+                <div className="input-wrap">
+                  <span className="material-icons input-icon">check_circle</span>
+                  <input
+                    type="password"
+                    placeholder="Repita sua senha"
+                    value={form.confirm}
+                    onChange={set('confirm')}
+                    disabled={loading}
+                    className={form.confirm && form.confirm !== form.pass ? 'error' : ''}
+                  />
+                </div>
+              </div>
+
+              <button className="btn btn-primary" disabled={loading}>
+                {loading ? (
+                  <div className="spinner" />
+                ) : (
+                  <>
+                    <span className="material-icons" style={{ fontSize: 18 }}>
+                      person_add
+                    </span>
+                    Criar Conta
+                  </>
+                )}
+              </button>
+            </form>
+
+            <div className="or-divider">
+              <span>ou</span>
+            </div>
+            <div className="register-row">
+              Já tem conta? <button onClick={onSwitch}>Faça login</button>
+            </div>
+          </div>
+        );
+      }
+
+      function App() {
+        const [view, setView] = useState('login'); // 'login' | 'register'
+        const [tweaks, setTweaks] = useState(false);
+        const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/ {
+          primaryColor: '#1623d4',
+          leftBg: '160deg,#0f172a 0%,#0284c7 100%',
+        }; /*EDITMODE-END*/
+        const [twkVals, setTwkVals] = useState(TWEAK_DEFAULTS);
+
+        useEffect(() => {
+          document.documentElement.style.setProperty('--primary', twkVals.primaryColor);
+        }, [twkVals]);
+
+        useEffect(() => {
+          const h = (e) => {
+            if (e.data?.type === '__activate_edit_mode') setTweaks(true);
+            if (e.data?.type === '__deactivate_edit_mode') setTweaks(false);
+          };
+          window.addEventListener('message', h);
+          window.parent.postMessage({ type: '__edit_mode_available' }, '*');
+          return () => window.removeEventListener('message', h);
+        }, []);
+
+        const bg = `linear-gradient(${twkVals.leftBg})`;
+
+        return (
+          <div className="auth-layout">
+            {/* Left */}
+            <div className="auth-left" style={{ background: bg }}>
+              {/* Floating dots */}
+              {[
+                { w: 400, h: 400, top: '-15%', left: '-15%' },
+                { w: 250, h: 250, bottom: '-8%', right: '-8%' },
+                { w: 150, h: 150, top: '40%', right: '10%' },
+                { w: 80, h: 80, top: '20%', left: '20%' },
+                { w: 120, h: 120, bottom: '20%', left: '8%' },
+              ].map((d, i) => (
+                <div
+                  key={i}
+                  className="dot"
+                  style={{
+                    width: d.w,
+                    height: d.h,
+                    top: d.top,
+                    bottom: d.bottom,
+                    left: d.left,
+                    right: d.right,
+                  }}
+                />
+              ))}
+
+              <div className="auth-left-content">
+                <span className="material-icons auth-left-icon">sports_tennis</span>
+                <div className="auth-left-title">Beach Tennis Platform</div>
+                <div className="auth-left-sub">
+                  Gerencie sua arena, torneios e jogadores com eficiência total
+                </div>
+
+                <div className="auth-stats">
+                  <div className="auth-stat">
+                    <div className="auth-stat-val">1.2k+</div>
+                    <div className="auth-stat-label">Jogadores</div>
+                  </div>
+                  <div className="auth-stat">
+                    <div className="auth-stat-val">48</div>
+                    <div className="auth-stat-label">Arenas</div>
+                  </div>
+                  <div className="auth-stat">
+                    <div className="auth-stat-val">200+</div>
+                    <div className="auth-stat-label">Torneios</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Right */}
+            <div className="auth-right">
+              {view === 'login' ? (
+                <LoginForm onSwitch={() => setView('register')} />
+              ) : (
+                <RegisterForm onSwitch={() => setView('login')} />
+              )}
+            </div>
+
+            {/* Tweaks */}
+            <div className={`tweaks-panel ${tweaks ? 'show' : ''}`}>
+              <div className="tweaks-title">
+                <span className="material-icons" style={{ fontSize: 16, color: 'var(--primary)' }}>
+                  tune
+                </span>
+                Tweaks
+              </div>
+              <div className="tweak-item">
+                <div className="tweak-label">Cor primária</div>
+                <input
+                  type="color"
+                  value={twkVals.primaryColor}
+                  onChange={(e) => {
+                    const v = { ...twkVals, primaryColor: e.target.value };
+                    setTwkVals(v);
+                    window.parent.postMessage({ type: '__edit_mode_set_keys', edits: v }, '*');
+                  }}
+                />
+              </div>
+              <div className="tweak-item">
+                <div className="tweak-label">Gradiente lateral</div>
+                <select
+                  value={twkVals.leftBg}
+                  onChange={(e) => {
+                    const v = { ...twkVals, leftBg: e.target.value };
+                    setTwkVals(v);
+                    window.parent.postMessage({ type: '__edit_mode_set_keys', edits: v }, '*');
+                  }}
+                >
+                  <option value="160deg,#020b4a 0%,#020fc5 100%">Azul profundo</option>
+                  <option value="160deg,#0f172a 0%,#0284c7 100%">Oceano (original)</option>
+                  <option value="160deg,#064e3b 0%,#059669 100%">Esmeralda</option>
+                  <option value="160deg,#1e1b4b 0%,#7c3aed 100%">Índigo</option>
+                  <option value="160deg,#1c1917 0%,#d97706 100%">Âmbar escuro</option>
+                </select>
+              </div>
+              <div className="tweak-item">
+                <div className="tweak-label">Formulário</div>
+                <select onChange={(e) => setView(e.target.value)} value={view}>
+                  <option value="login">Login</option>
+                  <option value="register">Cadastro</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        );
+      }
+
+      ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+    </script>
+  </body>
 </html>

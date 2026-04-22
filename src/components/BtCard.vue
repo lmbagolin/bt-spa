@@ -28,7 +28,7 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { computed } from 'vue';
 
 const props = defineProps({
   title: String,
@@ -49,7 +49,7 @@ const props = defineProps({
     type: String,
     default: 'default',
   },
-})
+});
 
 const cardClasses = computed(() => ({
   'bt-card--hoverable': props.hoverable,
@@ -58,7 +58,7 @@ const cardClasses = computed(() => ({
   'bt-card--elevated': props.variant === 'elevated',
   'bt-card--sm': props.padding === 'sm',
   'bt-card--lg': props.padding === 'lg',
-}))
+}));
 </script>
 
 <style scoped lang="scss">

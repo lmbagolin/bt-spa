@@ -195,12 +195,12 @@ export const useXyzStore = defineStore('xyz', () => {
 ```typescript
 // services/tournament.ts
 export async function getTournaments(): Promise<Tournament[]> {
-  const response = await api.get('/tournaments')
-  return response.data
+  const response = await api.get('/tournaments');
+  return response.data;
 }
 
 // Use in store actions
-const tournaments = await tournamentService.getTournaments()
+const tournaments = await tournamentService.getTournaments();
 ```
 
 **Key files in project:**

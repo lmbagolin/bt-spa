@@ -18,7 +18,7 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { computed } from 'vue';
 
 const props = defineProps({
   modelValue: {
@@ -36,9 +36,9 @@ const props = defineProps({
     default: true,
   },
   icon: String,
-})
+});
 
-const emit = defineEmits(['update:modelValue'])
+const emit = defineEmits(['update:modelValue']);
 
 const variantConfig = {
   success: {
@@ -65,22 +65,22 @@ const variantConfig = {
     icon: 'info',
     color: '#3498db',
   },
-}
+};
 
-const config = computed(() => variantConfig[props.variant] || variantConfig.info)
+const config = computed(() => variantConfig[props.variant] || variantConfig.info);
 
-const icon = computed(() => props.icon || config.value.icon)
+const icon = computed(() => props.icon || config.value.icon);
 
-const iconColor = computed(() => config.value.color)
+const iconColor = computed(() => config.value.color);
 
 const bannerClasses = computed(() => ({
   backgroundColor: config.value.bg,
   borderLeft: `4px solid ${config.value.border}`,
   color: config.value.color,
-}))
+}));
 
 function onClose() {
-  emit('update:modelValue', false)
+  emit('update:modelValue', false);
 }
 </script>
 

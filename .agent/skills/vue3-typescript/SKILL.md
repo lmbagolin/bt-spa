@@ -117,37 +117,37 @@ allowed-tools: Read, Write, Edit, Glob, Grep, Bash
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
-import { useTournamentStore } from '@/stores/tournament'
+import { ref, onMounted } from 'vue';
+import { useTournamentStore } from '@/stores/tournament';
 
 interface Tournament {
-  id: string
-  name: string
-  date: string
-  status: 'active' | 'completed' | 'pending'
+  id: string;
+  name: string;
+  date: string;
+  status: 'active' | 'completed' | 'pending';
 }
 
-const tournamentStore = useTournamentStore()
-const tournaments = ref<Tournament[]>([])
-const loading = ref(false)
-const error = ref<string | null>(null)
+const tournamentStore = useTournamentStore();
+const tournaments = ref<Tournament[]>([]);
+const loading = ref(false);
+const error = ref<string | null>(null);
 
 const columns = [
   { name: 'name', label: 'Name', field: 'name', align: 'left' },
   { name: 'date', label: 'Date', field: 'date', align: 'center' },
   { name: 'status', label: 'Status', field: 'status', align: 'center' },
-]
+];
 
 onMounted(async () => {
-  loading.value = true
+  loading.value = true;
   try {
-    tournaments.value = await tournamentStore.fetchTournaments()
+    tournaments.value = await tournamentStore.fetchTournaments();
   } catch (err) {
-    error.value = err instanceof Error ? err.message : 'Unknown error'
+    error.value = err instanceof Error ? err.message : 'Unknown error';
   } finally {
-    loading.value = false
+    loading.value = false;
   }
-})
+});
 </script>
 
 <style scoped lang="scss">

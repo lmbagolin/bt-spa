@@ -3,11 +3,14 @@
     <q-page-container>
       <q-page class="row no-wrap items-stretch">
         <!-- Coluna decorativa (Visível apenas em Desktop md+) -->
-        <div class="col-12 col-md-5 auth-side-panel gt-sm flex flex-center text-white relative-position overflow-hidden">
+        <div
+          class="col-12 col-md-5 auth-side-panel gt-sm flex flex-center text-white relative-position overflow-hidden"
+        >
           <div class="content text-center z-top q-pa-xl">
-            <q-icon name="sports_tennis" size="120px" class="opacity-90" />
-            <div class="text-h3 text-bold q-mt-md">Beach Tennis</div>
-            <div class="text-subtitle1 opacity-70 q-mt-sm">Gerencie sua arena com eficiência e estilo.</div>
+            <img src="~assets/logo-white.png" alt="Pontua" class="auth-logo q-mb-lg" />
+            <div class="text-subtitle1 opacity-70">
+              Gerencie sua arena com eficiência e estilo.
+            </div>
           </div>
           <!-- Elementos decorativos de fundo -->
           <div class="deco-circle-1"></div>
@@ -26,8 +29,7 @@
   </q-layout>
 </template>
 
-<script setup>
-</script>
+<script setup></script>
 
 <style scoped lang="scss">
 .auth-side-panel {
@@ -44,8 +46,9 @@
   opacity: 0.7;
 }
 
-.opacity-90 {
-  opacity: 0.9;
+.auth-logo {
+  width: 260px;
+  height: auto;
 }
 
 .deco-circle-1 {

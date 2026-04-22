@@ -19,13 +19,13 @@ BLUE (Primary)          GRAY (Neutral)
 
 ### Status Colors
 
-| Status | Color | Hex |
-|--------|-------|-----|
-| Success | Green | #27ae60 |
+| Status  | Color  | Hex     |
+| ------- | ------ | ------- |
+| Success | Green  | #27ae60 |
 | Warning | Orange | #f39c12 |
-| Danger | Red | #e74c3c |
-| Info | Blue | #3498db |
-| Neutral | Gray | #95a5a6 |
+| Danger  | Red    | #e74c3c |
+| Info    | Blue   | #3498db |
+| Neutral | Gray   | #95a5a6 |
 
 ---
 
@@ -35,16 +35,16 @@ BLUE (Primary)          GRAY (Neutral)
 
 ```scss
 // Main areas
-$bg-page: #f5f5f5;           // Main content background
-$bg-card: #ffffff;            // Card/component backgrounds
-$bg-header: #ffffff;          // Topbar background
-$bg-sidebar: #2c3e50;         // Sidebar background
+$bg-page: #f5f5f5; // Main content background
+$bg-card: #ffffff; // Card/component backgrounds
+$bg-header: #ffffff; // Topbar background
+$bg-sidebar: #2c3e50; // Sidebar background
 
 // Hover/States
-$bg-hover: #f9f9f9;           // Card hover
-$bg-input: #ffffff;           // Form input background
-$bg-input-focus: #f0f7ff;     // Input focus background
-$bg-disabled: #f5f5f5;        // Disabled element background
+$bg-hover: #f9f9f9; // Card hover
+$bg-input: #ffffff; // Form input background
+$bg-input-focus: #f0f7ff; // Input focus background
+$bg-disabled: #f5f5f5; // Disabled element background
 $bg-overlay: rgba(0, 0, 0, 0.5); // Modal overlay
 ```
 
@@ -52,23 +52,23 @@ $bg-overlay: rgba(0, 0, 0, 0.5); // Modal overlay
 
 ```scss
 // Primary text
-$text-primary: #2c3e50;       // Main text color
-$text-secondary: #7f8c8d;     // Secondary text (labels, hints)
-$text-light: #95a5a6;         // Disabled/placeholder text
-$text-inverse: #ffffff;       // Text on dark backgrounds
+$text-primary: #2c3e50; // Main text color
+$text-secondary: #7f8c8d; // Secondary text (labels, hints)
+$text-light: #95a5a6; // Disabled/placeholder text
+$text-inverse: #ffffff; // Text on dark backgrounds
 
 // Sidebar text
-$text-sidebar: #bdc3c7;       // Normal sidebar text
+$text-sidebar: #bdc3c7; // Normal sidebar text
 $text-sidebar-active: #ffffff; // Active sidebar item
 ```
 
 ### Borders & Dividers
 
 ```scss
-$border-color: #e0e0e0;       // Default border color
-$border-light: #ecf0f1;       // Light border
-$border-dark: #bdc3c7;        // Dark border
-$divider-color: #ecf0f1;      // Divider lines
+$border-color: #e0e0e0; // Default border color
+$border-light: #ecf0f1; // Light border
+$border-dark: #bdc3c7; // Dark border
+$divider-color: #ecf0f1; // Divider lines
 ```
 
 ### Shadows (Light Mode)
@@ -88,34 +88,34 @@ $shadow-xl: 0 8px 16px rgba(0, 0, 0, 0.12);
 
 ```scss
 // Main areas
-$dark-bg-page: #1a1a1a;       // Main content background
-$dark-bg-card: #2c3e50;       // Card/component backgrounds
-$dark-bg-header: #1e1e1e;     // Topbar background
-$dark-bg-sidebar: #1a1a1a;    // Sidebar background
+$dark-bg-page: #1a1a1a; // Main content background
+$dark-bg-card: #2c3e50; // Card/component backgrounds
+$dark-bg-header: #1e1e1e; // Topbar background
+$dark-bg-sidebar: #1a1a1a; // Sidebar background
 
 // Hover/States
-$dark-bg-hover: #34495e;      // Card hover
-$dark-bg-input: #2c3e50;      // Form input background
+$dark-bg-hover: #34495e; // Card hover
+$dark-bg-input: #2c3e50; // Form input background
 $dark-bg-input-focus: #34495e; // Input focus background
-$dark-bg-disabled: #1a1a1a;   // Disabled element background
+$dark-bg-disabled: #1a1a1a; // Disabled element background
 $dark-bg-overlay: rgba(0, 0, 0, 0.7); // Modal overlay
 ```
 
 ### Text Colors
 
 ```scss
-$dark-text-primary: #ecf0f1;  // Main text color
+$dark-text-primary: #ecf0f1; // Main text color
 $dark-text-secondary: #95a5a6; // Secondary text
-$dark-text-light: #7f8c8d;    // Disabled/placeholder text
-$dark-text-inverse: #2c3e50;  // Text on light backgrounds
+$dark-text-light: #7f8c8d; // Disabled/placeholder text
+$dark-text-inverse: #2c3e50; // Text on light backgrounds
 ```
 
 ### Borders & Dividers
 
 ```scss
-$dark-border-color: #34495e;  // Default border color
-$dark-border-light: #2c3e50;  // Light border
-$dark-border-dark: #1a1a1a;   // Dark border
+$dark-border-color: #34495e; // Default border color
+$dark-border-light: #2c3e50; // Light border
+$dark-border-dark: #1a1a1a; // Dark border
 $dark-divider-color: #34495e; // Divider lines
 ```
 
@@ -158,11 +158,11 @@ module.exports = function (ctx) {
           'text-primary': '#2c3e50',
           'text-secondary': '#7f8c8d',
           'bg-page': '#f5f5f5',
-        }
-      }
-    }
-  }
-}
+        },
+      },
+    },
+  };
+};
 ```
 
 ---
@@ -181,17 +181,17 @@ module.exports = function (ctx) {
 </template>
 
 <script setup>
-import { useQuasar } from 'quasar'
+import { useQuasar } from 'quasar';
 
-const $q = useQuasar()
+const $q = useQuasar();
 
 // Toggle dark mode
 const toggleDarkMode = () => {
-  $q.dark.set(!$q.dark.isActive)
-}
+  $q.dark.set(!$q.dark.isActive);
+};
 
 // Check if dark mode is active
-const isDark = computed(() => $q.dark.isActive)
+const isDark = computed(() => $q.dark.isActive);
 </script>
 ```
 
@@ -254,36 +254,16 @@ const isDark = computed(() => $q.dark.isActive)
 
 ```vue
 <!-- Default -->
-<q-input
-  v-model="value"
-  label="Enter text"
-  outlined
-/>
+<q-input v-model="value" label="Enter text" outlined />
 
 <!-- With color -->
-<q-input
-  v-model="value"
-  label="Highlight"
-  outlined
-  color="primary"
-/>
+<q-input v-model="value" label="Highlight" outlined color="primary" />
 
 <!-- With warning -->
-<q-input
-  v-model="value"
-  label="Warning"
-  outlined
-  color="warning"
-/>
+<q-input v-model="value" label="Warning" outlined color="warning" />
 
 <!-- With error -->
-<q-input
-  v-model="value"
-  label="Error"
-  outlined
-  color="negative"
-  error
-/>
+<q-input v-model="value" label="Error" outlined color="negative" error />
 ```
 
 ### Badges & Chips
@@ -295,12 +275,7 @@ const isDark = computed(() => $q.dark.isActive)
 <q-badge color="negative" label="Inactive" />
 
 <!-- Chip -->
-<q-chip
-  icon="sports_tennis"
-  color="primary"
-  text-color="white"
-  label="Beach Tennis"
-/>
+<q-chip icon="sports_tennis" color="primary" text-color="white" label="Beach Tennis" />
 ```
 
 ---
@@ -311,16 +286,10 @@ const isDark = computed(() => $q.dark.isActive)
 
 ```vue
 <template>
-  <q-table
-    :rows="rows"
-    :columns="columns"
-  >
+  <q-table :rows="rows" :columns="columns">
     <template #body-cell-status="props">
       <q-td :props="props">
-        <q-badge
-          :color="getStatusColor(props.row.status)"
-          :label="props.row.status"
-        />
+        <q-badge :color="getStatusColor(props.row.status)" :label="props.row.status" />
       </q-td>
     </template>
   </q-table>
@@ -329,12 +298,16 @@ const isDark = computed(() => $q.dark.isActive)
 <script setup>
 const getStatusColor = (status) => {
   switch (status) {
-    case 'active': return 'positive'
-    case 'pending': return 'warning'
-    case 'inactive': return 'negative'
-    default: return 'info'
+    case 'active':
+      return 'positive';
+    case 'pending':
+      return 'warning';
+    case 'inactive':
+      return 'negative';
+    default:
+      return 'info';
   }
-}
+};
 </script>
 ```
 
@@ -370,11 +343,7 @@ const getStatusColor = (status) => {
 
 ```scss
 .sakai-sidebar {
-  background: linear-gradient(
-    135deg,
-    #2c3e50 0%,
-    #34495e 100%
-  );
+  background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
 }
 ```
 
@@ -383,11 +352,7 @@ const getStatusColor = (status) => {
 ```scss
 .sakai-card {
   &:hover {
-    background: linear-gradient(
-      135deg,
-      #ffffff 0%,
-      #f9f9f9 100%
-    );
+    background: linear-gradient(135deg, #ffffff 0%, #f9f9f9 100%);
   }
 }
 ```
@@ -396,11 +361,7 @@ const getStatusColor = (status) => {
 
 ```scss
 .accent-gradient {
-  background: linear-gradient(
-    90deg,
-    #1976d2 0%,
-    #2196f3 100%
-  );
+  background: linear-gradient(90deg, #1976d2 0%, #2196f3 100%);
 }
 ```
 
