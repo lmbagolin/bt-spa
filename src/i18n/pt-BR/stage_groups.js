@@ -1,0 +1,70 @@
+export default {
+  title_prefix: 'Fase de Grupos',
+  subtitle_format: 'Duplas Rotativas',
+  btn_draw: 'Sortear Grupos',
+  btn_generate_finalists: 'Gerar Finalistas',
+  btn_go_playoffs: 'Ir para Playoffs',
+  breadcrumb_groups: 'Fase de Grupos',
+  // Cards de info
+  info_players: 'Jogadores',
+  info_groups: 'Grupos',
+  info_matches_played: 'Jogos realizados',
+  info_progress: 'Progresso',
+  info_format: 'Formato',
+  // Estado vazio
+  empty_title: 'Grupos não sorteados',
+  empty_min_players: 'São necessários pelo menos 4 jogadores inscritos para sortear grupos.',
+  empty_click_draw: 'Clique em "Sortear Grupos" para criar os grupos automaticamente.',
+  // Cabeçalho de grupo
+  group_label: 'Grupo {letter}',
+  group_info: '{players} jogadores · {matches} jogos',
+  // Cabeçalhos de tabela de ranking do grupo
+  col_pos: 'Pos',
+  col_player: 'Jogador',
+  col_pts: 'PTS',
+  col_sg: 'SG',
+  col_gp: 'GP',
+  col_gc: 'GC',
+  col_jg: 'JG',
+  // Cabeçalhos de partidas
+  col_team_a: 'Dupla A',
+  col_team_b: 'Dupla B',
+  // Seção de finalistas
+  finalists_title: 'Finalistas classificados',
+  finalists_subtitle: '{count} jogadores classificados para os playoffs',
+  btn_redo_finalists: 'Refazer',
+  col_group: 'Grupo',
+  // Dialog de finalistas - Step 1
+  dialog_finalists_title: 'Gerar Finalistas',
+  dialog_step1_subtitle: '{groups} grupos · {players} jogadores',
+  step1_question: 'Quantos jogadores se classificam para os playoffs?',
+  step1_hint: 'Número par · mínimo 4 · máximo {max}',
+  btn_continue: 'Continuar',
+  // Step 2 - Empate
+  tie_title: 'Empate — Grupo {letter}',
+  tie_subtitle: '{count} jogadores empatados em todos os critérios ({pts} pts · SG {sg} · GP {gp}) — posições {from}° a {to}° no grupo',
+  tie_counter: '{current} / {total}',
+  tie_instruction: 'Defina a ordem. Jogadores nas primeiras posições ficam melhor classificados',
+  tie_qualifies_note: '— os das posições até {pos}° se classificam.',
+  chip_qualifies: 'Classifica',
+  chip_eliminated: 'Eliminado',
+  btn_confirm: 'Confirmar',
+  // Step 3 - Resumo
+  dialog_confirm_finalists: 'Confirmar Finalistas',
+  dialog_confirm_subtitle: '{count} jogadores classificados',
+  group_position_label: '{pos}° Colocados',
+  btn_save_finalists: 'Salvar Finalistas',
+  // Dialogs de sorteio
+  dialog_draw_title: 'Sortear Grupos',
+  dialog_draw_reset_message: 'Isso vai resetar os grupos e resultados existentes. Tem certeza?',
+  dialog_draw_message: 'Sortear {count} jogadores em grupos de {size}?',
+  btn_draw_ok: 'Sortear',
+  // Notificações
+  notify_drawn: 'Grupos sorteados!',
+  notify_draw_error: 'Erro ao sortear grupos.',
+  notify_score_error: 'Erro ao salvar placar.',
+  notify_finalists_saved: 'Finalistas salvos com sucesso!',
+  notify_finalists_error: 'Erro ao salvar finalistas.',
+  notify_generate_warning: 'Sorteie os grupos primeiro.',
+  notify_min_players_warning: 'São necessários pelo menos 4 jogadores inscritos.',
+};

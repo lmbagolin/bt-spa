@@ -1,30 +1,25 @@
 <template>
   <q-page class="q-pa-lg">
-    <div class="row items-center justify-between q-mb-lg">
-      <div class="column">
-        <h1 class="text-2xl text-bold text-surface-900 q-my-none">Jogadores</h1>
-        <p class="text-sm text-surface-500 q-mt-xs q-mb-none font-medium">
-          Gerencie os atletas registrados na sua arena.
-        </p>
-      </div>
+    <PageHeader :title="$t('players.title')" :subtitle="$t('players.subtitle')">
       <q-btn
         color="primary"
         icon="person_add"
-        label="Novo Jogador"
+        :label="$t('players.new_player')"
         unelevated
-        class="text-bold no-caps q-px-md shadow-md"
+        no-caps
+        class="text-bold"
         @click="openPlayerDialog"
       />
-    </div>
+    </PageHeader>
 
     <!-- Filtros e Busca -->
     <q-card class="q-mb-md border-surface-100 shadow-card">
       <q-card-section class="q-pa-md">
         <div class="row q-col-gutter-md items-center">
           <div class="col-12 col-sm-6">
-            <q-input
+            <bt-input
               v-model="search"
-              placeholder="Buscar jogador por nome ou apelido..."
+              :placeholder="$t('players.search_placeholder')"
               outlined
               dense
               bg-color="white"
@@ -32,13 +27,13 @@
               <template v-slot:prepend>
                 <q-icon name="search" color="surface-400" />
               </template>
-            </q-input>
+            </bt-input>
           </div>
           <div class="col-12 col-sm-3">
-            <q-select
+            <BtSelect
               v-model="filterLevel"
               :options="levelOptions"
-              label="Filtrar Nível"
+              :label="$t('players.filter_level')"
               outlined
               dense
               clearable
@@ -61,8 +56,8 @@
         :loading="playerStore.loading"
         :pagination="pagination"
         class="sakai-table"
-        no-data-label="Nenhum jogador encontrado."
-        no-results-label="Nenhum jogador corresponde à busca."
+        :no-data-label="$t('players.no_data')"
+        :no-results-label="$t('players.no_results')"
       >
         <template v-slot:body-cell-name="props">
           <q-td :props="props">
@@ -99,7 +94,7 @@
               size="20px"
             />
             <span class="q-ml-xs text-surface-600">{{
-              props.row.gender === 'male' ? 'Masc' : 'Fem'
+              props.row.gender === 'male' ? $t('common.gender_masc') : $t('common.gender_fem')
             }}</span>
           </q-td>
         </template>
@@ -107,7 +102,7 @@
         <template v-slot:body-cell-actions="props">
           <q-td :props="props" class="q-gutter-x-sm">
             <q-btn flat round dense icon="edit" color="surface-400" @click="editPlayer(props.row)">
-              <q-tooltip>Editar</q-tooltip>
+              <q-tooltip>{{ $t('players.tooltip_edit') }}</q-tooltip>
             </q-btn>
             <q-btn
               flat
@@ -117,7 +112,7 @@
               color="negative"
               @click="confirmDelete(props.row)"
             >
-              <q-tooltip>Remover</q-tooltip>
+              <q-tooltip>{{ $t('players.tooltip_delete') }}</q-tooltip>
             </q-btn>
           </q-td>
         </template>
@@ -131,9 +126,11 @@
           <q-avatar icon="person" color="primary" text-color="white" class="shadow-md" />
           <div class="column q-ml-md">
             <div class="text-xl text-bold text-surface-900">
-              {{ form.id ? 'Editar Jogador' : 'Novo Jogador' }}
+              {{ form.id ? $t('players.dialog_edit') : $t('players.dialog_new') }}
             </div>
-            <div class="text-xs text-surface-400">Arena {{ arenaStore.currentArena?.name }}</div>
+            <div class="text-xs text-surface-400">
+              {{ $t('players.arena_label', { name: arenaStore.currentArena?.name }) }}
+            </div>
           </div>
           <q-space />
           <q-btn icon="close" flat round dense v-close-popup color="surface-400" />
@@ -146,27 +143,29 @@
             <div class="q-gutter-y-xs">
               <label
                 class="text-xs font-bold text-surface-500 block uppercase tracking-widest q-mb-sm"
-                >Nome Completo *</label
               >
+                {{ $t('players.field_full_name') }}
+              </label>
               <q-input
                 v-model="form.name"
-                placeholder="Ex: João da Silva"
+                :placeholder="$t('players.field_full_name_placeholder')"
                 outlined
                 dense
                 bg-color="white"
                 lazy-rules
-                :rules="[(val) => !!val || 'Nome é obrigatório']"
+                :rules="[(val) => !!val || $t('players.validation_name_required')]"
               />
             </div>
 
             <div class="q-gutter-y-xs">
               <label
                 class="text-xs font-bold text-surface-500 block uppercase tracking-widest q-mb-sm"
-                >Apelido</label
               >
+                {{ $t('players.field_nickname') }}
+              </label>
               <q-input
                 v-model="form.nickname"
-                placeholder="Ex: Japa"
+                :placeholder="$t('players.field_nickname_placeholder')"
                 outlined
                 dense
                 bg-color="white"
@@ -177,8 +176,9 @@
               <div class="col-12 col-sm-6">
                 <label
                   class="text-xs font-bold text-surface-500 q-mb-sm block uppercase tracking-widest"
-                  >Gênero</label
                 >
+                  {{ $t('players.field_gender') }}
+                </label>
                 <q-select
                   v-model="form.gender"
                   :options="genderOptions"
@@ -192,8 +192,9 @@
               <div class="col-12 col-sm-6">
                 <label
                   class="text-xs font-bold text-surface-500 q-mb-sm block uppercase tracking-widest"
-                  >Nível</label
                 >
+                  {{ $t('players.field_level') }}
+                </label>
                 <q-select
                   v-model="form.level"
                   :options="levelOptions"
@@ -209,11 +210,12 @@
             <div class="q-gutter-y-xs">
               <label
                 class="text-xs font-bold text-surface-500 block uppercase tracking-widest q-mb-sm"
-                >Cidade</label
               >
+                {{ $t('players.field_city') }}
+              </label>
               <q-input
                 v-model="form.city"
-                placeholder="Ex: Porto Alegre"
+                :placeholder="$t('players.field_city_placeholder')"
                 outlined
                 dense
                 bg-color="white"
@@ -228,14 +230,14 @@
           <q-card-actions align="right" class="q-pa-xl bg-surface-50 border-surface-100">
             <q-btn
               flat
-              label="Cancelar"
+              :label="$t('common.cancel')"
               v-close-popup
               color="surface-500"
               no-caps
               class="text-bold"
             />
             <q-btn
-              label="Salvar Jogador"
+              :label="$t('players.save')"
               type="submit"
               color="primary"
               unelevated
@@ -250,16 +252,19 @@
 </template>
 
 <script setup>
+import PageHeader from 'src/components/others/PageHeader.vue';
 import { ref, reactive, computed, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import { usePlayerStore } from 'src/stores/player';
 import { useArenaStore } from 'src/stores/arena';
 import { useQuasar } from 'quasar';
+import { useI18n } from 'vue-i18n';
 
 const $q = useQuasar();
 const playerStore = usePlayerStore();
 const arenaStore = useArenaStore();
 const route = useRoute();
+const { t } = useI18n();
 const arenaId = route.params.id;
 
 const search = ref('');
@@ -280,19 +285,25 @@ const form = reactive({
   city: '',
 });
 
-const columns = [
-  { name: 'name', align: 'left', label: 'Jogador', field: 'name', sortable: true },
-  { name: 'level', align: 'left', label: 'Nível', field: 'level', sortable: true },
-  { name: 'gender', align: 'left', label: 'Gênero', field: 'gender', sortable: true },
-  { name: 'city', align: 'left', label: 'Cidade', field: 'city', sortable: true },
-  { name: 'actions', align: 'center', label: 'Ações' },
-];
+const columns = computed(() => [
+  { name: 'name', align: 'left', label: t('players.col_player'), field: 'name', sortable: true },
+  { name: 'level', align: 'left', label: t('players.col_level'), field: 'level', sortable: true },
+  {
+    name: 'gender',
+    align: 'left',
+    label: t('players.col_gender'),
+    field: 'gender',
+    sortable: true,
+  },
+  { name: 'city', align: 'left', label: t('players.col_city'), field: 'city', sortable: true },
+  { name: 'actions', align: 'center', label: t('players.col_actions') },
+]);
 
-const genderOptions = [
-  { label: 'Masculino', value: 'male' },
-  { label: 'Feminino', value: 'female' },
-  { label: 'Outro', value: 'other' },
-];
+const genderOptions = computed(() => [
+  { label: t('common.gender_male'), value: 'male' },
+  { label: t('common.gender_female'), value: 'female' },
+  { label: t('common.gender_other'), value: 'other' },
+]);
 
 const levelOptions = ['Iniciante', 'Intermediário', 'Avançado', 'Pro', 'A', 'B', 'C', 'D'];
 
@@ -348,7 +359,7 @@ async function onSubmit() {
     await playerStore.savePlayer(arenaId, { ...form });
     $q.notify({
       type: 'positive',
-      message: `Jogador ${form.id ? 'atualizado' : 'cadastrado'} com sucesso!`,
+      message: form.id ? t('players.notify_updated') : t('players.notify_created'),
       position: 'top',
       icon: 'check_circle',
     });
@@ -356,7 +367,7 @@ async function onSubmit() {
   } catch {
     $q.notify({
       type: 'negative',
-      message: 'Erro ao salvar jogador.',
+      message: t('players.notify_error_save'),
       position: 'top',
     });
   } finally {
@@ -366,23 +377,28 @@ async function onSubmit() {
 
 function confirmDelete(player) {
   $q.dialog({
-    title: 'Excluir Jogador',
-    message: `Deseja realmente excluir ${player.name}? Esta ação não pode ser desfeita.`,
+    title: t('players.confirm_delete_title'),
+    message: t('players.confirm_delete_message', { name: player.name }),
     persistent: true,
-    ok: { label: 'Excluir', color: 'negative', unelevated: true, noCaps: true },
-    cancel: { label: 'Cancelar', flat: true, color: 'surface-500', noCaps: true },
+    ok: {
+      label: t('players.confirm_delete_ok'),
+      color: 'negative',
+      unelevated: true,
+      noCaps: true,
+    },
+    cancel: { label: t('common.cancel'), flat: true, color: 'surface-500', noCaps: true },
   }).onOk(async () => {
     try {
       await playerStore.deletePlayer(arenaId, player.id);
       $q.notify({
         type: 'positive',
-        message: 'Jogador removido com sucesso.',
+        message: t('players.notify_deleted'),
         position: 'top',
       });
     } catch {
       $q.notify({
         type: 'negative',
-        message: 'Erro ao remover jogador.',
+        message: t('players.notify_error_delete'),
         position: 'top',
       });
     }
@@ -404,7 +420,9 @@ function getLevelBadge(level) {
 }
 </script>
 
-<style scoped>
+<style lang="scss">
+@import '../css/bt-variables.scss';
+
 .sakai-table :deep(thead tr th) {
   font-weight: 700;
   color: var(--surface-700);

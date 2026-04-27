@@ -32,6 +32,14 @@
   --sidebar-hover: rgba(255, 255, 255, 0.05);
   --sidebar-active: #1976d2;
 
+  // Sidebar Admin (Orange tones)
+  --sidebar-admin-bg:         #7c3a0f;
+  --sidebar-admin-border:     rgba(255, 255, 255, 0.1);
+  --sidebar-admin-text:       rgba(255, 255, 255, 0.75);
+  --sidebar-admin-text-hover: #ffffff;
+  --sidebar-admin-hover:      rgba(255, 255, 255, 0.1);
+  --sidebar-admin-active:     #f37021;
+
   // Topbar (Header)
   --topbar-bg: #ffffff;
   --topbar-border: #e0e0e0;
@@ -275,4 +283,18 @@ body {
 
 .nav-active i {
   color: var(--sidebar-active-text) !important;
+}
+
+/* ── Admin Sidebar Theme ────────────────────────────────────────────────────── */
+.bt-sidebar-admin {
+  /* Re-map sidebar tokens to admin palette within this scope */
+  --sidebar-bg:          var(--sidebar-admin-bg);
+  --sidebar-border:      var(--sidebar-admin-border);
+  --sidebar-text:        var(--sidebar-admin-text);
+  --sidebar-text-hover:  var(--sidebar-admin-text-hover);
+  --sidebar-hover:       var(--sidebar-admin-hover);
+  --sidebar-active:      var(--sidebar-admin-active);
+
+  background-color: var(--sidebar-admin-bg) !important;
+  color: var(--sidebar-admin-text) !important;
 }

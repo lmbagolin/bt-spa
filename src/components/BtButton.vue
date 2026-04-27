@@ -121,6 +121,7 @@ function getColor() {
 </script>
 
 <style scoped lang="scss">
+@use 'sass:color';
 @import '../css/bt-variables.scss';
 
 .bt-btn {
@@ -138,7 +139,7 @@ function getColor() {
     color: white;
 
     &:hover:not(.bt-btn--loading) {
-      background-color: darken($color-primary, 5%);
+      background-color: color.adjust($color-primary, $lightness: -5%);
       box-shadow: $shadow-md;
     }
 
@@ -153,7 +154,7 @@ function getColor() {
     color: white;
 
     &:hover:not(.bt-btn--loading) {
-      background-color: lighten($color-sidebar-bg, 5%);
+      background-color: color.adjust($color-sidebar-bg, $lightness: 5%);
     }
   }
 
@@ -163,7 +164,7 @@ function getColor() {
     color: white;
 
     &:hover:not(.bt-btn--loading) {
-      background-color: darken($color-danger, 5%);
+      background-color: color.adjust($color-danger, $lightness: -5%);
     }
   }
 
@@ -173,7 +174,7 @@ function getColor() {
     color: white;
 
     &:hover:not(.bt-btn--loading) {
-      background-color: darken($color-success, 5%);
+      background-color: color.adjust($color-success, $lightness: -5%);
     }
   }
 
@@ -183,7 +184,7 @@ function getColor() {
     color: white;
 
     &:hover:not(.bt-btn--loading) {
-      background-color: darken($color-warning, 5%);
+      background-color: color.adjust($color-warning, $lightness: -5%);
     }
   }
 
@@ -193,7 +194,7 @@ function getColor() {
     color: white;
 
     &:hover:not(.bt-btn--loading) {
-      background-color: darken($color-info, 5%);
+      background-color: color.adjust($color-info, $lightness: -5%);
     }
   }
 

@@ -1,0 +1,17 @@
+export default {
+  title: 'Criar Conta',
+  subtitle: 'Gestão de ligas sem complicação',
+  full_name: 'Nome Completo',
+  full_name_placeholder: 'Seu nome completo',
+  email_placeholder: 'seu@email.com',
+  password: 'Senha',
+  password_placeholder: 'Mínimo 8 caracteres',
+  password_hint: 'Use pelo menos 8 caracteres',
+  password_confirm: 'Confirmar Senha',
+  password_confirm_placeholder: 'Repita sua senha',
+  submit: 'Cadastrar',
+  already_have_account: 'Já tem uma conta?',
+  access_now: 'Acesse agora',
+  notify_success: 'Conta criada com sucesso!',
+  notify_error: 'Erro ao criar conta. Verifique os dados.',
+};

@@ -1,0 +1,58 @@
+export default {
+  title_prefix: 'Playoffs',
+  breadcrumb: 'Playoffs',
+  btn_draw_pairs: 'Sortear Duplas',
+  btn_redo_pairs: 'Refazer Duplas',
+  btn_draw_bracket: 'Sortear Finais',
+  btn_redo_bracket: 'Refazer Bracket',
+  // Seção de finalistas
+  finalists_title: 'Finalistas classificados',
+  // Seção de duplas
+  pairs_title: 'Duplas formadas ({count})',
+  col_group: 'Grupo',
+  col_player: 'Jogador',
+  col_pos: 'Pos',
+  col_pts: 'PTS',
+  col_sg: 'SG',
+  col_gp: 'GP',
+  col_gc: 'GC',
+  col_pair: '#',
+  col_pair_label: 'Dupla',
+  // Seção de chaveamento
+  bracket_title: 'Chaveamento',
+  // Rounds do chaveamento
+  round_oitavas: 'Oitavas de Final',
+  round_quartas: 'Quartas de Final',
+  round_semi: 'Semifinais',
+  round_terceiro: '3° Lugar',
+  round_final: 'Final',
+  // Dialog de sorteio de duplas
+  dialog_pairs_title: 'Sortear Duplas',
+  dialog_pairs_subtitle: '{finalists} finalistas · {pairs} duplas',
+  pairs_method_label: 'Método de sorteio:',
+  method_order_label: 'Pela ordem de classificação',
+  method_order_desc: '1°+2°, 3°+4°, 5°+6°...',
+  method_split_label: 'Sorteio por faixa',
+  method_split_desc: 'Melhores colocados sorteados entre si, piores entre si',
+  method_random_label: 'Totalmente aleatório',
+  method_random_desc: 'Sorteio livre entre todos os finalistas',
+  btn_form_pairs: 'Formar Duplas',
+  // Dialog de chaveamento
+  dialog_bracket_title: 'Sortear Finais',
+  dialog_bracket_subtitle: '{pairs} duplas · {rounds}',
+  bracket_description: 'O chaveamento coloca a melhor dupla contra a pior, segunda melhor contra segunda pior, e assim por diante.',
+  toggle_third_place: 'Disputar 3° lugar',
+  third_place_hint: 'Os perdedores das semifinais se enfrentam pelo bronze',
+  btn_generate_bracket: 'Gerar Chaveamento',
+  // Gerar ranking final
+  all_results_title: 'Playoffs encerrados!',
+  all_results_subtitle: 'Todos os resultados foram definidos. Gere o ranking final para encerrar a etapa.',
+  btn_generate_ranking: 'Gerar Ranking Final',
+  // Notificações
+  notify_pairs_created: 'Duplas formadas com sucesso!',
+  notify_pairs_error: 'Erro ao formar duplas.',
+  notify_bracket_created: 'Chaveamento gerado!',
+  notify_bracket_error: 'Erro ao gerar chaveamento.',
+  notify_score_error: 'Erro ao salvar placar.',
+  notify_ranking_error: 'Erro ao gerar ranking.',
+};

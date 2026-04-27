@@ -2,19 +2,28 @@
   <q-page class="flex flex-center bg-gradient">
     <q-card class="auth-card q-pa-lg shadow-24">
       <q-card-section class="text-center">
-        <div class="text-h4 text-primary text-bold q-mb-xs">Criar Conta</div>
-        <div class="text-subtitle1 text-grey-7">Gestão de ligas sem complicação</div>
+        <div class="text-h4 text-primary text-bold q-mb-xs">{{ $t('register.title') }}</div>
+        <div class="text-subtitle1 text-grey-7">{{ $t('register.subtitle') }}</div>
       </q-card-section>
 
       <q-card-section>
         <q-form @submit="onSubmit" class="q-gutter-md">
-          <BtInput v-model="form.name" label="Nome Completo" placeholder="Seu nome completo">
+          <BtInput
+            v-model="form.name"
+            :label="$t('register.full_name')"
+            :placeholder="$t('register.full_name_placeholder')"
+          >
             <template #prefix>
               <q-icon name="person" color="primary" />
             </template>
           </BtInput>
 
-          <BtInput v-model="form.email" type="email" label="E-mail" placeholder="seu@email.com">
+          <BtInput
+            v-model="form.email"
+            type="email"
+            :label="$t('common.email')"
+            :placeholder="$t('register.email_placeholder')"
+          >
             <template #prefix>
               <q-icon name="email" color="primary" />
             </template>
@@ -23,9 +32,9 @@
           <BtInput
             v-model="form.password"
             type="password"
-            label="Senha"
-            placeholder="Mínimo 8 caracteres"
-            hint="Use pelo menos 8 caracteres"
+            :label="$t('register.password')"
+            :placeholder="$t('register.password_placeholder')"
+            :hint="$t('register.password_hint')"
           >
             <template #prefix>
               <q-icon name="lock" color="primary" />
@@ -35,8 +44,8 @@
           <BtInput
             v-model="form.password_confirmation"
             type="password"
-            label="Confirmar Senha"
-            placeholder="Repita sua senha"
+            :label="$t('register.password_confirm')"
+            :placeholder="$t('register.password_confirm_placeholder')"
           >
             <template #prefix>
               <q-icon name="check_circle" color="primary" />
@@ -45,7 +54,7 @@
 
           <div class="q-mt-xl">
             <q-btn
-              label="Cadastrar"
+              :label="$t('register.submit')"
               type="submit"
               color="primary"
               class="full-width text-bold q-py-sm shadow-10"
@@ -54,9 +63,9 @@
           </div>
 
           <div class="text-center q-mt-md">
-            Já tem uma conta?
+            {{ $t('register.already_have_account') }}
             <router-link to="/login" class="text-primary text-bold" style="text-decoration: none">
-              Acesse agora
+              {{ $t('register.access_now') }}
             </router-link>
           </div>
         </q-form>
@@ -70,10 +79,12 @@ import { reactive, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from 'src/stores/auth';
 import { useQuasar } from 'quasar';
+import { useI18n } from 'vue-i18n';
 
 const $q = useQuasar();
 const router = useRouter();
 const auth = useAuthStore();
+const { t } = useI18n();
 
 const loading = ref(false);
 const form = reactive({
@@ -89,7 +100,7 @@ async function onSubmit() {
     await auth.register(form);
     $q.notify({
       type: 'positive',
-      message: 'Conta criada com sucesso!',
+      message: t('register.notify_success'),
       position: 'top',
     });
     router.push('/');
@@ -97,7 +108,7 @@ async function onSubmit() {
     console.error(error);
     $q.notify({
       type: 'negative',
-      message: error.response?.data?.message || 'Erro ao criar conta. Verifique os dados.',
+      message: error.response?.data?.message || t('register.notify_error'),
       position: 'top',
     });
   } finally {

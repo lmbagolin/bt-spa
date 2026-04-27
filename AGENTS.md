@@ -14,10 +14,6 @@ Para evitar problemas de permissão e garantir que os comandos rodem com as mesm
 
 Sempre priorize a execução via Docker ao invés de rodar comandos (`npm`, `composer`, `php`, etc.) diretamente na máquina local (`host`).
 
-## Alterações de Backend (API)
-
-- **Fluxo de Trabalho:** Alterações que envolvam o backend (API Laravel) **NÃO** devem ser executadas diretamente pelo agente. O agente deve criar um **Prompt detalhado** para que o usuário execute as alterações separadamente no projeto API. O agente foca na implementação do Frontend (SPA).
-
 ## Referência de Design (Design System)
 
 - **Consultar Design System:** SEMPRE que for criar ou modificar telas e componentes, você DEVE consultar o arquivo `docs/design_system.md`. Ele contém a paleta de cores, tipografia, padrões de layout (Auth, Main, Admin) e referências de componentes que devem ser seguidos para manter a consistência visual do projeto.

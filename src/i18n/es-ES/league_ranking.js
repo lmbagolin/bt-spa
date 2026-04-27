@@ -1,0 +1,16 @@
+export default {
+  title_prefix: 'Ranking General',
+  breadcrumb: 'Ranking General',
+  subtitle: '{stages} etapa{stages_plural} cerrada{stages_plural} · {players} jugadores',
+  empty_title: 'Ninguna etapa cerrada',
+  empty_subtitle: 'El ranking general se mostrará después de cerrar al menos una etapa.',
+  table_title: 'Clasificación completa',
+  col_pos: 'Pos',
+  col_player: 'Jugador',
+  col_total: 'Total',
+  col_wins: 'V',
+  col_sg: 'SG',
+  col_gp: 'GP',
+  col_gc: 'GC',
+  pts_label: '{pts} pts',
+};

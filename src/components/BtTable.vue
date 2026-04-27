@@ -136,7 +136,7 @@ const tableAttrs = computed(() => ({
 }));
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
 @import '../css/bt-variables.scss';
 
 .bt-table-card {
@@ -216,11 +216,15 @@ const tableAttrs = computed(() => ({
   }
 
   // Pagination
-  :deep(.q-table__bottom) {
+  .q-table__bottom {
     background-color: $color-bg-light;
-    border-top: $border-width solid $color-card-border;
+    border: 1px solid red;
     padding: $spacing-md;
     color: $color-text-secondary;
+
+    label.q-field {
+      margin: 0px !important;
+    }
   }
 
   :deep(.q-table__card.q-table__container--bordered) {

@@ -1,0 +1,31 @@
+export default {
+  // Textos gerais de login/register
+  name: 'Nome',
+  email: 'E-mail',
+  password: 'Senha',
+  password_confirm: 'Confirmar Senha',
+  remember_me: 'Lembrar de mim',
+  forgot_password: 'Esqueceu a senha?',
+  forgot_password_label: 'Esqueci a senha',
+  submit: 'Entrar',
+  enter_on: 'Entrar no {brandName}',
+  already_have_account: "Já tem uma conta <a class='text-indigo-600' href='{url}'>{brandName}</a>?",
+  register: 'Criar minha conta',
+  message: 'Ainda não tem uma conta?',
+  access_using_same_credentials: 'Acesse com o mesmo e-mail e senha.',
+  sign_up: 'Cadastre-se Grátis',
+  login: 'Faça login',
+  or_login: 'ou entrar com',
+  // LoginPage
+  welcome_back: 'Bem-vindo de volta',
+  subtitle: 'Entre na sua conta para continuar',
+  email_placeholder: 'seu@email.com',
+  password_placeholder: 'Sua senha',
+  no_account: 'Não tem uma conta?',
+  register_link: 'Cadastre-se',
+  notify_success: 'Login realizado com sucesso!',
+  notify_error: 'Erro ao realizar login. Verifique suas credenciais.',
+  error: {
+    invalid_credentials: 'Usuário ou senha inválidos.',
+  },
+};

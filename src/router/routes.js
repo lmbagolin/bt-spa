@@ -37,6 +37,12 @@ const routes = [
         component: () => import('pages/PlayerLeagueDetailPage.vue'),
         meta: { requiresAuth: true },
       },
+      {
+        path: 'leagues/:leagueId/ranking',
+        name: 'player-league-ranking',
+        component: () => import('pages/PlayerLeagueRankingPage.vue'),
+        meta: { requiresAuth: true },
+      },
     ],
   },
   {
@@ -50,9 +56,29 @@ const routes = [
       { path: 'leagues', component: () => import('pages/ArenaLeaguesPage.vue') },
       { path: 'leagues/:leagueId', component: () => import('pages/ArenaLeagueDetailPage.vue') },
       {
+        path: 'leagues/:leagueId/ranking',
+        name: 'league-ranking',
+        component: () => import('pages/ArenaLeagueRankingPage.vue'),
+      },
+      {
         path: 'leagues/:leagueId/stages/:stageId',
         name: 'stage-detail',
         component: () => import('pages/ArenaLeagueStageDetailPage.vue'),
+      },
+      {
+        path: 'leagues/:leagueId/stages/:stageId/grupos',
+        name: 'stage-groups',
+        component: () => import('pages/ArenaLeagueStageGroupsPage.vue'),
+      },
+      {
+        path: 'leagues/:leagueId/stages/:stageId/playoffs',
+        name: 'stage-playoffs',
+        component: () => import('pages/ArenaLeagueStagePlayoffsPage.vue'),
+      },
+      {
+        path: 'leagues/:leagueId/stages/:stageId/ranking',
+        name: 'stage-ranking',
+        component: () => import('pages/ArenaLeagueStageRankingPage.vue'),
       },
       { path: 'settings', component: () => import('pages/ArenaSettingsPage.vue') },
     ],

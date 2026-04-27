@@ -119,7 +119,7 @@ const selectClasses = computed(() => ({
   :deep(.q-field__control) {
     font-size: $font-size-base;
     color: $color-text-primary;
-    padding: 10px 14px;
+    padding: 0px 14px !important;
   }
 
   :deep(.q-field--outlined .q-field__control) {

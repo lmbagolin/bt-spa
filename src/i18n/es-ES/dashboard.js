@@ -1,0 +1,15 @@
+export default {
+  title: 'Dashboard',
+  new_league: 'Nueva Liga',
+  stat_total_leagues: 'Total de Ligas',
+  stat_players: 'Jugadores',
+  stat_active_leagues: 'Ligas Activas',
+  stat_matches_played: 'Partidos Jugados',
+  section_leagues: 'Ligas de la Arena',
+  section_players: 'Jugadores',
+  no_leagues: 'Ninguna liga registrada',
+  create_first_league: 'Crear primera liga',
+  search_player: 'Buscar jugador...',
+  no_players: 'Ningún jugador encontrado',
+  players_count: '{filtered} de {total} jugadores',
+};

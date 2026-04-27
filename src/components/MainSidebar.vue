@@ -14,7 +14,7 @@
         class="text-xs text-bold text-uppercase"
         style="color: var(--sidebar-text)"
       >
-        Área do Jogador
+        {{ $t('sidebar.section_player') }}
       </q-item-label>
 
       <q-item clickable v-ripple to="/" exact class="nav-item q-mb-xs" active-class="nav-active">
@@ -22,7 +22,7 @@
           <q-icon name="explore" size="22px" />
         </q-item-section>
         <q-item-section>
-          <q-item-label class="text-weight-medium">Descobrir</q-item-label>
+          <q-item-label class="text-weight-medium">{{ $t('sidebar.nav_discover') }}</q-item-label>
         </q-item-section>
       </q-item>
 
@@ -38,7 +38,7 @@
           <q-icon name="emoji_events" size="22px" />
         </q-item-section>
         <q-item-section>
-          <q-item-label class="text-weight-medium">Ligas & Torneios</q-item-label>
+          <q-item-label class="text-weight-medium">{{ $t('sidebar.nav_leagues') }}</q-item-label>
         </q-item-section>
       </q-item>
 
@@ -54,39 +54,41 @@
           <q-icon name="person" size="22px" />
         </q-item-section>
         <q-item-section>
-          <q-item-label class="text-weight-medium">Meu Perfil</q-item-label>
+          <q-item-label class="text-weight-medium">{{ $t('sidebar.nav_profile') }}</q-item-label>
         </q-item-section>
       </q-item>
     </q-list>
 
-    <q-separator style="background-color: var(--sidebar-hover); margin: 0 24px" />
+    <template v-if="canManageArenas">
+      <q-separator style="background-color: var(--sidebar-hover); margin: 0 24px" />
 
-    <!-- Admin Section Navigation -->
-    <q-list padding class="q-mt-md">
-      <q-item-label
-        header
-        class="text-xs text-bold text-uppercase"
-        style="color: var(--sidebar-text)"
-      >
-        Gerenciador de Arenas
-      </q-item-label>
+      <!-- Admin Section Navigation -->
+      <q-list padding class="q-mt-md">
+        <q-item-label
+          header
+          class="text-xs text-bold text-uppercase"
+          style="color: var(--sidebar-text)"
+        >
+          {{ $t('sidebar.section_admin') }}
+        </q-item-label>
 
-      <q-item
-        clickable
-        v-ripple
-        to="/arenas"
-        exact
-        class="nav-item q-mb-xs"
-        active-class="nav-active"
-      >
-        <q-item-section avatar>
-          <q-icon name="stadium" size="22px" />
-        </q-item-section>
-        <q-item-section>
-          <q-item-label class="text-weight-medium">Minhas Arenas</q-item-label>
-        </q-item-section>
-      </q-item>
-    </q-list>
+        <q-item
+          clickable
+          v-ripple
+          to="/arenas"
+          exact
+          class="nav-item q-mb-xs"
+          active-class="nav-active"
+        >
+          <q-item-section avatar>
+            <q-icon name="stadium" size="22px" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label class="text-weight-medium">{{ $t('sidebar.nav_arenas') }}</q-item-label>
+          </q-item-section>
+        </q-item>
+      </q-list>
+    </template>
 
     <q-space />
 
@@ -94,14 +96,18 @@
     <div class="sidebar-footer">
       <q-separator style="background-color: var(--sidebar-hover); margin: 0 0 16px 0" />
       <div class="text-center text-xs" style="color: var(--sidebar-text)">
-        © 2026 Pontua
+        {{ $t('sidebar.footer') }}
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-// Componente de navegação lateral para o MainLayout
+import { storeToRefs } from 'pinia';
+import { useAuthStore } from 'src/stores/auth';
+
+const authStore = useAuthStore();
+const { canManageArenas } = storeToRefs(authStore);
 </script>
 
 <style scoped lang="scss">

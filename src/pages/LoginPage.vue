@@ -3,17 +3,17 @@
     <q-card class="auth-card q-pa-md">
       <q-card-section class="text-center q-pb-md">
         <img src="~assets/logo-mini-100.png" alt="Pontua" class="login-logo q-mb-sm" />
-        <h1 class="text-h5 text-bold text-surface-900 q-my-none">Bem-vindo de volta</h1>
-        <p class="text-body2 text-surface-500 q-mb-none">Entre na sua conta para continuar</p>
+        <h1 class="text-h5 text-bold text-surface-900 q-my-none">{{ $t('login.welcome_back') }}</h1>
+        <p class="text-body2 text-surface-500 q-mb-none">{{ $t('login.subtitle') }}</p>
       </q-card-section>
 
       <q-card-section>
         <q-form @submit="onSubmit" class="q-gutter-y-sm">
           <BtInput
             v-model="form.email"
-            label="E-mail"
+            :label="$t('login.email')"
             type="email"
-            placeholder="seu@email.com"
+            :placeholder="$t('login.email_placeholder')"
             :error="!!emailError"
             :error-message="emailError"
           >
@@ -24,9 +24,9 @@
 
           <BtInput
             v-model="form.password"
-            label="Senha"
+            :label="$t('login.password')"
             type="password"
-            placeholder="Sua senha"
+            :placeholder="$t('login.password_placeholder')"
             :error="!!passwordError"
             :error-message="passwordError"
           >
@@ -39,7 +39,7 @@
             <q-btn
               flat
               no-caps
-              label="Esqueceu a senha?"
+              :label="$t('login.forgot_password')"
               color="primary"
               size="sm"
               dense
@@ -49,7 +49,7 @@
 
           <div class="q-mt-lg">
             <q-btn
-              label="Entrar"
+              :label="$t('login.submit')"
               type="submit"
               color="primary"
               class="full-width q-py-sm"
@@ -59,13 +59,13 @@
           </div>
 
           <div class="text-center q-mt-xl text-body2">
-            <span class="text-surface-500">Não tem uma conta?</span>
+            <span class="text-surface-500">{{ $t('login.no_account') }}</span>
             <q-btn
               flat
               no-caps
               to="/register"
               color="primary"
-              label="Cadastre-se"
+              :label="$t('login.register_link')"
               dense
               class="q-ml-xs text-bold"
             />
@@ -81,12 +81,16 @@ import { reactive, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from 'src/stores/auth';
 import { useQuasar } from 'quasar';
+import { useI18n } from 'vue-i18n';
 
 const $q = useQuasar();
 const router = useRouter();
 const auth = useAuthStore();
+const { t } = useI18n();
 
 const loading = ref(false);
+const emailError = ref('');
+const passwordError = ref('');
 const form = reactive({
   email: '',
   password: '',
@@ -98,7 +102,7 @@ async function onSubmit() {
     await auth.login(form);
     $q.notify({
       type: 'positive',
-      message: 'Login realizado com sucesso!',
+      message: t('login.notify_success'),
       position: 'top',
       icon: 'check_circle',
     });
@@ -107,8 +111,7 @@ async function onSubmit() {
     console.error(error);
     $q.notify({
       type: 'negative',
-      message:
-        error.response?.data?.message || 'Erro ao realizar login. Verifique suas credenciais.',
+      message: error.response?.data?.message || t('login.notify_error'),
       position: 'top',
     });
   } finally {

@@ -15,6 +15,17 @@ export const useLeagueStore = defineStore('league', {
     loadingPublic: false,
     publicStageRegistrations: {},
     loadingPublicRegistrations: false,
+    stageGroups: [],
+    loadingGroups: false,
+    stageFinalists: [],
+    loadingFinalists: false,
+    playoffPairs: [],
+    playoffMatches: [],
+    loadingPlayoffs: false,
+    stageRanking: [],
+    loadingRanking: false,
+    leagueRanking: { stages: [], rankings: [] },
+    loadingLeagueRanking: false,
   }),
 
   actions: {
@@ -148,10 +159,7 @@ export const useLeagueStore = defineStore('league', {
       try {
         let response;
         if (data.id) {
-          response = await api.put(
-            `/arenas/${arenaId}/leagues/${leagueId}/stages/${data.id}`,
-            data,
-          );
+          response = await api.put(`/stages/${data.id}`, data);
           const index = this.stages.findIndex((s) => s.id === data.id);
           if (index !== -1) this.stages[index] = response.data.data;
         } else {
@@ -250,6 +258,174 @@ export const useLeagueStore = defineStore('league', {
       } finally {
         this.loadingRegistrations = false;
       }
+    },
+
+    async fetchStageGroups(arenaId, leagueId, stageId) {
+      this.loadingGroups = true;
+      try {
+        const response = await api.get(
+          `/arenas/${arenaId}/leagues/${leagueId}/stages/${stageId}/groups`,
+        );
+        this.stageGroups = response.data.data;
+      } catch (error) {
+        console.error('Error fetching stage groups:', error);
+        throw error;
+      } finally {
+        this.loadingGroups = false;
+      }
+    },
+
+    async drawStageGroups(arenaId, leagueId, stageId) {
+      this.loadingGroups = true;
+      try {
+        const response = await api.post(
+          `/arenas/${arenaId}/leagues/${leagueId}/stages/${stageId}/groups/draw`,
+        );
+        this.stageGroups = response.data.data;
+      } catch (error) {
+        console.error('Error drawing stage groups:', error);
+        throw error;
+      } finally {
+        this.loadingGroups = false;
+      }
+    },
+
+    async resetStageGroups(arenaId, leagueId, stageId) {
+      try {
+        await api.delete(`/arenas/${arenaId}/leagues/${leagueId}/stages/${stageId}/groups`);
+        this.stageGroups = [];
+      } catch (error) {
+        console.error('Error resetting stage groups:', error);
+        throw error;
+      }
+    },
+
+    async fetchStageFinalists(arenaId, leagueId, stageId) {
+      this.loadingFinalists = true;
+      try {
+        const response = await api.get(
+          `/arenas/${arenaId}/leagues/${leagueId}/stages/${stageId}/finalists`,
+        );
+        this.stageFinalists = response.data.data;
+      } catch (error) {
+        console.error('Error fetching finalists:', error);
+        throw error;
+      } finally {
+        this.loadingFinalists = false;
+      }
+    },
+
+    async saveStageFinalists(arenaId, leagueId, stageId, finalists) {
+      this.loadingFinalists = true;
+      try {
+        const response = await api.post(
+          `/arenas/${arenaId}/leagues/${leagueId}/stages/${stageId}/finalists`,
+          { finalists },
+        );
+        this.stageFinalists = response.data.data;
+      } catch (error) {
+        console.error('Error saving finalists:', error);
+        throw error;
+      } finally {
+        this.loadingFinalists = false;
+      }
+    },
+
+    async fetchPlayoffPairs(arenaId, leagueId, stageId) {
+      this.loadingPlayoffs = true;
+      try {
+        const r = await api.get(`/arenas/${arenaId}/leagues/${leagueId}/stages/${stageId}/playoffs/pairs`);
+        this.playoffPairs = r.data.data;
+      } catch (e) { console.error(e); throw e; }
+      finally { this.loadingPlayoffs = false; }
+    },
+
+    async savePlayoffPairs(arenaId, leagueId, stageId, pairs) {
+      this.loadingPlayoffs = true;
+      try {
+        const r = await api.post(`/arenas/${arenaId}/leagues/${leagueId}/stages/${stageId}/playoffs/pairs`, { pairs });
+        this.playoffPairs = r.data.data;
+      } catch (e) { console.error(e); throw e; }
+      finally { this.loadingPlayoffs = false; }
+    },
+
+    async fetchPlayoffMatches(arenaId, leagueId, stageId) {
+      this.loadingPlayoffs = true;
+      try {
+        const r = await api.get(`/arenas/${arenaId}/leagues/${leagueId}/stages/${stageId}/playoffs/matches`);
+        this.playoffMatches = r.data.data;
+      } catch (e) { console.error(e); throw e; }
+      finally { this.loadingPlayoffs = false; }
+    },
+
+    async savePlayoffMatches(arenaId, leagueId, stageId, matches) {
+      this.loadingPlayoffs = true;
+      try {
+        const r = await api.post(`/arenas/${arenaId}/leagues/${leagueId}/stages/${stageId}/playoffs/matches`, { matches });
+        this.playoffMatches = r.data.data;
+      } catch (e) { console.error(e); throw e; }
+      finally { this.loadingPlayoffs = false; }
+    },
+
+    async updatePlayoffMatch(arenaId, leagueId, stageId, matchId, data) {
+      try {
+        const r = await api.patch(
+          `/arenas/${arenaId}/leagues/${leagueId}/stages/${stageId}/playoffs/matches/${matchId}`,
+          data,
+        );
+        const idx = this.playoffMatches.findIndex((m) => m.id === matchId);
+        if (idx !== -1) Object.assign(this.playoffMatches[idx], r.data.data);
+      } catch (e) { console.error(e); throw e; }
+    },
+
+    async updateMatchScore(arenaId, leagueId, stageId, groupId, matchId, data) {
+      try {
+        const response = await api.patch(
+          `/arenas/${arenaId}/leagues/${leagueId}/stages/${stageId}/groups/${groupId}/matches/${matchId}`,
+          data,
+        );
+        return response.data.data;
+      } catch (error) {
+        console.error('Error updating match score:', error);
+        throw error;
+      }
+    },
+
+    async fetchStageRanking(arenaId, leagueId, stageId) {
+      this.loadingRanking = true;
+      try {
+        const r = await api.get(`/arenas/${arenaId}/leagues/${leagueId}/stages/${stageId}/ranking`);
+        this.stageRanking = r.data.data;
+      } catch (e) { console.error(e); throw e; }
+      finally { this.loadingRanking = false; }
+    },
+
+    async fetchLeagueRanking(arenaId, leagueId) {
+      this.loadingLeagueRanking = true;
+      try {
+        const r = await api.get(`/arenas/${arenaId}/leagues/${leagueId}/ranking`);
+        this.leagueRanking = r.data.data;
+      } catch (e) { console.error(e); throw e; }
+      finally { this.loadingLeagueRanking = false; }
+    },
+
+    async fetchPublicLeagueRanking(leagueId) {
+      this.loadingLeagueRanking = true;
+      try {
+        const r = await api.get(`/leagues/${leagueId}/ranking`);
+        this.leagueRanking = r.data.data;
+      } catch (e) { console.error(e); throw e; }
+      finally { this.loadingLeagueRanking = false; }
+    },
+
+    async generateStageRanking(arenaId, leagueId, stageId) {
+      this.loadingRanking = true;
+      try {
+        const r = await api.post(`/arenas/${arenaId}/leagues/${leagueId}/stages/${stageId}/ranking`);
+        this.stageRanking = r.data.data;
+        return r.data.data;
+      } catch (e) { console.error(e); throw e; }
+      finally { this.loadingRanking = false; }
     },
 
     setCurrentLeague(league) {

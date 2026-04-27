@@ -3,6 +3,7 @@
 // ═══════════════════════════════════════════════════════════════════════════════════
 // Global component styles following Sakai design system
 
+@use 'sass:color';
 @import './bt-variables.scss';
 
 // ═══════════════════════════════════════════════════════════════════════════════════
@@ -181,7 +182,7 @@
     background-color: $color-primary;
 
     &:hover {
-      background-color: darken($color-primary, 5%);
+      background-color: color.adjust($color-primary, $lightness: -5%);
     }
   }
 
@@ -200,7 +201,7 @@
     background-color: $color-danger;
 
     &:hover {
-      background-color: darken($color-danger, 5%);
+      background-color: color.adjust($color-danger, $lightness: -5%);
     }
   }
 
@@ -209,7 +210,7 @@
     background-color: $color-success;
 
     &:hover {
-      background-color: darken($color-success, 5%);
+      background-color: color.adjust($color-success, $lightness: -5%);
     }
   }
 
@@ -218,7 +219,7 @@
     background-color: $color-warning;
 
     &:hover {
-      background-color: darken($color-warning, 5%);
+      background-color: color.adjust($color-warning, $lightness: -5%);
     }
   }
 }
@@ -230,6 +231,36 @@
 .bt-sidebar {
   background-color: $color-sidebar-bg;
   color: $color-sidebar-text;
+
+  &.bt-sidebar-admin {
+    background-color: $color-sidebar-admin-bg;
+    color: $color-sidebar-admin-text;
+
+    .q-item {
+      color: $color-sidebar-admin-text;
+
+      .q-icon {
+        color: $color-sidebar-admin-text;
+      }
+
+      &:hover {
+        background-color: $color-sidebar-admin-hover;
+        color: $color-sidebar-admin-text-hover;
+        .q-icon {
+          color: $color-sidebar-admin-text-hover;
+        }
+      }
+
+      &.q-router-link--active,
+      &.nav-active {
+        background-color: $color-sidebar-admin-active;
+        color: #ffffff;
+        .q-icon {
+          color: #ffffff;
+        }
+      }
+    }
+  }
 
   .q-item {
     padding: $spacing-sm $spacing-md;
@@ -456,5 +487,16 @@
 
   .q-toolbar {
     padding: 0 $spacing-md !important;
+  }
+}
+
+.q-table__container {
+  .q-table__bottom {
+    background-color: $color-bg-light;
+    color: $color-text-secondary;
+
+    label.q-field {
+      margin: 0px !important;
+    }
   }
 }

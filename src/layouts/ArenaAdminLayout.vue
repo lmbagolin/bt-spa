@@ -31,6 +31,7 @@
 
         <!-- Right Section - Notifications & User -->
         <div class="row items-center q-gutter-md">
+          <LanguageSelector />
           <q-btn flat round dense icon="notifications" color="text-secondary">
             <q-badge color="red" floating size="xs">2</q-badge>
           </q-btn>
@@ -68,7 +69,7 @@
       show-if-above
       :width="250"
       :breakpoint="1024"
-      class="bt-sidebar"
+      class="bt-sidebar bt-sidebar-admin"
     >
       <!-- Sidebar Header - Arena Logo -->
       <div class="sidebar-header q-pa-lg row items-center no-wrap">
@@ -80,18 +81,18 @@
           <span class="text-sm text-bold text-white leading-none truncate" style="max-width: 140px">
             {{ arenaStore.currentArena?.name }}
           </span>
-          <span class="text-xs" style="color: var(--sidebar-text)">Manager</span>
+          <span class="text-xs" style="color: var(--sidebar-admin-text)">Manager</span>
         </div>
       </div>
 
-      <q-separator style="background-color: var(--sidebar-hover); margin: 0 24px" />
+      <q-separator style="background-color: var(--sidebar-admin-border); margin: 0 24px" />
 
       <!-- Navigation Menu -->
       <q-list class="col q-px-md q-mt-md">
         <q-item-label
           header
           class="text-xs text-bold text-uppercase"
-          style="color: var(--sidebar-text)"
+          style="color: var(--sidebar-admin-text)"
         >
           Menu Principal
         </q-item-label>
@@ -117,13 +118,13 @@
 
       <!-- Sidebar Footer -->
       <div class="q-pa-md">
-        <q-separator style="background-color: var(--sidebar-hover); margin: 0 0 16px 0" />
+        <q-separator style="background-color: var(--sidebar-admin-border); margin: 0 0 16px 0" />
         <q-btn
           flat
           icon="arrow_back"
           label="Minhas Arenas"
           class="full-width no-caps text-bold sidebar-footer-btn"
-          style="color: var(--sidebar-text)"
+          style="color: var(--sidebar-admin-text)"
           @click="$router.push('/arenas')"
         />
       </div>
@@ -156,9 +157,8 @@ const arenaId = ref(route.params.id);
 
 const links = ref([
   { title: 'Dashboard', icon: 'dashboard', to: `/admin/arena/${arenaId.value}/dashboard` },
-  { title: 'Torneios', icon: 'emoji_events', to: `/admin/arena/${arenaId.value}/tournaments` },
-  { title: 'Jogadores', icon: 'people', to: `/admin/arena/${arenaId.value}/players` },
   { title: 'Ligas', icon: 'sports_soccer', to: `/admin/arena/${arenaId.value}/leagues` },
+  { title: 'Jogadores', icon: 'people', to: `/admin/arena/${arenaId.value}/players` },
   { title: 'Configurações', icon: 'settings', to: `/admin/arena/${arenaId.value}/settings` },
 ]);
 
@@ -169,9 +169,8 @@ watch(
       arenaId.value = newId;
       links.value = [
         { title: 'Dashboard', icon: 'dashboard', to: `/admin/arena/${newId}/dashboard` },
-        { title: 'Torneios', icon: 'emoji_events', to: `/admin/arena/${newId}/tournaments` },
-        { title: 'Jogadores', icon: 'people', to: `/admin/arena/${newId}/players` },
         { title: 'Ligas', icon: 'sports_soccer', to: `/admin/arena/${newId}/leagues` },
+        { title: 'Jogadores', icon: 'people', to: `/admin/arena/${newId}/players` },
         { title: 'Configurações', icon: 'settings', to: `/admin/arena/${newId}/settings` },
       ];
     }

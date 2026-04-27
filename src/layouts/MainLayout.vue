@@ -20,6 +20,9 @@
 
         <q-space />
 
+        <!-- Language Selector -->
+        <LanguageSelector class="q-mr-sm" />
+
         <!-- Right Section - User Info -->
         <div v-if="auth.user" class="row items-center q-gutter-md">
           <div

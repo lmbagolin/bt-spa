@@ -40,11 +40,25 @@
               </template>
             </q-input>
           </div>
-          <div class="col-12 col-sm-3">
+          <div class="col-12 col-sm-2">
             <q-select
               v-model="filters.nivel"
               :options="nivelOptions"
               label="Nível"
+              outlined
+              dense
+              clearable
+              emit-value
+              map-options
+              bg-color="white"
+              @update:model-value="loadLeagues"
+            />
+          </div>
+          <div class="col-12 col-sm-2">
+            <q-select
+              v-model="filters.genero"
+              :options="generoOptions"
+              label="Gênero"
               outlined
               dense
               clearable
@@ -97,102 +111,13 @@
         :key="`${item.league.id}-${item.stage.id}`"
         class="col-12 col-sm-6 col-md-4"
       >
-        <q-card
-          class="stage-card border-surface-100 shadow-card overflow-hidden full-height cursor-pointer"
-          :class="{ 'stage-card--featured': item.isNextOfLeague }"
+        <PlayerLeagueCard
+          :league="item.league"
+          :stage="item.stage"
+          :is-next-of-league="item.isNextOfLeague"
           @click="goToLeague(item.league.id)"
-        >
-          <!-- Topo colorido com data -->
-          <div class="stage-card-header q-pa-lg" :style="getHeaderStyle(item.league.nivel)">
-            <div class="row items-start justify-between no-wrap">
-              <div>
-                <div v-if="item.isNextOfLeague" class="q-mb-sm">
-                  <q-chip color="white" text-color="primary" dense class="text-bold" style="font-size: 10px;">
-                    Próxima Etapa
-                  </q-chip>
-                </div>
-                <div class="text-3xl text-bold text-white leading-none">
-                  {{ formatDay(item.stage.data_etapa) }}
-                </div>
-                <div class="text-sm text-white q-mt-xs" style="opacity: 0.85;">
-                  {{ formatMonthYear(item.stage.data_etapa) }}
-                </div>
-                <div class="text-xs q-mt-xs" style="color: rgba(255,255,255,0.65);">
-                  {{ getDayOfWeek(item.stage.data_etapa) }} · {{ getDaysUntil(item.stage.data_etapa) }}
-                </div>
-              </div>
-              <div class="column items-end q-gutter-xs">
-                <q-chip
-                  color="white"
-                  text-color="primary"
-                  dense
-                  class="text-bold text-xs"
-                >
-                  {{ item.league.nivel }}
-                </q-chip>
-                <q-chip
-                  color="rgba(255,255,255,0.15)"
-                  text-color="white"
-                  dense
-                  class="text-xs"
-                >
-                  {{ item.stage.tipo }}
-                </q-chip>
-              </div>
-            </div>
-          </div>
-
-          <!-- Corpo do card -->
-          <q-card-section class="q-pa-md">
-            <!-- Liga e Arena -->
-            <div class="text-base text-bold text-surface-900 q-mb-xs ellipsis">
-              {{ item.league.nome }}
-            </div>
-            <div v-if="item.league.arena" class="row items-center q-gutter-xs q-mb-md">
-              <q-icon name="location_on" size="14px" color="surface-400" />
-              <span class="text-xs text-surface-500">{{ item.league.arena.name }}</span>
-              <span v-if="item.league.arena.city" class="text-xs text-surface-400">
-                · {{ item.league.arena.city }}
-              </span>
-            </div>
-
-            <q-separator color="surface-100" class="q-mb-md" />
-
-            <!-- Detalhes da etapa -->
-            <div class="row items-center justify-between">
-              <div class="column items-start">
-                <div class="text-xs text-surface-400 q-mb-xs">Inscrição</div>
-                <div class="text-base text-bold text-positive">
-                  {{ formatCurrency(item.stage.valor_inscricao) }}
-                </div>
-              </div>
-              <div class="column items-center">
-                <div class="text-xs text-surface-400 q-mb-xs">Jogadores/Grupo</div>
-                <div class="text-base text-bold text-surface-700">
-                  {{ item.stage.jogadores_por_grupo }}
-                </div>
-              </div>
-              <div v-if="item.league.numero_etapas" class="column items-end">
-                <div class="text-xs text-surface-400 q-mb-xs">Etapas</div>
-                <div class="text-base text-bold text-surface-700">
-                  {{ item.league.numero_etapas }}
-                </div>
-              </div>
-            </div>
-          </q-card-section>
-
-          <!-- Rodapé -->
-          <q-card-actions class="q-pa-md q-pt-none">
-            <q-btn
-              label="Ver Liga"
-              color="primary"
-              unelevated
-              no-caps
-              class="full-width text-bold"
-              @click.stop="goToLeague(item.league.id)"
-            />
-          </q-card-actions>
-        </q-card>
+          @register="goToLeague(item.league.id)"
+        />
       </div>
     </div>
   </q-page>
@@ -202,6 +127,7 @@
 import { reactive, computed, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useLeagueStore } from 'src/stores/league';
+import PlayerLeagueCard from 'src/components/others/PlayerLeagueCard.vue';
 
 const leagueStore = useLeagueStore();
 const router = useRouter();
@@ -217,9 +143,16 @@ const nivelOptions = [
   { label: 'D', value: 'D' },
 ];
 
+const generoOptions = [
+  { label: 'Masculino', value: 'masculino' },
+  { label: 'Feminino',  value: 'feminino'  },
+  { label: 'Misto',     value: 'misto'     },
+];
+
 const filters = reactive({
   search: '',
   nivel: null,
+  genero: null,
 });
 
 const upcomingStages = computed(() => {
@@ -230,15 +163,19 @@ const upcomingStages = computed(() => {
   for (const league of leagueStore.publicLeagues) {
     if (!league.stages?.length) continue;
     const futureStages = league.stages
-      .filter((s) => new Date(s.data_etapa) >= today)
-      .sort((a, b) => new Date(a.data_etapa) - new Date(b.data_etapa));
+      .filter((s) => new Date(s.data_etapa.replace(' ', 'T')) >= today)
+      .sort((a, b) => new Date(a.data_etapa.replace(' ', 'T')) - new Date(b.data_etapa.replace(' ', 'T')));
 
     futureStages.forEach((stage, idx) => {
       items.push({ league, stage, isNextOfLeague: idx === 0 });
     });
   }
 
-  return items.sort((a, b) => new Date(a.stage.data_etapa) - new Date(b.stage.data_etapa));
+  return items.sort(
+    (a, b) =>
+      new Date(a.stage.data_etapa.replace(' ', 'T')) -
+      new Date(b.stage.data_etapa.replace(' ', 'T')),
+  );
 });
 
 onMounted(() => {
@@ -248,97 +185,13 @@ onMounted(() => {
 async function loadLeagues() {
   const params = {};
   if (filters.search) params.search = filters.search;
-  if (filters.nivel) params.nivel = filters.nivel;
+  if (filters.nivel)  params.nivel  = filters.nivel;
+  if (filters.genero) params.genero = filters.genero;
   await leagueStore.fetchPublicLeagues(params);
 }
 
 function goToLeague(leagueId) {
   router.push({ name: 'player-league-detail', params: { leagueId } });
 }
-
-const nivelGradients = {
-  Iniciante: 'linear-gradient(135deg, #1565c0 0%, #0d47a1 100%)',
-  Intermediário: 'linear-gradient(135deg, #e65100 0%, #bf360c 100%)',
-  Avançado: 'linear-gradient(135deg, #6a1b9a 0%, #4a148c 100%)',
-  Pro: 'linear-gradient(135deg, #b71c1c 0%, #7f0000 100%)',
-  A: 'linear-gradient(135deg, #283593 0%, #1a237e 100%)',
-  B: 'linear-gradient(135deg, #00695c 0%, #004d40 100%)',
-  C: 'linear-gradient(135deg, #00838f 0%, #006064 100%)',
-  D: 'linear-gradient(135deg, #546e7a 0%, #37474f 100%)',
-};
-
-function getHeaderStyle(nivel) {
-  const gradient = nivelGradients[nivel] || 'linear-gradient(135deg, #1976d2 0%, #0d47a1 100%)';
-  return { background: gradient };
-}
-
-function formatDay(dateStr) {
-  if (!dateStr) return '--';
-  return new Date(dateStr).toLocaleDateString('pt-BR', { day: '2-digit' });
-}
-
-function formatMonthYear(dateStr) {
-  if (!dateStr) return '';
-  return new Date(dateStr).toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' });
-}
-
-function getDayOfWeek(dateStr) {
-  const days = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
-  return days[new Date(dateStr).getDay()];
-}
-
-function getDaysUntil(dateStr) {
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-  const target = new Date(dateStr);
-  target.setHours(0, 0, 0, 0);
-  const diff = Math.round((target - today) / (1000 * 60 * 60 * 24));
-  if (diff === 0) return 'Hoje!';
-  if (diff === 1) return 'Amanhã';
-  return `Em ${diff} dias`;
-}
-
-function formatCurrency(value) {
-  if (value == null) return '—';
-  if (value === 0) return 'Grátis';
-  return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value);
-}
 </script>
 
-<style scoped lang="scss">
-.stage-card {
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  border-radius: var(--radius-lg) !important;
-
-  &:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12) !important;
-  }
-
-  &--featured {
-    box-shadow: 0 4px 20px rgba(25, 118, 210, 0.18) !important;
-  }
-}
-
-.stage-card-header {
-  min-height: 140px;
-}
-
-.leading-none {
-  line-height: 1;
-}
-
-.text-3xl {
-  font-size: 2.25rem;
-}
-
-.text-base {
-  font-size: 0.9375rem;
-}
-
-.ellipsis {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-</style>

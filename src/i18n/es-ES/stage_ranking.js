@@ -1,0 +1,16 @@
+export default {
+  title_prefix: 'Ranking Final',
+  subtitle_suffix: 'Etapa cerrada',
+  breadcrumb: 'Ranking Final',
+  chip_closed: 'Cerrada',
+  table_title: 'Clasificación completa',
+  col_pos: 'Pos',
+  col_player: 'Jugador',
+  col_pts: 'PTS',
+  col_wins: 'V',
+  col_matches: 'PJ',
+  col_sg: 'SG',
+  col_gp: 'GP',
+  col_gc: 'GC',
+  pts_label: '{pts} pts',
+};
