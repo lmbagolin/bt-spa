@@ -17,7 +17,7 @@
                 :rules="[(val) => !!val || 'O nome é obrigatório']"
               />
 
-              <q-input v-model="form.city" label="Cidade" outlined dense />
+              <CitySelect v-model="form.city" />
 
               <div class="text-subtitle2 text-grey-7 q-mt-lg">Branding & Logo</div>
               <q-separator class="q-mb-md" />
@@ -72,6 +72,7 @@
 import { ref, reactive, watch } from 'vue';
 import { useArenaStore } from 'src/stores/arena';
 import { useQuasar } from 'quasar';
+import CitySelect from 'src/components/CitySelect.vue';
 
 const $q = useQuasar();
 const arenaStore = useArenaStore();
@@ -81,7 +82,7 @@ const logoPreview = ref(null);
 
 const form = reactive({
   name: '',
-  city: '',
+  city: null,
   logo: null,
 });
 
@@ -97,7 +98,9 @@ watch(
 
 function loadArenaData(arena) {
   form.name = arena.name;
-  form.city = arena.city;
+  form.city = arena.city
+    ? { label: `${arena.city.name} - ${arena.city.state_code}`, ...arena.city }
+    : null;
   logoPreview.value = arena.logo_url;
 }
 
@@ -132,7 +135,7 @@ async function onSubmit() {
     const payload = {
       id: arenaStore.currentArena.id,
       name: form.name,
-      city: form.city,
+      city_id: form.city?.id ?? null,
     };
 
     if (form.logo) {

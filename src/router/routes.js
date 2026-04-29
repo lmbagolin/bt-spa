@@ -43,7 +43,18 @@ const routes = [
         component: () => import('pages/PlayerLeagueRankingPage.vue'),
         meta: { requiresAuth: true },
       },
+      {
+        path: 'amigos',
+        name: 'player-friends',
+        component: () => import('pages/PlayerFriendsPage.vue'),
+        meta: { requiresAuth: true },
+      },
     ],
+  },
+  {
+    path: '/amigos/aceitar/:token',
+    name: 'friend-accept',
+    component: () => import('pages/FriendAcceptPage.vue'),
   },
   {
     path: '/admin/arena/:id',

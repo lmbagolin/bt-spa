@@ -1,8 +1,5 @@
 <template>
-  <q-card
-    class="league-card border-surface-100 shadow-card cursor-pointer"
-    @click="$emit('click')"
-  >
+  <q-card class="league-card border-surface-100 shadow-card cursor-pointer" @click="$emit('click')">
     <!-- Body -->
     <q-card-section class="q-pa-lg">
       <!-- Name + chevron -->
@@ -10,16 +7,7 @@
         <div class="col ellipsis">
           <div class="text-base text-bold text-surface-900 ellipsis">{{ league.nome }}</div>
           <div class="text-xs text-surface-400 q-mt-xs">
-            <q-chip
-              v-if="league.genero"
-              dense
-              :color="generoColor(league.genero)"
-              text-color="white"
-              class="text-xs text-bold q-mr-xs"
-              style="height:18px;font-size:0.6rem"
-            >
-              {{ generoLabel(league.genero) }}
-            </q-chip>
+            <GeneroChip v-if="league.gender" :gender="league.gender" class="q-mr-xs" />
             {{ league.total_stages ?? league.numero_etapas ?? 0 }}
             etapa{{ (league.total_stages ?? league.numero_etapas ?? 0) !== 1 ? 's' : '' }}
             <template v-if="league.closed_stages != null">
@@ -61,7 +49,8 @@
           </q-chip>
         </div>
         <div class="text-sm text-bold text-surface-900">
-          {{ tipoLabel(league.active_stage.tipo) }} — {{ formatDate(league.active_stage.data_etapa) }}
+          {{ tipoLabel(league.active_stage.tipo) }} —
+          {{ formatDate(league.active_stage.data_etapa) }}
         </div>
         <div class="text-xs text-surface-400 q-mt-xs">
           {{ league.active_stage.registrations }}
@@ -82,28 +71,67 @@
     <!-- Actions -->
     <q-separator color="surface-100" />
     <q-card-actions class="q-px-lg q-py-sm">
-      <q-btn flat dense no-caps size="sm" icon="grid_view" label="Etapas"
-        color="primary" class="text-bold" @click.stop="$emit('stages')" />
+      <q-btn
+        flat
+        dense
+        no-caps
+        size="sm"
+        icon="grid_view"
+        label="Etapas"
+        color="primary"
+        class="text-bold"
+        @click.stop="$emit('stages')"
+      />
       <q-btn
         v-if="league.active_stage || league.closed_stages > 0"
-        flat dense no-caps size="sm" icon="bar_chart" label="Ranking"
-        color="surface-500" class="text-bold" @click.stop="$emit('ranking')"
+        flat
+        dense
+        no-caps
+        size="sm"
+        icon="bar_chart"
+        label="Ranking"
+        color="surface-500"
+        class="text-bold"
+        @click.stop="$emit('ranking')"
       />
       <q-space />
       <template v-if="onEdit || onDelete">
-        <q-btn v-if="onEdit" flat round dense size="sm" icon="edit" color="surface-400"
-          @click.stop="onEdit()">
+        <q-btn
+          v-if="onEdit"
+          flat
+          round
+          dense
+          size="sm"
+          icon="edit"
+          color="surface-400"
+          @click.stop="onEdit()"
+        >
           <q-tooltip>Editar</q-tooltip>
         </q-btn>
-        <q-btn v-if="onDelete" flat round dense size="sm" icon="delete" color="negative"
-          @click.stop="onDelete()">
+        <q-btn
+          v-if="onDelete"
+          flat
+          round
+          dense
+          size="sm"
+          icon="delete"
+          color="negative"
+          @click.stop="onDelete()"
+        >
           <q-tooltip>Remover</q-tooltip>
         </q-btn>
       </template>
       <q-btn
         v-else-if="league.active_stage"
-        flat dense no-caps size="sm" icon="arrow_forward" label="Ver etapa"
-        color="orange" class="text-bold" @click.stop="$emit('active-stage')"
+        flat
+        dense
+        no-caps
+        size="sm"
+        icon="arrow_forward"
+        label="Ver etapa"
+        color="orange"
+        class="text-bold"
+        @click.stop="$emit('active-stage')"
       />
     </q-card-actions>
   </q-card>
@@ -112,10 +140,11 @@
 <script setup>
 import { computed } from 'vue';
 import { tipoLabel } from 'src/composables/useStageTypes';
+import GeneroChip from 'src/components/others/GeneroChip.vue';
 
 const props = defineProps({
-  league:   { type: Object, required: true },
-  onEdit:   { type: Function, default: null },
+  league: { type: Object, required: true },
+  onEdit: { type: Function, default: null },
   onDelete: { type: Function, default: null },
 });
 
@@ -127,38 +156,38 @@ const progressValue = computed(() => {
   return (props.league.closed_stages ?? 0) / totalStages.value;
 });
 
-const GENERO_MAP = {
-  masculino: { label: 'Masculino', color: 'blue' },
-  feminino:  { label: 'Feminino',  color: 'pink' },
-  misto:     { label: 'Misto',     color: 'purple' },
-};
-function generoLabel(g) { return GENERO_MAP[g]?.label ?? g; }
-function generoColor(g)  { return GENERO_MAP[g]?.color ?? 'grey'; }
-
 const STATUS_MAP = {
-  created:            { label: 'Criada',             bg: 'surface-100', text: 'surface-600' },
-  registrations_open: { label: 'Inscrições abertas', bg: 'blue-1',      text: 'blue-9'      },
-  group_draw:         { label: 'Sorteio grupos',     bg: 'purple-1',    text: 'purple-9'    },
-  group_stage:        { label: 'Fase de grupos',     bg: 'orange-1',    text: 'orange-9'    },
-  playoffs:           { label: 'Playoffs',           bg: 'green-1',     text: 'green-9'     },
-  closed:             { label: 'Encerrada',          bg: 'grey-2',      text: 'grey-8'      },
+  created: { label: 'Criada', bg: 'surface-100', text: 'surface-600' },
+  registrations_open: { label: 'Inscrições abertas', bg: 'blue-1', text: 'blue-9' },
+  group_draw: { label: 'Sorteio grupos', bg: 'purple-1', text: 'purple-9' },
+  group_stage: { label: 'Fase de grupos', bg: 'orange-1', text: 'orange-9' },
+  playoffs: { label: 'Playoffs', bg: 'green-1', text: 'green-9' },
+  closed: { label: 'Encerrada', bg: 'grey-2', text: 'grey-8' },
 };
 
-function statusLabel(s) { return STATUS_MAP[s]?.label ?? s; }
-function statusColor(s) { return STATUS_MAP[s] ?? { bg: 'surface-100', text: 'surface-600' }; }
+function statusLabel(s) {
+  return STATUS_MAP[s]?.label ?? s;
+}
+function statusColor(s) {
+  return STATUS_MAP[s] ?? { bg: 'surface-100', text: 'surface-600' };
+}
 
 function formatDate(d) {
   if (!d) return '—';
-  const [datePart, timePart] = d.toString().split(' ');
+  const str = d.toString();
+  const [datePart, rest] = str.split(/[T ]/);
   const [y, m, day] = datePart.split('-');
   const dateStr = `${day}/${m}/${y}`;
+  const timePart = rest ? rest.substring(0, 5) : null;
   return timePart && timePart !== '00:00' ? `${dateStr} ${timePart}` : dateStr;
 }
 </script>
 
 <style scoped>
 .league-card {
-  transition: box-shadow 0.15s, transform 0.15s;
+  transition:
+    box-shadow 0.15s,
+    transform 0.15s;
 }
 .league-card:hover {
   box-shadow: 0 6px 24px rgba(0, 0, 0, 0.1) !important;

@@ -37,14 +37,19 @@ export default {
   // Dialog de finalistas - Step 1
   dialog_finalists_title: 'Gerar Finalistas',
   dialog_step1_subtitle: '{groups} grupos · {players} jogadores',
+  dialog_step1_subtitle_dupla: '{groups} grupos · {players} duplas',
   step1_question: 'Quantos jogadores se classificam para os playoffs?',
+  step1_question_dupla: 'Quantas duplas se classificam para os playoffs?',
   step1_hint: 'Número par · mínimo 4 · máximo {max}',
+  step1_hint_dupla: 'Número par · mínimo 2 · máximo {max} duplas',
   btn_continue: 'Continuar',
   // Step 2 - Empate
   tie_title: 'Empate — Grupo {letter}',
   tie_subtitle: '{count} jogadores empatados em todos os critérios ({pts} pts · SG {sg} · GP {gp}) — posições {from}° a {to}° no grupo',
+  tie_subtitle_dupla: '{count} duplas empatadas em todos os critérios ({pts} pts · SG {sg} · GP {gp}) — posições {from}° a {to}° no grupo',
   tie_counter: '{current} / {total}',
   tie_instruction: 'Defina a ordem. Jogadores nas primeiras posições ficam melhor classificados',
+  tie_instruction_dupla: 'Defina a ordem. As duplas nas primeiras posições ficam melhor classificadas',
   tie_qualifies_note: '— os das posições até {pos}° se classificam.',
   chip_qualifies: 'Classifica',
   chip_eliminated: 'Eliminado',
@@ -52,6 +57,7 @@ export default {
   // Step 3 - Resumo
   dialog_confirm_finalists: 'Confirmar Finalistas',
   dialog_confirm_subtitle: '{count} jogadores classificados',
+  dialog_confirm_subtitle_dupla: '{count} duplas classificadas',
   group_position_label: '{pos}° Colocados',
   btn_save_finalists: 'Salvar Finalistas',
   // Dialogs de sorteio
@@ -63,6 +69,7 @@ export default {
   notify_drawn: 'Grupos sorteados!',
   notify_draw_error: 'Erro ao sortear grupos.',
   notify_score_error: 'Erro ao salvar placar.',
+  notify_invalid_score: 'Placar inválido. Resultados permitidos: 6×(0–4) ou 7×(5–6).',
   notify_finalists_saved: 'Finalistas salvos com sucesso!',
   notify_finalists_error: 'Erro ao salvar finalistas.',
   notify_generate_warning: 'Sorteie os grupos primeiro.',

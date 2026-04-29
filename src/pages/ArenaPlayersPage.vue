@@ -213,17 +213,7 @@
               >
                 {{ $t('players.field_city') }}
               </label>
-              <q-input
-                v-model="form.city"
-                :placeholder="$t('players.field_city_placeholder')"
-                outlined
-                dense
-                bg-color="white"
-              >
-                <template v-slot:prepend>
-                  <q-icon name="location_on" color="surface-300" />
-                </template>
-              </q-input>
+              <CitySelect v-model="form.city" :label="null" />
             </div>
           </q-card-section>
 
@@ -253,6 +243,7 @@
 
 <script setup>
 import PageHeader from 'src/components/others/PageHeader.vue';
+import CitySelect from 'src/components/CitySelect.vue';
 import { ref, reactive, computed, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import { usePlayerStore } from 'src/stores/player';
@@ -282,7 +273,7 @@ const form = reactive({
   nickname: '',
   gender: 'male',
   level: 'Iniciante',
-  city: '',
+  city: null,
 });
 
 const columns = computed(() => [
@@ -295,7 +286,7 @@ const columns = computed(() => [
     field: 'gender',
     sortable: true,
   },
-  { name: 'city', align: 'left', label: t('players.col_city'), field: 'city', sortable: true },
+  { name: 'city', align: 'left', label: t('players.col_city'), field: (row) => row.city?.name ?? '-', sortable: true },
   { name: 'actions', align: 'center', label: t('players.col_actions') },
 ]);
 
@@ -340,7 +331,7 @@ function resetForm() {
   form.nickname = '';
   form.gender = 'male';
   form.level = 'Iniciante';
-  form.city = '';
+  form.city = null;
 }
 
 function editPlayer(player) {
@@ -349,14 +340,23 @@ function editPlayer(player) {
   form.nickname = player.nickname;
   form.gender = player.gender;
   form.level = player.level;
-  form.city = player.city;
+  form.city = player.city
+    ? { label: `${player.city.name} - ${player.city.state_code}`, ...player.city }
+    : null;
   showDialog.value = true;
 }
 
 async function onSubmit() {
   saving.value = true;
   try {
-    await playerStore.savePlayer(arenaId, { ...form });
+    await playerStore.savePlayer(arenaId, {
+      id: form.id,
+      name: form.name,
+      nickname: form.nickname,
+      gender: form.gender,
+      level: form.level,
+      city_id: form.city?.id ?? null,
+    });
     $q.notify({
       type: 'positive',
       message: form.id ? t('players.notify_updated') : t('players.notify_created'),

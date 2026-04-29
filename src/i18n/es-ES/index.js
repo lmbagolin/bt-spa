@@ -13,6 +13,8 @@ import stage_ranking from './stage_ranking';
 import league_ranking from './league_ranking';
 import player_league_detail from './player_league_detail';
 import player_league_card from './player_league_card';
+import stage_registration_card from './stage_registration_card';
+import friends from './friends';
 import sidebar from './sidebar';
 
 export default {
@@ -31,5 +33,7 @@ export default {
   league_ranking,
   player_league_detail,
   player_league_card,
+  stage_registration_card,
+  friends,
   sidebar,
 };

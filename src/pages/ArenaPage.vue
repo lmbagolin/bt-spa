@@ -56,7 +56,7 @@
                       </div>
                       <div class="text-sm text-surface-500 flex items-center ellipsis">
                         <q-icon name="location_on" color="primary" size="14px" class="q-mr-xs" />
-                        {{ arena.city || 'Cidade não informada' }}
+                        {{ arena.city?.name || 'Cidade não informada' }}
                       </div>
                     </div>
                   </div>
@@ -139,7 +139,7 @@
               outlined
               :rules="[(val) => !!val || 'Nome é obrigatório']"
             />
-            <q-input v-model="form.city" label="Cidade" outlined />
+            <CitySelect v-model="form.city" />
 
             <div class="row items-center q-gutter-md">
               <q-avatar size="80px" rounded class="bg-surface-100 shadow-sm overflow-hidden">
@@ -187,6 +187,7 @@ import { onMounted, reactive, ref } from 'vue';
 import { useArenaStore } from 'src/stores/arena';
 import { useQuasar } from 'quasar';
 import { useRouter } from 'vue-router';
+import CitySelect from 'src/components/CitySelect.vue';
 
 const arenaStore = useArenaStore();
 const $q = useQuasar();
@@ -198,7 +199,7 @@ const editingId = ref(null);
 
 const form = reactive({
   name: '',
-  city: '',
+  city: null,
   logo: null,
 });
 
@@ -225,13 +226,15 @@ function openForm(arena = null) {
   if (arena) {
     editingId.value = arena.id;
     form.name = arena.name;
-    form.city = arena.city;
+    form.city = arena.city
+      ? { label: `${arena.city.name} - ${arena.city.state_code}`, ...arena.city }
+      : null;
     form.logo = null;
     logoPreview.value = arena.logo_url;
   } else {
     editingId.value = null;
     form.name = '';
-    form.city = '';
+    form.city = null;
     form.logo = null;
     logoPreview.value = null;
   }
@@ -241,7 +244,12 @@ function openForm(arena = null) {
 async function onSubmit() {
   submitting.value = true;
   try {
-    await arenaStore.saveArena({ id: editingId.value, ...form });
+    await arenaStore.saveArena({
+      id: editingId.value,
+      name: form.name,
+      city_id: form.city?.id ?? null,
+      logo: form.logo,
+    });
     $q.notify({
       type: 'positive',
       message: editingId.value ? 'Arena atualizada com sucesso!' : 'Arena cadastrada com sucesso!',

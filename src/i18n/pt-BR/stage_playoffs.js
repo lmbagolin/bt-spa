@@ -3,6 +3,8 @@ export default {
   breadcrumb: 'Playoffs',
   btn_draw_pairs: 'Sortear Duplas',
   btn_redo_pairs: 'Refazer Duplas',
+  btn_seed_duplas: 'Definir Chaves',
+  btn_redo_seed_duplas: 'Refazer Chaves',
   btn_draw_bracket: 'Sortear Finais',
   btn_redo_bracket: 'Refazer Bracket',
   // Seção de finalistas
@@ -29,6 +31,8 @@ export default {
   // Dialog de sorteio de duplas
   dialog_pairs_title: 'Sortear Duplas',
   dialog_pairs_subtitle: '{finalists} finalistas · {pairs} duplas',
+  dialog_seed_duplas_title: 'Definir Chaves',
+  dialog_seed_duplas_subtitle: '{duplas} duplas classificadas',
   pairs_method_label: 'Método de sorteio:',
   method_order_label: 'Pela ordem de classificação',
   method_order_desc: '1°+2°, 3°+4°, 5°+6°...',

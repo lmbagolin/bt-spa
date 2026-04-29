@@ -103,7 +103,7 @@
                     </div>
 
                     <div class="col-12">
-                      <q-input v-model="profileForm.city" label="Cidade" outlined dense />
+                      <CitySelect v-model="profileForm.city" />
                     </div>
                   </div>
 
@@ -182,7 +182,7 @@
 
                     <q-item-section>
                       <q-item-label class="text-bold">{{ arena.name }}</q-item-label>
-                      <q-item-label caption>{{ arena.city }}</q-item-label>
+                      <q-item-label caption>{{ arena.city?.name }}</q-item-label>
                     </q-item-section>
 
                     <q-item-section side>
@@ -268,6 +268,7 @@ import { useAuthStore } from 'src/stores/auth';
 import { usePlayerStore } from 'src/stores/player';
 import { useQuasar } from 'quasar';
 import { useRouter } from 'vue-router';
+import CitySelect from 'src/components/CitySelect.vue';
 
 const authStore = useAuthStore();
 const playerStore = usePlayerStore();
@@ -286,7 +287,7 @@ const profileForm = reactive({
   useSameName: true,
   gender: null,
   level: null,
-  city: '',
+  city: null,
   instagram: '',
   whatsapp: '',
 });
@@ -374,7 +375,9 @@ onMounted(async () => {
       profileForm.useSameName = !profile.nickname || profile.nickname === profile.name;
       profileForm.gender = profile.gender || null;
       profileForm.level = profile.level || null;
-      profileForm.city = profile.city || '';
+      profileForm.city = profile.city
+        ? { label: `${profile.city.name} - ${profile.city.state_code}`, ...profile.city }
+        : null;
       profileForm.instagram = profile.instagram || '';
       profileForm.whatsapp = profile.whatsapp || '';
       imagePreview.value = profile.image_url || null;
@@ -387,7 +390,15 @@ onMounted(async () => {
 async function onUpdateProfile() {
   saving.value = true;
   try {
-    await playerStore.updateProfile({ ...profileForm });
+    await playerStore.updateProfile({
+      name: profileForm.name,
+      nickname: profileForm.nickname,
+      gender: profileForm.gender,
+      level: profileForm.level,
+      city_id: profileForm.city?.id ?? null,
+      instagram: profileForm.instagram,
+      whatsapp: profileForm.whatsapp,
+    });
     $q.notify({
       type: 'positive',
       message: 'Perfil atualizado com sucesso!',

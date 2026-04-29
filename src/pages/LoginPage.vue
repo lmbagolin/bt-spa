@@ -13,7 +13,6 @@
             v-model="form.email"
             :label="$t('login.email')"
             type="email"
-            :placeholder="$t('login.email_placeholder')"
             :error="!!emailError"
             :error-message="emailError"
           >
@@ -26,7 +25,6 @@
             v-model="form.password"
             :label="$t('login.password')"
             type="password"
-            :placeholder="$t('login.password_placeholder')"
             :error="!!passwordError"
             :error-message="passwordError"
           >

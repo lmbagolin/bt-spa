@@ -16,9 +16,11 @@
         :back="goToStage"
       >
         <q-btn v-if="!hasPairs" color="primary" unelevated no-caps icon="shuffle"
-          :label="$t('stage_playoffs.btn_draw_pairs')" class="text-bold" @click="openPairsDialog" />
+          :label="isDupla ? $t('stage_playoffs.btn_seed_duplas') : $t('stage_playoffs.btn_draw_pairs')"
+          class="text-bold" @click="openPairsDialog" />
         <template v-else>
-          <q-btn outline color="surface-700" no-caps icon="refresh" :label="$t('stage_playoffs.btn_redo_pairs')"
+          <q-btn outline color="surface-700" no-caps icon="refresh"
+            :label="isDupla ? $t('stage_playoffs.btn_redo_seed_duplas') : $t('stage_playoffs.btn_redo_pairs')"
             class="text-bold" @click="openPairsDialog" />
           <q-btn v-if="!hasBracket" color="orange" unelevated no-caps icon="account_tree"
             :label="$t('stage_playoffs.btn_draw_bracket')" class="text-bold" @click="openBracketDialog" />
@@ -89,24 +91,35 @@
           <div v-for="pair in leagueStore.playoffPairs" :key="pair.id" class="pair-table-row">
             <span class="ft-center text-sm text-bold text-surface-400">{{ pair.pair_rank }}</span>
             <div class="pair-players">
-              <div class="row items-center no-wrap q-gutter-xs">
-                <div class="player-mini-av" :style="{ background: pair.finalist1?.color || '#64748b' }">
-                  {{ getInitial(pair.finalist1?.player?.name || '') }}
+              <!-- Dupla fixa: exibe apenas a dupla do finalist1 (player + parceiro) -->
+              <template v-if="isDupla">
+                <div class="row items-center no-wrap q-gutter-xs">
+                  <div class="player-mini-av" :style="{ background: pair.finalist1?.color || '#64748b' }">
+                    {{ getInitial(pair.finalist1?.player?.name || '') }}
+                  </div>
+                  <div>
+                    <div class="text-sm text-bold text-surface-900">{{ pair.finalist1?.player?.name || '—' }}</div>
+                    <div v-if="pair.finalist1?.player?.partner_name" class="text-xs text-surface-400">
+                      / {{ pair.finalist1.player.partner_name }}
+                    </div>
+                  </div>
                 </div>
-                <span class="text-sm text-bold text-surface-900 ellipsis">
-                  {{ pair.finalist1?.player?.name || '—' }}
-                  <span v-if="pair.finalist1?.player?.partner_name" class="text-xs text-surface-400 text-normal"> / {{ pair.finalist1.player.partner_name }}</span>
-                </span>
-              </div>
-              <div class="row items-center no-wrap q-gutter-xs q-mt-xs">
-                <div class="player-mini-av" :style="{ background: pair.finalist2?.color || '#64748b' }">
-                  {{ getInitial(pair.finalist2?.player?.name || '') }}
+              </template>
+              <!-- Simples: exibe os dois finalistas que formam o par -->
+              <template v-else>
+                <div class="row items-center no-wrap q-gutter-xs">
+                  <div class="player-mini-av" :style="{ background: pair.finalist1?.color || '#64748b' }">
+                    {{ getInitial(pair.finalist1?.player?.name || '') }}
+                  </div>
+                  <span class="text-sm text-bold text-surface-900 ellipsis">{{ pair.finalist1?.player?.name || '—' }}</span>
                 </div>
-                <span class="text-sm text-bold text-surface-700 ellipsis">
-                  {{ pair.finalist2?.player?.name || '—' }}
-                  <span v-if="pair.finalist2?.player?.partner_name" class="text-xs text-surface-400 text-normal"> / {{ pair.finalist2.player.partner_name }}</span>
-                </span>
-              </div>
+                <div class="row items-center no-wrap q-gutter-xs q-mt-xs">
+                  <div class="player-mini-av" :style="{ background: pair.finalist2?.color || '#64748b' }">
+                    {{ getInitial(pair.finalist2?.player?.name || '') }}
+                  </div>
+                  <span class="text-sm text-bold text-surface-700 ellipsis">{{ pair.finalist2?.player?.name || '—' }}</span>
+                </div>
+              </template>
             </div>
             <span class="ft-center text-sm text-bold text-primary">{{ pair.pts_total }}</span>
             <span class="ft-center rr-cell" :class="pair.sg_total > 0 ? 'rr-pos-val' : pair.sg_total < 0 ? 'rr-neg-val' : ''">
@@ -186,9 +199,14 @@
       <q-card-section class="row items-center q-pa-xl bg-surface-50">
         <q-avatar icon="shuffle" color="primary" text-color="white" class="shadow-md" />
         <div class="column q-ml-md">
-          <div class="text-xl text-bold text-surface-900">{{ $t('stage_playoffs.dialog_pairs_title') }}</div>
+          <div class="text-xl text-bold text-surface-900">
+            {{ isDupla ? $t('stage_playoffs.dialog_seed_duplas_title') : $t('stage_playoffs.dialog_pairs_title') }}
+          </div>
           <div class="text-xs text-surface-400">
-            {{ $t('stage_playoffs.dialog_pairs_subtitle', { finalists: leagueStore.stageFinalists.length, pairs: leagueStore.stageFinalists.length / 2 }) }}
+            {{ isDupla
+              ? $t('stage_playoffs.dialog_seed_duplas_subtitle', { duplas: leagueStore.stageFinalists.length })
+              : $t('stage_playoffs.dialog_pairs_subtitle', { finalists: leagueStore.stageFinalists.length, pairs: leagueStore.stageFinalists.length / 2 })
+            }}
           </div>
         </div>
         <q-space />
@@ -294,6 +312,7 @@ const pairMethods = computed(() => [
 ]);
 
 const stage = computed(() => leagueStore.stages.find((s) => String(s.id) === String(stageId)) || null);
+const isDupla = computed(() => stage.value?.tipo === 'dupla-fixa');
 const stageName = computed(() => {
   if (!stage.value) return 'Etapa';
   const d = stage.value.data_etapa;
@@ -363,12 +382,28 @@ function buildPairs(finalists, method) {
     const worst = ordered.slice(bestCount).sort(() => Math.random() - 0.5);
     ordered = [...best, ...worst];
   }
+  // Para dupla-fixa: cada finalista JÁ é uma dupla → 1 slot por finalista
+  if (isDupla.value) return ordered.map((f) => [f]);
+  // Para simples: 2 finalistas formam 1 par de chave
   const pairs = [];
   for (let i = 0; i < ordered.length - 1; i += 2) pairs.push([ordered[i], ordered[i + 1]]);
   return pairs;
 }
 
 function rankPairs(pairs) {
+  if (isDupla.value) {
+    return pairs
+      .map(([f1]) => ({
+        finalist1_id: f1.id,
+        finalist2_id: null,
+        pts_total:     f1.pts || 0,
+        gp_total:      f1.gp  || 0,
+        gc_total:      f1.gc  || 0,
+        position_sum:  f1.group_position || 0,
+      }))
+      .sort((a, b) => a.position_sum - b.position_sum || b.pts_total - a.pts_total)
+      .map((p, i) => ({ ...p, pair_rank: i + 1 }));
+  }
   return pairs
     .map(([f1, f2]) => ({ finalist1_id: f1.id, finalist2_id: f2.id, pts_total: (f1.pts || 0) + (f2.pts || 0), gp_total: (f1.gp || 0) + (f2.gp || 0), gc_total: (f1.gc || 0) + (f2.gc || 0), position_sum: (f1.group_position || 0) + (f2.group_position || 0) }))
     .sort((a, b) => a.position_sum - b.position_sum || b.pts_total - a.pts_total || b.gp_total - b.gc_total - (a.gp_total - a.gc_total))
@@ -533,6 +568,15 @@ async function onGenerateRanking() {
 
 function pairToPlayers(pair) {
   if (!pair) return [];
+  if (isDupla.value) {
+    // Cada pair = 1 dupla fixa: mostrar jogador + parceiro do finalist1
+    const f = pair.finalist1;
+    if (!f?.player?.name) return [];
+    const players = [{ name: f.player.name, partner_name: null, color: f.color || '#64748b' }];
+    if (f.player.partner_name) players.push({ name: f.player.partner_name, partner_name: null, color: f.color || '#64748b' });
+    return players;
+  }
+  // Simples: 2 finalistas formam 1 lado do jogo
   return [
     { name: pair.finalist1?.player?.name || '—', partner_name: pair.finalist1?.player?.partner_name || null, color: pair.finalist1?.color || '#64748b' },
     { name: pair.finalist2?.player?.name || '—', partner_name: pair.finalist2?.player?.partner_name || null, color: pair.finalist2?.color || '#64748b' },

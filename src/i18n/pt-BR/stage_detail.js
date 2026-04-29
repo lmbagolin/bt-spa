@@ -5,6 +5,13 @@ export default {
   btn_groups: 'Fase de Grupos',
   btn_playoffs: 'Playoffs',
   btn_register: 'Inscrever Jogador',
+  btn_edit_stage: 'Editar Etapa',
+  // Dialog editar etapa
+  dialog_edit_stage_title: 'Editar Etapa',
+  field_time: 'Horário',
+  save_stage: 'Salvar Etapa',
+  notify_stage_updated: 'Etapa atualizada com sucesso!',
+  notify_stage_error: 'Erro ao salvar etapa.',
   // Cards de info
   info_date: 'Data',
   info_registration: 'Inscrição',

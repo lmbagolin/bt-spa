@@ -53,20 +53,30 @@
               {{ pair.position }}°
             </div>
 
-            <!-- Both players of the pair -->
+            <!-- Avatars -->
             <div class="podium-avatars">
-              <div
-                v-for="p in pair.players"
-                :key="p.registration_id"
-                class="player-mini-av"
-                :class="{ 'player-mini-av--lg': pair.position === 1 }"
-                :style="{ background: p.player?.color || '#64748b' }"
-                :title="p.player?.name"
-              >
-                {{ getInitial(p.player?.name) }}
-              </div>
+              <template v-for="p in pair.players" :key="p.registration_id">
+                <div
+                  class="player-mini-av"
+                  :class="{ 'player-mini-av--lg': pair.position === 1 }"
+                  :style="{ background: p.player?.color || '#64748b' }"
+                  :title="p.player?.name"
+                >
+                  {{ getInitial(p.player?.name) }}
+                </div>
+                <div
+                  v-if="isDupla && p.player?.partner_name"
+                  class="player-mini-av"
+                  :class="{ 'player-mini-av--lg': pair.position === 1 }"
+                  :style="{ background: p.player?.color || '#64748b' }"
+                  :title="p.player.partner_name"
+                >
+                  {{ getInitial(p.player.partner_name) }}
+                </div>
+              </template>
             </div>
 
+            <!-- Names -->
             <div class="podium-names">
               <div
                 v-for="p in pair.players"
@@ -75,6 +85,9 @@
                 :class="{ 'podium-name--bold': pair.position === 1 }"
               >
                 {{ p.player?.name || '—' }}
+                <span v-if="isDupla && p.player?.partner_name" class="podium-partner">
+                  / {{ p.player.partner_name }}
+                </span>
               </div>
             </div>
 
@@ -127,7 +140,12 @@
             <div class="player-mini-av" :style="{ background: entry.player?.color || '#64748b' }">
               {{ getInitial(entry.player?.name) }}
             </div>
-            <span class="rr-name">{{ entry.player?.name || '—' }}</span>
+            <div>
+              <div class="rr-name">{{ entry.player?.name || '—' }}</div>
+              <div v-if="isDupla && entry.player?.partner_name" class="rr-partner">
+                / {{ entry.player.partner_name }}
+              </div>
+            </div>
           </div>
 
           <!-- Stats -->
@@ -165,6 +183,7 @@ const loading = ref(false);
 const stage = computed(
   () => leagueStore.stages.find((s) => String(s.id) === String(stageId)) || null,
 );
+const isDupla = computed(() => stage.value?.tipo === 'dupla-fixa');
 const stageName = computed(() => {
   if (!stage.value) return 'Etapa';
   const d = stage.value.data_etapa;
@@ -280,6 +299,7 @@ function goToStage() {
   margin-bottom: 4px;
 }
 .podium-name--bold { font-weight: 800; color: var(--surface-900); }
+.podium-partner { font-weight: 400; color: var(--surface-400); font-size: 0.72rem; }
 
 .podium-pts {
   font-size: 0.72rem;
@@ -363,6 +383,13 @@ function goToStage() {
   align-items: center;
   gap: 6px;
   min-width: 0;
+}
+.rr-partner {
+  font-size: 0.7rem;
+  color: var(--surface-400);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .rr-name {

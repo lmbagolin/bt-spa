@@ -43,6 +43,21 @@
       </q-item>
 
       <q-item
+        clickable v-ripple to="/amigos" exact
+        class="nav-item q-mb-xs" active-class="nav-active"
+      >
+        <q-item-section avatar>
+          <q-icon name="group" size="22px" />
+        </q-item-section>
+        <q-item-section>
+          <q-item-label class="text-weight-medium">{{ $t('sidebar.nav_friends') }}</q-item-label>
+        </q-item-section>
+        <q-item-section side v-if="pendingRequestsCount">
+          <q-badge color="negative">{{ pendingRequestsCount }}</q-badge>
+        </q-item-section>
+      </q-item>
+
+      <q-item
         clickable
         v-ripple
         to="/profile"
@@ -103,11 +118,18 @@
 </template>
 
 <script setup>
+import { computed, onMounted } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useAuthStore } from 'src/stores/auth';
+import { useFriendStore } from 'src/stores/friend';
 
-const authStore = useAuthStore();
+const authStore   = useAuthStore();
+const friendStore = useFriendStore();
 const { canManageArenas } = storeToRefs(authStore);
+
+const pendingRequestsCount = computed(() => friendStore.requests.length);
+
+onMounted(() => friendStore.fetchRequests().catch(() => {}));
 </script>
 
 <style scoped lang="scss">

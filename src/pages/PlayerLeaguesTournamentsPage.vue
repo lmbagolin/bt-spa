@@ -56,7 +56,7 @@
           </div>
           <div class="col-12 col-sm-2">
             <q-select
-              v-model="filters.genero"
+              v-model="filters.gender"
               :options="generoOptions"
               label="Gênero"
               outlined
@@ -144,15 +144,15 @@ const nivelOptions = [
 ];
 
 const generoOptions = [
-  { label: 'Masculino', value: 'masculino' },
-  { label: 'Feminino',  value: 'feminino'  },
-  { label: 'Misto',     value: 'misto'     },
+  { label: 'Masculino', value: 'male'   },
+  { label: 'Feminino',  value: 'female' },
+  { label: 'Misto',     value: 'mixed'  },
 ];
 
 const filters = reactive({
   search: '',
   nivel: null,
-  genero: null,
+  gender: null,
 });
 
 const upcomingStages = computed(() => {
@@ -186,7 +186,7 @@ async function loadLeagues() {
   const params = {};
   if (filters.search) params.search = filters.search;
   if (filters.nivel)  params.nivel  = filters.nivel;
-  if (filters.genero) params.genero = filters.genero;
+  if (filters.gender) params.gender = filters.gender;
   await leagueStore.fetchPublicLeagues(params);
 }
 

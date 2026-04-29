@@ -78,14 +78,8 @@
             <div class="text-xs text-surface-500 text-bold uppercase tracking-widest q-mb-md">
               {{ $t('league_detail.info_gender') }}
             </div>
-            <q-chip
-              dense
-              :color="generoChip(leagueStore.currentLeague.genero).color"
-              text-color="white"
-              class="text-sm text-bold q-px-md"
-            >
-              {{ generoChip(leagueStore.currentLeague.genero).label }}
-            </q-chip>
+
+            <GeneroChip :gender="leagueStore.currentLeague.gender" />
           </q-card-section>
         </q-card>
       </div>
@@ -296,7 +290,7 @@
                 {{ $t('league_detail.field_gender') }}
               </label>
               <BtSelect
-                v-model="leagueForm.genero"
+                v-model="leagueForm.gender"
                 :options="generoOptions"
                 emit-value
                 map-options
@@ -748,6 +742,7 @@
 
 <script setup>
 import PageHeader from 'src/components/others/PageHeader.vue';
+import GeneroChip from 'src/components/others/GeneroChip.vue';
 import BtDialog from 'src/components/BtDialog.vue';
 import BtInput from 'src/components/BtInput.vue';
 import BtSelect from 'src/components/BtSelect.vue';
@@ -775,9 +770,9 @@ const showLeagueDialog = ref(false);
 const savingLeague = ref(false);
 
 const generoOptions = computed(() => [
-  { label: t('common.gender_male'), value: 'masculino' },
-  { label: t('common.gender_female'), value: 'feminino' },
-  { label: t('common.gender_mixed'), value: 'misto' },
+  { label: t('common.gender_male'), value: 'male' },
+  { label: t('common.gender_female'), value: 'female' },
+  { label: t('common.gender_mixed'), value: 'mixed' },
 ]);
 
 const leagueForm = reactive({
@@ -787,7 +782,7 @@ const leagueForm = reactive({
   data_prevista_termino: '',
   numero_etapas: 1,
   nivel: '',
-  genero: 'misto',
+  gender: 'mixed',
   descricao: '',
   premiacao: '',
 });
@@ -923,7 +918,7 @@ function openLeagueDialog() {
   leagueForm.data_prevista_termino = l.data_prevista_termino;
   leagueForm.numero_etapas = l.numero_etapas;
   leagueForm.nivel = l.nivel;
-  leagueForm.genero = l.genero ?? 'misto';
+  leagueForm.gender = l.gender ?? 'mixed';
   leagueForm.descricao = l.descricao;
   leagueForm.premiacao = l.premiacao;
   showLeagueDialog.value = true;
@@ -1073,15 +1068,6 @@ function formatDate(dateStr) {
   const dateFormatted = d.toLocaleDateString('pt-BR');
   const timePart = dateStr.includes(' ') ? dateStr.split(' ')[1] : null;
   return timePart && timePart !== '00:00' ? `${dateFormatted} ${timePart}` : dateFormatted;
-}
-
-const GENERO_MAP = computed(() => ({
-  masculino: { label: t('common.gender_male'), color: 'blue' },
-  feminino: { label: t('common.gender_female'), color: 'pink' },
-  misto: { label: t('common.gender_mixed'), color: 'purple' },
-}));
-function generoChip(g) {
-  return GENERO_MAP.value[g] ?? { label: '—', color: 'grey' };
 }
 </script>
 

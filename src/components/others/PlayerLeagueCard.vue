@@ -40,14 +40,14 @@
           <div class="text-base text-bold text-surface-900 ellipsis">{{ league.nome }}</div>
           <div class="row items-center q-mt-xs">
             <q-chip
-              v-if="league.genero"
+              v-if="league.gender"
               dense
-              :color="generoColor(league.genero)"
+              :color="generoColor(league.gender)"
               text-color="white"
               class="text-bold q-ma-none q-mr-xs"
               style="font-size: 0.6rem; height: 18px"
             >
-              {{ generoLabel(league.genero) }}
+              {{ generoLabel(league.gender) }}
             </q-chip>
             <q-chip
               v-if="league.nivel"
@@ -158,9 +158,9 @@ defineProps({
 defineEmits(['click', 'register']);
 
 const GENERO_MAP = {
-  masculino: { label: () => t('player_league_card.gender_male'), color: 'blue-8' },
-  feminino: { label: () => t('player_league_card.gender_female'), color: 'pink-8' },
-  misto: { label: () => t('player_league_card.gender_mixed'), color: 'green-8' },
+  male:   { label: () => t('player_league_card.gender_male'),   color: 'blue-8'  },
+  female: { label: () => t('player_league_card.gender_female'), color: 'pink-8'  },
+  mixed:  { label: () => t('player_league_card.gender_mixed'),  color: 'green-8' },
 };
 function generoLabel(g) {
   return GENERO_MAP[g]?.label() ?? g;
