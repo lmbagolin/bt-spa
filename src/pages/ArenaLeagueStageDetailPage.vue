@@ -46,6 +46,28 @@
         class="text-bold"
         @click="router.push({ name: 'stage-playoffs', params: { id: arenaId, leagueId, stageId } })"
       />
+
+      <q-btn
+        v-if="!isClosed"
+        unelevated
+        color="primary"
+        icon="add"
+        label="Nova Inscrição"
+        no-caps
+        class="text-bold"
+        @click="openAddRegistrationDialog"
+      />
+
+      <q-btn
+        v-if="!isClosed"
+        outline
+        color="primary"
+        icon="group_add"
+        label="Inscrição em Lote"
+        no-caps
+        class="text-bold"
+        @click="openBatchDialog"
+      />
     </PageHeader>
 
     <!-- Cards de Informações da Etapa -->
@@ -230,7 +252,7 @@
         <q-table
           :rows="filteredRegistrations"
           :columns="columns"
-          row-key="id"
+          row-key="index"
           flat
           :loading="leagueStore.loadingRegistrations"
           :pagination="pagination"
@@ -238,6 +260,12 @@
           :no-data-label="$t('stage_detail.no_data')"
           :no-results-label="$t('stage_detail.no_results')"
         >
+          <template v-slot:body-cell-index="props">
+            <q-td :props="props">
+              {{ props.rowIndex + 1 }}
+            </q-td>
+          </template>
+
           <template v-slot:body-cell-player="props">
             <q-td :props="props">
               <div class="column q-gutter-sm">
@@ -381,6 +409,30 @@
                     <label
                       class="text-xs font-bold text-surface-500 block uppercase tracking-widest q-mb-sm"
                     >
+                      Selecionar Jogador (da arena)
+                    </label>
+                    <BtSelect
+                      v-model="registrationForm.player_id"
+                      :options="playerOptions"
+                      emit-value
+                      map-options
+                      clearable
+                      outlined
+                      dense
+                      bg-color="white"
+                      placeholder="Buscar jogador cadastrado..."
+                      use-input
+                      fill-input
+                      input-debounce="0"
+                      @filter="(val, update) => update()"
+                      @update:model-value="onSelectPlayer"
+                    />
+                  </div>
+
+                  <div class="q-gutter-y-xs">
+                    <label
+                      class="text-xs font-bold text-surface-500 block uppercase tracking-widest q-mb-sm"
+                    >
                       {{ $t('stage_detail.field_full_name') }}
                     </label>
                     <q-input
@@ -391,6 +443,7 @@
                       bg-color="white"
                       lazy-rules
                       :rules="[(val) => !!val || $t('stage_detail.validation_name_required')]"
+                      :disable="!!registrationForm.player_id"
                     />
                   </div>
                   <div class="q-gutter-y-xs">
@@ -405,6 +458,7 @@
                       outlined
                       dense
                       bg-color="white"
+                      :disable="!!registrationForm.player_id"
                     />
                   </div>
                   <div class="row q-col-gutter-lg">
@@ -422,6 +476,7 @@
                         emit-value
                         map-options
                         bg-color="white"
+                        :disable="!!registrationForm.player_id"
                       />
                     </div>
                     <div class="col-12 col-sm-6">
@@ -438,6 +493,7 @@
                         emit-value
                         map-options
                         bg-color="white"
+                        :disable="!!registrationForm.player_id"
                       />
                     </div>
                   </div>
@@ -606,6 +662,103 @@
             />
           </q-card-actions>
         </q-form>
+      </q-card>
+    </q-dialog>
+
+    <!-- Dialog de Inscrição em Lote -->
+    <q-dialog v-model="showBatchDialog" persistent backdrop-filter="blur(8px)">
+      <q-card class="radius-xl shadow-xl overflow-hidden" style="width: 600px; max-width: 95vw">
+        <q-card-section class="row items-center q-pa-xl bg-surface-50">
+          <q-avatar icon="group_add" color="primary" text-color="white" class="shadow-md" />
+          <div class="column q-ml-md">
+            <div class="text-xl text-bold text-surface-900">Inscrição em Lote</div>
+            <div class="text-xs text-surface-400">Jogadores gerenciados pela arena</div>
+          </div>
+          <q-space />
+          <q-btn icon="close" flat round dense v-close-popup color="surface-400" />
+        </q-card-section>
+
+        <q-separator color="surface-100" />
+
+        <q-card-section class="q-pa-xl">
+          <div class="q-mb-lg">
+            <label
+              class="text-xs font-bold text-surface-500 block uppercase tracking-widest q-mb-sm"
+            >
+              Status Inicial das Inscrições
+            </label>
+            <q-select
+              v-model="batchStatus"
+              :options="statusOptions"
+              outlined
+              dense
+              emit-value
+              map-options
+              bg-color="white"
+            />
+          </div>
+
+          <div class="text-sm text-bold text-surface-900 q-mb-md">
+            Selecione os Jogadores ({{ managedPlayersOptions.length }} disponíveis)
+          </div>
+
+          <q-scroll-area style="height: 300px" class="border-surface-100 radius-md bg-surface-20">
+            <q-list separator>
+              <q-item
+                v-for="player in managedPlayersOptions"
+                :key="player.value"
+                tag="label"
+                v-ripple
+                class="q-py-md"
+              >
+                <q-item-section side top>
+                  <q-checkbox v-model="batchSelectedPlayers" :val="player.value" />
+                </q-item-section>
+                <q-item-section>
+                  <q-item-label class="text-bold">{{ player.label }}</q-item-label>
+                  <q-item-label caption>
+                    <GeneroChip :gender="player.gender" class="q-mr-xs" />
+                    <q-chip
+                      :color="getLevelBadge(player.level).color"
+                      :text-color="getLevelBadge(player.level).textColor"
+                      dense
+                      size="xs"
+                    >
+                      {{ player.level }}
+                    </q-chip>
+                  </q-item-label>
+                </q-item-section>
+              </q-item>
+              <q-item v-if="managedPlayersOptions.length === 0" class="text-center q-pa-xl">
+                <q-item-section>
+                  <div class="text-surface-400 italic">
+                    Nenhum jogador gerenciado disponível para inscrição.
+                  </div>
+                </q-item-section>
+              </q-item>
+            </q-list>
+          </q-scroll-area>
+        </q-card-section>
+
+        <q-card-actions align="right" class="q-pa-xl bg-surface-50 border-surface-100">
+          <q-btn
+            flat
+            label="Cancelar"
+            v-close-popup
+            color="surface-500"
+            no-caps
+            class="text-bold"
+          />
+          <q-btn
+            label="Inscrever Selecionados"
+            color="primary"
+            unelevated
+            class="q-px-xl text-bold no-caps shadow-md"
+            :loading="savingBatch"
+            :disable="batchSelectedPlayers.length === 0"
+            @click="onSubmitBatchRegistration"
+          />
+        </q-card-actions>
       </q-card>
     </q-dialog>
 
@@ -992,9 +1145,11 @@ const leagueStore = useLeagueStore();
 const playerStore = usePlayerStore();
 
 const showDialog = ref(false);
+const showBatchDialog = ref(false);
 const showStatusDialog = ref(false);
 const showStageEditDialog = ref(false);
 const saving = ref(false);
+const savingBatch = ref(false);
 const savingStage = ref(false);
 const updatingStatus = ref(false);
 const pendingStatus = ref(null);
@@ -1002,8 +1157,10 @@ const selectedRegistration = ref(null);
 const search = ref('');
 const filterStatus = ref(null);
 const filterGender = ref(null);
+const batchSelectedPlayers = ref([]);
+const batchStatus = ref('pending');
 
-const pagination = { rowsPerPage: 15 };
+const pagination = { rowsPerPage: 32 };
 
 const stage = computed(() => {
   return leagueStore.stages.find((s) => String(s.id) === String(stageId)) || null;
@@ -1079,6 +1236,11 @@ const filteredRegistrations = computed(() => {
 });
 
 const columns = computed(() => [
+  {
+    name: 'index',
+    label: '#',
+    field: 'index',
+  },
   {
     name: 'player',
     align: 'left',
@@ -1243,16 +1405,128 @@ const registrationForm = reactive({
   observacoes: '',
 });
 
-const partnerOptions = computed(() => {
+function openAddRegistrationDialog() {
+  registrationForm.id = null;
+  registrationForm.player_id = null;
+  registrationForm.name = '';
+  registrationForm.nickname = '';
+  registrationForm.gender = 'male';
+  registrationForm.level = 'Iniciante';
+  registrationForm.whatsapp = '';
+  registrationForm.partner_player_id = null;
+  registrationForm.partner_name = '';
+  registrationForm.status = 'pending';
+  registrationForm.valor_pago = stage.value?.valor_inscricao ?? null;
+  registrationForm.posicao_grupo = null;
+  registrationForm.observacoes = '';
+  showDialog.value = true;
+}
+
+const managedPlayersOptions = computed(() => {
   const registeredIds = new Set(
     leagueStore.stageRegistrations.flatMap((r) =>
       [r.player?.id, r.partner_player_id].filter(Boolean),
     ),
   );
   return playerStore.players
+    .filter((p) => p.arena_id == arenaId && !p.user_id && !registeredIds.has(p.id))
+    .map((p) => ({
+      label: p.name + (p.nickname ? ` (${p.nickname})` : ''),
+      value: p.id,
+      gender: p.gender,
+      level: p.level,
+    }));
+});
+
+function openBatchDialog() {
+  batchSelectedPlayers.value = [];
+  batchStatus.value = 'pending';
+  showBatchDialog.value = true;
+}
+
+async function onSubmitBatchRegistration() {
+  if (batchSelectedPlayers.value.length === 0) {
+    $q.notify({ type: 'warning', message: 'Selecione ao menos um jogador.' });
+    return;
+  }
+
+  savingBatch.value = true;
+  try {
+    const result = await leagueStore.saveStageRegistrationBatch(arenaId, leagueId, stageId, {
+      player_ids: batchSelectedPlayers.value,
+      status: batchStatus.value,
+    });
+
+    $q.notify({
+      type: 'positive',
+      message: result.message,
+      position: 'top',
+      icon: 'check_circle',
+    });
+
+    if (result.errors && result.errors.length > 0) {
+      result.errors.forEach((err) => {
+        $q.notify({ type: 'warning', message: err, position: 'top', timeout: 5000 });
+      });
+    }
+
+    showBatchDialog.value = false;
+  } catch {
+    $q.notify({ type: 'negative', message: 'Erro ao processar inscrições em lote.' });
+  } finally {
+    savingBatch.value = false;
+  }
+}
+
+const partnerOptions = computed(() => {
+  const registeredIds = new Set(
+    leagueStore.stageRegistrations.flatMap((r) =>
+      [r.player?.id, r.partner_player_id].filter(Boolean),
+    ),
+  );
+  // Also filter current selected player
+  if (registrationForm.player_id) {
+    registeredIds.add(registrationForm.player_id);
+  }
+  return playerStore.players
     .filter((p) => !registeredIds.has(p.id))
     .map((p) => ({ label: p.name + (p.nickname ? ` (${p.nickname})` : ''), value: p.id }));
 });
+
+const playerOptions = computed(() => {
+  const registeredIds = new Set(
+    leagueStore.stageRegistrations.flatMap((r) =>
+      [r.player?.id, r.partner_player_id].filter(Boolean),
+    ),
+  );
+  // Also filter current selected partner
+  if (registrationForm.partner_player_id) {
+    registeredIds.add(registrationForm.partner_player_id);
+  }
+  return playerStore.players
+    .filter((p) => !registeredIds.has(p.id))
+    .map((p) => ({ label: p.name + (p.nickname ? ` (${p.nickname})` : ''), value: p.id }));
+});
+
+function onSelectPlayer(playerId) {
+  if (playerId) {
+    const player = playerStore.players.find((p) => p.id === playerId);
+    if (player) {
+      registrationForm.name = player.name;
+      registrationForm.nickname = player.nickname || '';
+      registrationForm.gender = player.gender || 'male';
+      registrationForm.level = player.level || 'Iniciante';
+      registrationForm.whatsapp = player.whatsapp || '';
+    }
+  } else {
+    // Reset fields if cleared
+    registrationForm.name = '';
+    registrationForm.nickname = '';
+    registrationForm.gender = 'male';
+    registrationForm.level = 'Iniciante';
+    registrationForm.whatsapp = '';
+  }
+}
 
 onMounted(async () => {
   await leagueStore.fetchLeague(arenaId, leagueId);

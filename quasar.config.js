@@ -76,6 +76,10 @@ export default defineConfig((/* ctx */) => {
       port: 3000,
       host: '0.0.0.0',
       open: true, // opens browser window automatically
+      allowedHosts: ['spa.pontua.local.com'],
+      client: {
+        webSocketURL: 'wss://spa.pontua.local.com/ws',
+      },
     },
 
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-file#framework

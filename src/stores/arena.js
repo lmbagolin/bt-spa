@@ -17,6 +17,20 @@ export const useArenaStore = defineStore('arena', {
   }),
 
   actions: {
+    async fetchArena(arenaId) {
+      this.loading = true;
+      try {
+        const response = await api.get(`/arenas/${arenaId}`);
+        this.currentArena = response.data.data;
+        return this.currentArena;
+      } catch (error) {
+        console.error('Error fetching arena:', error);
+        throw error;
+      } finally {
+        this.loading = false;
+      }
+    },
+
     async fetchArenas() {
       this.loading = true;
       try {

@@ -80,7 +80,7 @@
                     </div>
 
                     <div class="col-6">
-                      <q-select
+                      <bt-select
                         v-model="profileForm.gender"
                         :options="genderOptions"
                         label="Gênero"
@@ -100,6 +100,28 @@
                         emit-value
                         map-options
                       />
+                    </div>
+
+                    <div class="col-12">
+                      <q-select
+                        v-model="profileForm.nationality"
+                        :options="filteredCountries"
+                        label="Nacionalidade"
+                        outlined
+                        dense
+                        emit-value
+                        map-options
+                        use-input
+                        @filter="filterCountries"
+                      >
+                        <template v-slot:no-option>
+                          <q-item>
+                            <q-item-section class="text-grey">
+                              Nenhum país encontrado
+                            </q-item-section>
+                          </q-item>
+                        </template>
+                      </q-select>
                     </div>
 
                     <div class="col-12">
@@ -268,6 +290,7 @@ import { useAuthStore } from 'src/stores/auth';
 import { usePlayerStore } from 'src/stores/player';
 import { useQuasar } from 'quasar';
 import { useRouter } from 'vue-router';
+import { api } from 'boot/axios';
 import CitySelect from 'src/components/CitySelect.vue';
 
 const authStore = useAuthStore();
@@ -287,10 +310,43 @@ const profileForm = reactive({
   useSameName: true,
   gender: null,
   level: null,
+  nationality: null,
   city: null,
   instagram: '',
   whatsapp: '',
 });
+
+const countries = ref([]);
+const filteredCountries = ref([]);
+
+async function fetchCountries() {
+  try {
+    const response = await api.get('/countries');
+    countries.value = response.data.map((c) => ({
+      label: c.name,
+      value: c.iso3,
+    }));
+    filteredCountries.value = countries.value;
+  } catch (error) {
+    console.error('Error fetching countries:', error);
+  }
+}
+
+function filterCountries(val, update) {
+  if (val === '') {
+    update(() => {
+      filteredCountries.value = countries.value;
+    });
+    return;
+  }
+
+  update(() => {
+    const needle = val.toLowerCase();
+    filteredCountries.value = countries.value.filter(
+      (v) => v.label.toLowerCase().indexOf(needle) > -1,
+    );
+  });
+}
 
 // Sincroniza nickname com name se o checkbox estiver marcado
 watch(
@@ -367,6 +423,7 @@ const levelOptions = [
 ];
 
 onMounted(async () => {
+  fetchCountries();
   try {
     const profile = await playerStore.fetchProfile();
     if (profile) {
@@ -375,6 +432,7 @@ onMounted(async () => {
       profileForm.useSameName = !profile.nickname || profile.nickname === profile.name;
       profileForm.gender = profile.gender || null;
       profileForm.level = profile.level || null;
+      profileForm.nationality = profile.nationality || null;
       profileForm.city = profile.city
         ? { label: `${profile.city.name} - ${profile.city.state_code}`, ...profile.city }
         : null;
@@ -395,6 +453,7 @@ async function onUpdateProfile() {
       nickname: profileForm.nickname,
       gender: profileForm.gender,
       level: profileForm.level,
+      nationality: profileForm.nationality,
       city_id: profileForm.city?.id ?? null,
       instagram: profileForm.instagram,
       whatsapp: profileForm.whatsapp,

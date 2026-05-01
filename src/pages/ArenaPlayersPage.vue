@@ -1,15 +1,26 @@
 <template>
   <q-page class="q-pa-lg">
     <PageHeader :title="$t('players.title')" :subtitle="$t('players.subtitle')">
-      <q-btn
-        color="primary"
-        icon="person_add"
-        :label="$t('players.new_player')"
-        unelevated
-        no-caps
-        class="text-bold"
-        @click="openPlayerDialog"
-      />
+      <div class="row q-gutter-sm">
+        <q-btn
+          outline
+          color="primary"
+          icon="group_add"
+          label="Cadastro em Lote"
+          no-caps
+          class="text-bold"
+          @click="router.push({ name: 'arena-players-batch', params: { id: arenaId } })"
+        />
+        <q-btn
+          color="primary"
+          icon="person_add"
+          :label="$t('players.new_player')"
+          unelevated
+          no-caps
+          class="text-bold"
+          @click="openPlayerDialog"
+        />
+      </div>
     </PageHeader>
 
     <!-- Filtros e Busca -->
@@ -66,7 +77,21 @@
                 {{ props.row.name.charAt(0).toUpperCase() }}
               </q-avatar>
               <div class="column q-ml-sm">
-                <div class="text-bold text-surface-900">{{ props.row.name }}</div>
+                <div class="row items-center">
+                  <div class="text-bold text-surface-900">{{ props.row.name }}</div>
+                  <q-chip
+                    v-if="props.row.arena_id && !props.row.user_id"
+                    dense
+                    size="10px"
+                    color="orange-1"
+                    text-color="orange-9"
+                    icon="admin_panel_settings"
+                    class="text-bold q-ml-sm"
+                  >
+                    Gerenciado
+                    <q-tooltip>Jogador cadastrado e gerenciado pela arena</q-tooltip>
+                  </q-chip>
+                </div>
                 <div class="text-xs text-surface-400">{{ props.row.nickname || '-' }}</div>
               </div>
             </div>
@@ -211,6 +236,33 @@
               <label
                 class="text-xs font-bold text-surface-500 block uppercase tracking-widest q-mb-sm"
               >
+                Nacionalidade
+              </label>
+              <q-select
+                v-model="form.nationality"
+                :options="filteredCountries"
+                outlined
+                dense
+                emit-value
+                map-options
+                use-input
+                bg-color="white"
+                @filter="filterCountries"
+              >
+                <template v-slot:no-option>
+                  <q-item>
+                    <q-item-section class="text-grey">
+                      Nenhum país encontrado
+                    </q-item-section>
+                  </q-item>
+                </template>
+              </q-select>
+            </div>
+
+            <div class="q-gutter-y-xs">
+              <label
+                class="text-xs font-bold text-surface-500 block uppercase tracking-widest q-mb-sm"
+              >
                 {{ $t('players.field_city') }}
               </label>
               <CitySelect v-model="form.city" :label="null" />
@@ -245,11 +297,12 @@
 import PageHeader from 'src/components/others/PageHeader.vue';
 import CitySelect from 'src/components/CitySelect.vue';
 import { ref, reactive, computed, onMounted } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { usePlayerStore } from 'src/stores/player';
 import { useArenaStore } from 'src/stores/arena';
 import { useQuasar } from 'quasar';
 import { useI18n } from 'vue-i18n';
+import { api } from 'boot/axios';
 
 const $q = useQuasar();
 const playerStore = usePlayerStore();
@@ -262,6 +315,7 @@ const search = ref('');
 const filterLevel = ref(null);
 const showDialog = ref(false);
 const saving = ref(false);
+const router = useRouter();
 
 const pagination = {
   rowsPerPage: 10,
@@ -273,8 +327,39 @@ const form = reactive({
   nickname: '',
   gender: 'male',
   level: 'Iniciante',
+  nationality: null,
   city: null,
 });
+
+const countries = ref([]);
+const filteredCountries = ref([]);
+
+async function fetchCountries() {
+  try {
+    const response = await api.get('/countries');
+    countries.value = response.data.map((c) => ({
+      label: c.name,
+      value: c.iso3,
+    }));
+    filteredCountries.value = countries.value;
+  } catch (error) {
+    console.error('Error fetching countries:', error);
+  }
+}
+
+function filterCountries(val, update) {
+  if (val === '') {
+    update(() => {
+      filteredCountries.value = countries.value;
+    });
+    return;
+  }
+
+  update(() => {
+    const needle = val.toLowerCase();
+    filteredCountries.value = countries.value.filter((v) => v.label.toLowerCase().indexOf(needle) > -1);
+  });
+}
 
 const columns = computed(() => [
   { name: 'name', align: 'left', label: t('players.col_player'), field: 'name', sortable: true },
@@ -317,6 +402,8 @@ const filteredPlayers = computed(() => {
 });
 
 onMounted(async () => {
+  fetchCountries();
+  await arenaStore.fetchArena(arenaId);
   await playerStore.fetchPlayers(arenaId);
 });
 
@@ -331,6 +418,7 @@ function resetForm() {
   form.nickname = '';
   form.gender = 'male';
   form.level = 'Iniciante';
+  form.nationality = 'BRA';
   form.city = null;
 }
 
@@ -340,6 +428,7 @@ function editPlayer(player) {
   form.nickname = player.nickname;
   form.gender = player.gender;
   form.level = player.level;
+  form.nationality = player.nationality;
   form.city = player.city
     ? { label: `${player.city.name} - ${player.city.state_code}`, ...player.city }
     : null;
@@ -355,6 +444,7 @@ async function onSubmit() {
       nickname: form.nickname,
       gender: form.gender,
       level: form.level,
+      nationality: form.nationality,
       city_id: form.city?.id ?? null,
     });
     $q.notify({

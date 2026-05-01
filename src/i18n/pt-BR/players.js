@@ -25,6 +25,9 @@ export default {
   field_level: 'Nível',
   field_city: 'Cidade',
   field_city_placeholder: 'Ex: Porto Alegre',
+  field_nationality: 'Nacionalidade',
+  field_whatsapp: 'Whatsapp',
+  field_instagram: 'Instagram',
   validation_name_required: 'Nome é obrigatório',
   // Ações da tabela
   tooltip_edit: 'Editar',

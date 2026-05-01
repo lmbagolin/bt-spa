@@ -89,6 +89,17 @@ export const usePlayerStore = defineStore('player', {
       }
     },
 
+    async savePlayersBatch(arenaId, players) {
+      this.loading = true;
+      try {
+        const response = await api.post(`/arenas/${arenaId}/players/batch`, { players });
+        await this.fetchPlayers(arenaId);
+        return response.data;
+      } finally {
+        this.loading = false;
+      }
+    },
+
     async deletePlayer(arenaId, playerId) {
       this.loading = true;
       try {

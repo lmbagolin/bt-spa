@@ -64,6 +64,11 @@ const routes = [
       { path: 'dashboard', component: () => import('pages/ArenaDashboardPage.vue') },
       { path: 'tournaments', component: () => import('pages/ArenaTournamentsPage.vue') },
       { path: 'players', component: () => import('pages/ArenaPlayersPage.vue') },
+      {
+        path: 'players/batch',
+        name: 'arena-players-batch',
+        component: () => import('pages/ArenaPlayersBatchPage.vue'),
+      },
       { path: 'leagues', component: () => import('pages/ArenaLeaguesPage.vue') },
       { path: 'leagues/:leagueId', component: () => import('pages/ArenaLeagueDetailPage.vue') },
       {

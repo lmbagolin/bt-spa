@@ -1,13 +1,13 @@
 <template>
-  <q-select
-    :model-value="modelValue"
-    @update:model-value="$emit('update:modelValue', $event)"
+  <bt-select
+    v-model="vModel"
     :options="cityOptions"
     option-label="label"
+    map-options
     use-input
     hide-selected
     fill-input
-    input-debounce="0"
+    input-debounce="10"
     :loading="loading"
     :label="resolvedLabel"
     :placeholder="resolvedPlaceholder"
@@ -17,6 +17,7 @@
     :dense="dense"
     :disable="disable"
     :readonly="readonly"
+    emit-value
     outlined
     class="bt-select city-select"
     @filter="filterCities"
@@ -32,11 +33,11 @@
         </q-item-section>
       </q-item>
     </template>
-  </q-select>
+  </bt-select>
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted, watch } from 'vue';
 import { api } from 'boot/axios';
 import { useI18n } from 'vue-i18n';
 
@@ -54,11 +55,68 @@ const props = defineProps({
   readonly: { type: Boolean, default: false },
 });
 
-defineEmits(['update:modelValue']);
+const emits = defineEmits(['update:modelValue']);
 
 const cityOptions = ref([]);
 const loading = ref(false);
 const hasSearched = ref(false);
+
+onMounted(() => {
+  preloadCities();
+});
+
+async function preloadCities() {
+  if (sessionStorage.getItem('all_cities')) return;
+
+  try {
+    const { data } = await api.get('/cities');
+    const results = data.map((c) => ({
+      label: `${c.name} - ${c.state_code}`,
+      id: c.id,
+      value: c.id,
+      name: c.name,
+      state_code: c.state_code,
+    }));
+    sessionStorage.setItem('all_cities', JSON.stringify(results));
+    updateSelectedOption();
+  } catch (error) {
+    console.error('Error preloading cities:', error);
+  }
+}
+
+function updateSelectedOption() {
+  if (!props.modelValue) return;
+
+  const allCitiesStr = sessionStorage.getItem('all_cities');
+  if (allCitiesStr) {
+    const allCities = JSON.parse(allCitiesStr);
+    const selected = allCities.find((c) => c.id === props.modelValue);
+    if (selected) {
+      // Ensure the selected option is in cityOptions so map-options can find it
+      if (!cityOptions.value.find((o) => o.id === selected.id)) {
+        cityOptions.value = [selected, ...cityOptions.value];
+      }
+    }
+  }
+}
+
+watch(
+  () => props.modelValue,
+  () => {
+    updateSelectedOption();
+  },
+  { immediate: true },
+);
+
+const vModel = computed({
+  get() {
+    console.log('GET', cityOptions.value);
+    return props.modelValue;
+  },
+  set(value) {
+    emits('update:modelValue', value);
+  },
+});
 
 const resolvedLabel = computed(() => props.label ?? t('common.city'));
 const resolvedPlaceholder = computed(
@@ -75,17 +133,56 @@ async function filterCities(val, update, abort) {
     return;
   }
 
-  loading.value = true;
-  try {
-    const { data } = await api.get('/cities', { params: { search: val } });
+  // Tenta busca local primeiro
+  const allCitiesStr = sessionStorage.getItem('all_cities');
+  if (allCitiesStr) {
+    const allCities = JSON.parse(allCitiesStr);
+    const needle = val.toLowerCase();
+    const filtered = allCities.filter((c) => c.label.toLowerCase().includes(needle)).slice(0, 50);
+
+    // Sempre incluir o selecionado se ele não estiver no filtro
+    if (props.modelValue) {
+      const selected = allCities.find((c) => c.id === props.modelValue);
+      if (selected && !filtered.find((f) => f.id === selected.id)) {
+        filtered.push(selected);
+      }
+    }
+
     update(() => {
       hasSearched.value = true;
-      cityOptions.value = data.map((c) => ({
-        label: `${c.name} - ${c.state_code}`,
-        id: c.id,
-        name: c.name,
-        state_code: c.state_code,
-      }));
+      cityOptions.value = filtered;
+    });
+    return;
+  }
+
+  // Fallback para API (ou cache de busca específica)
+  loading.value = true;
+  try {
+    const cacheKey = `cities_search_${val.toLowerCase()}`;
+    const cached = sessionStorage.getItem(cacheKey);
+
+    if (cached) {
+      update(() => {
+        hasSearched.value = true;
+        cityOptions.value = JSON.parse(cached);
+      });
+      return;
+    }
+
+    const { data } = await api.get('/cities', { params: { search: val } });
+    const results = data.map((c) => ({
+      label: `${c.name} - ${c.state_code}`,
+      id: c.id,
+      value: c.id,
+      name: c.name,
+      state_code: c.state_code,
+    }));
+
+    sessionStorage.setItem(cacheKey, JSON.stringify(results));
+
+    update(() => {
+      hasSearched.value = true;
+      cityOptions.value = results;
     });
   } catch {
     abort();

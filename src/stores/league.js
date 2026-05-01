@@ -203,6 +203,24 @@ export const useLeagueStore = defineStore('league', {
       }
     },
 
+    async saveStageRegistrationBatch(arenaId, leagueId, stageId, data) {
+      this.loadingRegistrations = true;
+      try {
+        const response = await api.post(
+          `/arenas/${arenaId}/leagues/${leagueId}/stages/${stageId}/registrations/batch`,
+          data,
+        );
+        // Refresh registrations
+        await this.fetchStageRegistrations(arenaId, leagueId, stageId);
+        return response.data;
+      } catch (error) {
+        console.error('Error saving batch registrations:', error);
+        throw error;
+      } finally {
+        this.loadingRegistrations = false;
+      }
+    },
+
     async saveStageRegistration(arenaId, leagueId, stageId, data) {
       this.loadingRegistrations = true;
       try {
